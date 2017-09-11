@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.aiqing.sharerobot.activity.LeaseDetailActivity">
+
+    <include layout="@layout/public_header"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="设备ID"
+                android:textSize="17sp"/>
+
+            <TextView
+                android:id="@+id/tv_aibot_id"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:textSize="17sp"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#999999"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="17dp"
+            android:background="#999999"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:src="@mipmap/header"/>
+
+            <TextView
+                android:id="@+id/tv_order_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textSize="17sp"/>
+
+            <TextView
+                android:id="@+id/tv_order_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:textSize="17sp"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#999999"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_order_creattime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                   android:layout_marginBottom="10dp"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="33:88:00"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <TextView
+              android:layout_alignParentBottom="true"
+                android:id="@+id/tv_orderbei"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:lines="2"
+                android:textSize="14sp"/>
+        </RelativeLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#999999"/>
+
+        <!--  <View
+              android:layout_width="match_parent"
+              android:layout_height="0.5dp"
+              android:layout_marginTop="20dp"
+              android:background="#999999"/>
+-->
+        <!-- <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="48dp"
+             android:layout_gravity="center"
+             android:layout_marginLeft="15dp"
+             android:layout_marginRight="15dp">
+
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_centerVertical="true"
+                 android:gravity="center"
+                 android:text="社会是否有故障，破损"
+                 android:textSize="17sp"/>
+
+             <ImageView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentRight="true"
+                 android:layout_centerVertical="true"
+                 android:src="@mipmap/switch_on"/>
+         </RelativeLayout>
+
+         <View
+             android:layout_width="match_parent"
+             android:layout_height="0.5dp"
+             android:background="#999999"/>
+
+         <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="48dp"
+             android:layout_gravity="center"
+             android:layout_marginLeft="15dp"
+             android:layout_marginRight="20dp">
+
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_centerVertical="true"
+                 android:gravity="center"
+                 android:text="故障1：金额50"
+                 android:textSize="15sp"/>
+
+             <ImageView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentRight="true"
+                 android:layout_centerVertical="true"
+                 android:layout_marginRight="10dp"
+                 android:src="@mipmap/right"/>
+         </RelativeLayout>
+
+         <View
+             android:layout_width="match_parent"
+             android:layout_height="0.5dp"
+             android:background="#999999"/>
+
+         <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="48dp"
+             android:layout_gravity="center"
+             android:layout_marginLeft="15dp"
+             android:layout_marginRight="20dp">
+
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_centerVertical="true"
+                 android:gravity="center"
+                 android:text="故障2：金额50"
+                 android:textSize="15sp"/>
+
+             <ImageView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentRight="true"
+                 android:layout_centerVertical="true"
+                 android:layout_marginRight="10dp"
+                 android:src="@mipmap/point_icon"/>
+         </RelativeLayout>
+-->
+        <!--  <View
+              android:layout_width="match_parent"
+              android:layout_height="0.5dp"
+              android:background="#999999"/>
+
+          <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="48dp">
+
+              <LinearLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentRight="true"
+                  android:layout_centerVertical="true"
+                  android:orientation="horizontal">
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center"
+                      android:text="从租用人押金中扣除：￥"
+                      android:textSize="15sp"/>
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center"
+                      android:layout_marginRight="10dp"
+                      android:text="50"
+                      android:textSize="15sp"/>
+              </LinearLayout>
+          </RelativeLayout>
+-->
+        <!--  <View
+              android:layout_width="match_parent"
+              android:layout_height="0.5dp"
+              android:background="#999999"/>-->
+
+        <Button
+            android:id="@+id/btn_order_sure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@mipmap/dissabled"
+            android:text="确认收货"
+            android:textSize="15sp"/>
+    </LinearLayout>
+</LinearLayout>

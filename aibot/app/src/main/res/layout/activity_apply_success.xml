@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.aiqing.sharerobot.activity.ApplySuccessActivity">
+    <include layout="@layout/public_header"/>
+    <LinearLayout
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="15sp"
+            android:text="您已成功完成进货申请"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:textSize="15sp"
+            android:text="等待平台/代理商审核"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+   <Button
+       android:id="@+id/btn_sure"
+       android:layout_marginTop="250dp"
+       android:text="确定"
+       android:layout_gravity="center"
+       android:background="@mipmap/dissabled"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"/>
+</LinearLayout>

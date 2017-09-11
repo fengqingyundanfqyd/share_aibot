@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFC27F"
+    android:orientation="vertical"
+    tools:context="com.example.aiqing.sharerobot.activity.TobeErweimaActivity">
+
+    <include layout="@layout/public_header"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="43dp"
+        android:background="#fff"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_marginRight="13.5dp"
+                android:layout_marginLeft="25dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@mipmap/robot"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="代理商_0305081"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_putin"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="扫一扫二维码申请成为我的投放商"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.example.aiqing.sharerobot">
+
+    <!-- 用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!-- 用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!-- 用于获取运营商信息，用于支持提供运营商信息相关的接口 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!-- 用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- 用于读取手机当前的状态 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!-- 用于写入缓存数据到扩展存储卡 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!-- 用于申请调用A-GPS模块 -->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+    <!-- 用于申请获取蓝牙信息进行室内定位 -->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/logo"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <service android:name="com.amap.api.location.APSService"/>
+        //开发者申请的key
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="041b2ae66216bf35d797c9e782e53814">
+        </meta-data>
+
+        <activity android:name=".MainActivity">
+        </activity>
+        <activity android:name=".activity.BusinessInfoActivity">
+        </activity>
+        <activity android:name=".activity.ApplyRentActivity">
+        </activity>
+        <activity android:name=".activity.AddAddressActivity">
+        </activity>
+        <activity android:name=".activity.SearchAddressActivity">
+        </activity>
+        <activity android:name=".activity.PayDepositActivity">
+        </activity>
+        <activity android:name=".activity.CompleteActivity">
+        </activity>
+        <activity android:name=".activity.ErweimaActivity">
+        </activity>
+        <activity android:name=".activity.TobeErweimaActivity">
+        </activity>
+        <activity android:name=".activity.YajinActivity">
+        </activity>
+        <activity android:name=".activity.PutInActivity">
+        </activity>
+        <activity android:name=".activity.PersonalInfoActivity">
+        </activity>
+        <activity android:name=".activity.MyAddressActivity">
+        </activity>
+        <activity android:name=".activity.PutManagerActivity">
+        </activity>
+        <activity android:name=".activity.LeaseManagerActivity">
+        </activity>
+        <activity android:name=".activity.LoginActivity">
+        </activity>
+        <activity android:name=".activity.ShopDataActivity">
+        </activity>
+        <activity android:name=".activity.TheRentPayActivity">
+        </activity>
+        <activity android:name=".activity.MyAibotActivity">
+        </activity>
+        <activity android:name=".activity.InternetSelectActivity">
+        </activity>
+        <activity android:name=".activity.ChangeRobotActivity">
+        </activity>
+        <activity android:name=".activity.InventoryActivity">
+        </activity>
+        <activity android:name=".activity.WebViewActivity">
+        </activity>
+        <activity android:name=".activity.LeaseDetailActivity">
+        </activity>
+        <activity android:name=".activity.GetGoodsActivity">
+        </activity>
+        <activity android:name=".activity.AgentyActivity">
+        </activity>
+        <activity android:name=".activity.InAndOutActivity">
+        </activity>
+        <activity android:name=".activity.DetailingActivity">
+        </activity>
+        <activity android:name=".activity.ApplySuccessActivity">
+        </activity>
+        <activity android:name=".activity.OrderManagerActivity">
+        </activity>
+        <activity android:name=".activity.SubletReleaseActivity">
+        </activity>
+        <activity android:name=".activity.SubletActivity">
+        </activity>
+        <activity android:name=".activity.TojoininApplyActivity">
+        </activity>
+        <activity android:name=".activity.MyWalletActivity">
+        </activity>
+        <activity android:name=".activity.MoneyDetailingActivity">
+        </activity>
+        <activity android:name=".activity.LeaseHistoryActivity">
+        </activity>
+        <activity android:name=".activity.RechargeActivity">
+        </activity>
+        <activity android:name=".activity.WithdrawalsActivity">
+        </activity>
+        <activity android:name=".activity.SelectCardActivity">
+        </activity>
+        <activity android:name=".activity.AddCardActivity">
+        </activity>
+        <activity android:name=".activity.SettingActivity">
+        </activity>
+        <activity android:name=".activity.LeaseDetailOrderActivity">
+        </activity>
+        <activity android:name=".activity.LeaseDetailDaizuActivity">
+        </activity>
+        <activity android:name=".activity.MyAibotOMActivity">
+        </activity>
+        <activity android:name=".activity.NoSendGoodActivity">
+        </activity>
+        <activity android:name=".activity.NoLeaseActivity">
+        </activity>
+        <activity android:name=".activity.StockActivity">
+        </activity>
+        <activity android:name=".activity.UpdataNickNameActivity">
+        </activity>
+        <activity android:name=".activity.HadInitDaiActivity">
+        </activity>
+        <activity android:name=".wxapi.WXPayEntryActivity">
+            android:exported="true"
+            android:launchMode="singleTop"
+        </activity>
+        <activity android:name=".activity.DaiInAndOutActivity">
+        </activity>
+        <activity android:name=".activity.DaiDetailingActivity">
+        </activity>
+        <activity android:name=".activity.Main2Activity">
+        </activity>
+        <activity android:name=".activity.ScanActivity">
+        </activity>
+        <activity android:name=".activity.ViewpagerActivity">
+        </activity>
+        <activity android:name=".activity.SubletMessageActivity">
+        </activity>
+        <activity android:name=".activity.DistributorManagerActivity">
+        </activity>
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+        </activity>
+        <activity
+            android:name="com.alipay.sdk.app.H5AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+        </activity>
+        <activity android:name=".activity.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.RecharActivity">
+        </activity>
+    </application>
+
+</manifest>

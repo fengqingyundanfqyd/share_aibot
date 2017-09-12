@@ -57,6 +57,9 @@ import com.example.aiqing.sharerobot.bean.UsersAddressBean;
 import com.example.aiqing.sharerobot.bean.WeChatPayBean;
 import com.example.aiqing.sharerobot.bean.YaoqingManBean;
 import com.example.aiqing.sharerobot.bean.ZhifubaoB2CBean;
+import com.example.aiqing.sharerobot.bean.advanceWxEBean;
+import com.example.aiqing.sharerobot.bean.advanceYuEBean;
+import com.example.aiqing.sharerobot.bean.advanceZfbBean;
 import com.example.aiqing.sharerobot.bean.daiInitRobotBean;
 import com.example.aiqing.sharerobot.bean.scanAgencyBean;
 
@@ -461,6 +464,25 @@ public interface ApiService {
      */
     @POST("http://120.132.117.157:8083/distributor/myDistributorInfo.shtml")
     Call<DistributorMineBean> disMy(@Header("JSESSIONID") String JSESSIONID);
+
+    /**
+     * 100、投放商预发量支付宝充值接口（APP和H5支付整合版）
+     */
+    @POST("http://120.132.117.157:8083/distributor/advanceApply.shtml")
+    Call<advanceZfbBean> advanceZfb(@Header("JSESSIONID") String JSESSIONID, @Query("distributorid") String distributorid, @Query("ptypeid") String ptypeid, @Query("paytype") String paytype, @Query("source") String source, @Query("num") String num, @Query("voucherimg") String voucherimg);
+
+    /**
+     * 100、投放商预发量余额充值接口（APP和H5支付整合版）
+     */
+    @POST("http://120.132.117.157:8083/distributor/advanceApply.shtml")
+    Call<advanceYuEBean> advanceYuE(@Header("JSESSIONID") String JSESSIONID, @Query("distributorid") String distributorid, @Query("ptypeid") String ptypeid, @Query("paytype") String paytype, @Query("source") String source, @Query("num") String num, @Query("voucherimg") String voucherimg);
+
+    /**
+     * 100、投放商预发量微信充值接口（APP和H5支付整合版）
+     */
+    @POST("http://120.132.117.157:8083/distributor/advanceApply.shtml")
+    Call<advanceWxEBean> advanceWx(@Header("JSESSIONID") String JSESSIONID, @Query("distributorid") String distributorid, @Query("ptypeid") String ptypeid, @Query("paytype") String paytype, @Query("source") String source, @Query("num") String num, @Query("voucherimg") String voucherimg);
+
 
 
 }

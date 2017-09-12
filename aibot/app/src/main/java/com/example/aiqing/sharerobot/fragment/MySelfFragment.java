@@ -133,7 +133,7 @@ public class MySelfFragment extends Fragment implements View.OnClickListener {
                 getActivity().finish();
                 break;
             case R.id.tv_recharge:
-                //充值
+                //充值 预发量
                 intent.setClass(getActivity(), RecharActivity.class);
                 startActivity(intent);
                 getActivity().finish();

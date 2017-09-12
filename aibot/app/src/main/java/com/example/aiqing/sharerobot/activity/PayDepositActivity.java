@@ -313,8 +313,8 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
         call.enqueue(new Callback<ZhifubaoB2CBean>() {
             @Override
             public void onResponse(Response<ZhifubaoB2CBean> response, Retrofit retrofit) {
-                String coder = response.body().getCoder();
-                Log.e("支付宝", "onResponse: " + coder);
+//                String coder = response.body().getCoder();
+//                Log.e("支付宝", "onResponse: " + coder);
                 String body = response.body().getBody();
                 Log.e("支付宝1", "onResponse: " + body);
 

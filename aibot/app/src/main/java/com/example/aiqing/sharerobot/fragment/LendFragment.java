@@ -81,7 +81,7 @@ public class LendFragment extends Fragment {
 
             @Override
             public void onFailure(Throwable t) {
-                Toast.makeText(getActivity(), "网络出错，请检查网络", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "网络出错，请检查网络", Toast.LENGTH_SHORT).show();
                 DialogUtil.closeDialog(loadingDialog);
             }
         });

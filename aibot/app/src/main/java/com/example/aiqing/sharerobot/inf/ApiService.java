@@ -7,6 +7,7 @@ import com.example.aiqing.sharerobot.bean.ApplyBean;
 import com.example.aiqing.sharerobot.bean.ApplyJoinBean;
 import com.example.aiqing.sharerobot.bean.ChangeRentBean;
 import com.example.aiqing.sharerobot.bean.ChangeRentReleaseBean;
+import com.example.aiqing.sharerobot.bean.CommitBean;
 import com.example.aiqing.sharerobot.bean.DaiDetailingBean;
 import com.example.aiqing.sharerobot.bean.DaiInfoBean;
 import com.example.aiqing.sharerobot.bean.DaiKucunBean;
@@ -15,6 +16,7 @@ import com.example.aiqing.sharerobot.bean.DailiBean;
 import com.example.aiqing.sharerobot.bean.DeleteAddressBean;
 import com.example.aiqing.sharerobot.bean.DiaTouInitBean;
 import com.example.aiqing.sharerobot.bean.DisAllLendBean;
+import com.example.aiqing.sharerobot.bean.DisReturnBean;
 import com.example.aiqing.sharerobot.bean.DisWaitLendBean;
 import com.example.aiqing.sharerobot.bean.DistributorGetGoodsBean;
 import com.example.aiqing.sharerobot.bean.DistributorMineBean;
@@ -36,10 +38,13 @@ import com.example.aiqing.sharerobot.bean.OrderBean;
 import com.example.aiqing.sharerobot.bean.OverRentBean;
 import com.example.aiqing.sharerobot.bean.PersonalInfoBean;
 import com.example.aiqing.sharerobot.bean.PlatformSendBean;
+import com.example.aiqing.sharerobot.bean.ProblemBean;
 import com.example.aiqing.sharerobot.bean.PutManagerBean;
 import com.example.aiqing.sharerobot.bean.RentPayBean;
 import com.example.aiqing.sharerobot.bean.ReturnAibotBean;
+import com.example.aiqing.sharerobot.bean.ScanDisSendBean;
 import com.example.aiqing.sharerobot.bean.ScanRentBean;
+import com.example.aiqing.sharerobot.bean.ScanReturnBean;
 import com.example.aiqing.sharerobot.bean.ScanToufangBean;
 import com.example.aiqing.sharerobot.bean.SelectShopBean;
 import com.example.aiqing.sharerobot.bean.SendGoodsBean;
@@ -483,6 +488,36 @@ public interface ApiService {
     @POST("http://120.132.117.157:8083/distributor/advanceApply.shtml")
     Call<advanceWxEBean> advanceWx(@Header("JSESSIONID") String JSESSIONID, @Query("distributorid") String distributorid, @Query("ptypeid") String ptypeid, @Query("paytype") String paytype, @Query("source") String source, @Query("num") String num, @Query("voucherimg") String voucherimg);
 
+    /**
+     * 103、投放商归还列表接口
+     */
+    @POST("http://120.132.117.157:8083/distributor/returnToDistributor.shtml")
+    Call<DisReturnBean> disReturn(@Header("JSESSIONID") String JSESSIONID, @Query("distributorId") String distributorId, @Query("pageNum") String pageNum, @Query("pageSize") String pageSize);
+
+    /**
+     * 92.产品维修报价列表
+     */
+    @POST("http://120.132.117.157:8083/product/forFeitList.shtml")
+    Call<ProblemBean> problem(@Header("JSESSIONID") String JSESSIONID, @Query("productId") String productId);
+
+    /**
+     * 95、投放商确认收货（C端还货的收货）
+     */
+    @POST("http://120.132.117.157:8083/distributor/receiptB2C.shtml")
+    Call<CommitBean> commit(@Header("JSESSIONID") String JSESSIONID, @Query("productId") String productId, @Query("distributorId") String distributorId, @Query("feitid") String feitid);
+
+    /**
+     * 93、投放商扫码收货（C端还货的扫码）
+     */
+    @POST("http://120.132.117.157:8083/distributor/scanReceipt.shtml")
+    Call<ScanReturnBean> scanReturn(@Header("JSESSIONID") String JSESSIONID, @Query("productId") String productId, @Query("distributorId") String distributorId);
+
+
+    /**
+     * 93、投放商扫码确认发货（C端还货的扫码）
+     */
+    @POST("http://120.132.117.157:8083/distributor/sureDistributorSend.shtml")
+    Call<ScanDisSendBean> scanSend(@Header("JSESSIONID") String JSESSIONID, @Query("paId") String paId, @Query("product_Id") String product_Id, @Query("distributorId") String distributorId);
 
 
 }

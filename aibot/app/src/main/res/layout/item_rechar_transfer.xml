@@ -251,7 +251,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:lines="2"
+                    android:lines="3"
                     android:text="转账至以上公司账号，并上传凭证，平台工作人员将在一个工作日内审核，通过后，预发量会成功充值。"/>
             </LinearLayout>
         </LinearLayout>

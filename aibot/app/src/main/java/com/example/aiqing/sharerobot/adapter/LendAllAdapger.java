@@ -2,6 +2,7 @@ package com.example.aiqing.sharerobot.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aiqing.sharerobot.R;
+import com.example.aiqing.sharerobot.activity.ScanActivity;
 import com.example.aiqing.sharerobot.bean.DisAllLendBean;
 import com.example.aiqing.sharerobot.bean.PlatformSendBean;
 import com.example.aiqing.sharerobot.inf.ApiService;
@@ -125,10 +127,15 @@ public class LendAllAdapger extends BaseAdapter {
                 sendGoodHttp(position);
             }
         });
+        final String paId = lendresult.get(position).getPaId();
         viewHolder.tv_direct_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO 扫苗二维码
+                //扫苗二维码
+                Intent intent=new Intent();
+                intent.setClass(context, ScanActivity.class);
+                intent.putExtra("paId",paId);
+                context.startActivity(intent);
             }
         });
 

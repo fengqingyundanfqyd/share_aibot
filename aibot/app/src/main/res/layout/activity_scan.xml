@@ -8,7 +8,6 @@
     style="@style/MatchMatch"
     tools:context="com.example.aiqing.sharerobot.activity.ScanActivity">
     <cn.bingoogolapple.qrcode.zxing.ZXingView
-        android:layout_marginTop="30dp"
         android:id="@+id/zxingview"
         style="@style/MatchMatch"
         app:qrcv_animTime="800"

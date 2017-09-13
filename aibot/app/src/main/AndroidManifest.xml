@@ -185,6 +185,8 @@
         </activity>
         <activity android:name=".activity.RecharActivity">
         </activity>
+        <activity android:name=".activity.GetGoodsLogActivity">
+        </activity>
     </application>
 
 </manifest>

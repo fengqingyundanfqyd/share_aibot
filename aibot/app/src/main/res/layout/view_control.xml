@@ -149,6 +149,7 @@
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"/>
    <LinearLayout
+       android:visibility="gone"
        android:id="@+id/ll_all_scan"
        android:background="#0B151E"
        android:orientation="horizontal"

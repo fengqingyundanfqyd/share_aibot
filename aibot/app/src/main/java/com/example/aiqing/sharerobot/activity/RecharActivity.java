@@ -3,14 +3,20 @@ package com.example.aiqing.sharerobot.activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +32,7 @@ import android.widget.Toast;
 import com.alipay.sdk.app.PayTask;
 import com.example.aiqing.sharerobot.R;
 import com.example.aiqing.sharerobot.adapter.RecharPagerAdapter;
+import com.example.aiqing.sharerobot.bean.UploadImaBean;
 import com.example.aiqing.sharerobot.bean.advanceWxEBean;
 import com.example.aiqing.sharerobot.bean.advanceYuEBean;
 import com.example.aiqing.sharerobot.bean.advanceZfbBean;
@@ -33,10 +40,13 @@ import com.example.aiqing.sharerobot.inf.ApiService;
 import com.example.aiqing.sharerobot.inf.HttpTool;
 import com.example.aiqing.sharerobot.utils.DialogUtil;
 import com.example.aiqing.sharerobot.utils.PayResult;
+import com.example.aiqing.sharerobot.utils.PictureUtil;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +61,7 @@ import retrofit.Retrofit;
 public class RecharActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int SDK_PAY_FLAG = 1;
+    private static final int PHOTO_REQUEST_GALLERY = 2;
     private View viewOnline;
     private View viewChange;
     private TabLayout mTabRechar;
@@ -93,6 +104,8 @@ public class RecharActivity extends AppCompatActivity implements View.OnClickLis
         }
     };
     private int mTransfer;
+    private ImageView mIvProof;
+    private Bitmap mBitmap;
 
 
     @Override
@@ -141,7 +154,7 @@ public class RecharActivity extends AppCompatActivity implements View.OnClickLis
         RelativeLayout rlAddTransfer = (RelativeLayout) viewChange.findViewById(R.id.rl_add_rechar_transfer);
         final EditText etTransfer = (EditText) viewChange.findViewById(R.id.et_rechar_num_transfer);
         final TextView tvTransferMoney = (TextView) viewChange.findViewById(R.id.tv_rechar_transfer);
-        ImageView ivProof = (ImageView) viewChange.findViewById(R.id.iv_proof);
+        mIvProof = (ImageView) viewChange.findViewById(R.id.iv_proof);
         Button btnUpload= (Button) viewChange.findViewById(R.id.btn_upload_rechar);
 
 
@@ -171,9 +184,91 @@ public class RecharActivity extends AppCompatActivity implements View.OnClickLis
                 tvTransferMoney.setText(tranmoney * mTransfer + "");
             }
         });
+        mIvProof.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //打印凭证  相册
+                Intent albumIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(albumIntent, PHOTO_REQUEST_GALLERY);
+            }
+        });
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //点击上传
+                String base64 = bitmapToBase64(mBitmap);
+                final Dialog loadingDialog = DialogUtil.createLoadingDialog(RecharActivity.this, "加载中...");
+                Retrofit builder = new Retrofit.Builder()
+                        .client(mHttpTool.client())
+                        .baseUrl("https://shared.aqcome.com/image/uploadImageBase64.shtml")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                ApiService apiService = builder.create(ApiService.class);
+                Call<UploadImaBean> call = apiService.uploadpic(mCookie, base64);
+                call.enqueue(new Callback<UploadImaBean>() {
+                    public String mObj;
+
+                    @Override
+                    public void onResponse(Response<UploadImaBean> response, Retrofit retrofit) {
+                        if (response.body() != null) {
+                            //路径
+                            mObj = response.body().getObj();
+                            if (response.body().getCoder().equals("0000")){
+                                Toast.makeText(RecharActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
+                                DialogUtil.closeDialog(loadingDialog);
+                            }
+
+                        } else {
+                            return;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        DialogUtil.closeDialog(loadingDialog);
+                        Toast.makeText(RecharActivity.this, "网络连接失败，请检查您的网络！", Toast.LENGTH_SHORT).show();
+                        Log.e("失败", "失败" + t.getMessage());
+                    }
+                });
+            }
+        });
 
     }
+    /**
+     * bitmap转为base64
+     *
+     * @param bitmap
+     * @return
+     */
+    public static String bitmapToBase64(Bitmap bitmap) {
 
+        String result = null;
+        ByteArrayOutputStream baos = null;
+        try {
+            if (bitmap != null) {
+                baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+                baos.flush();
+                baos.close();
+
+                byte[] bitmapBytes = baos.toByteArray();
+                result = "data:image/png;base64," + Base64.encodeToString(bitmapBytes, Base64.DEFAULT);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (baos != null) {
+                    baos.flush();
+                    baos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
     private void initId() {
         mTabRechar = (TabLayout) findViewById(R.id.tab_rechar);
         mVpRechar = (ViewPager) findViewById(R.id.vp_rechar);
@@ -429,4 +524,21 @@ public class RecharActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode==RESULT_OK){
+            if (requestCode == PHOTO_REQUEST_GALLERY){
+                Uri uri = data.getData();
+                Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+                if (cursor != null && cursor.moveToFirst()) {
+                    String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+
+                    mIvProof.setImageBitmap(PictureUtil.getSmallBitmap(path, 480, 800));
+                    mBitmap = PictureUtil.getSmallBitmap(path, 20, 20);
+
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

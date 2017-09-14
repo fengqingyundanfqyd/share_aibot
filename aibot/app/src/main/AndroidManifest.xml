@@ -187,6 +187,8 @@
         </activity>
         <activity android:name=".activity.GetGoodsLogActivity">
         </activity>
+        <activity android:name=".activity.AgencyManagerActivity">
+        </activity>
     </application>
 
 </manifest>

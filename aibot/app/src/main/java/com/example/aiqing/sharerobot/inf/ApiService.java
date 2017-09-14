@@ -1,6 +1,8 @@
 package com.example.aiqing.sharerobot.inf;
 
 import com.example.aiqing.sharerobot.bean.AddAddressBean;
+import com.example.aiqing.sharerobot.bean.AgencyDisBean;
+import com.example.aiqing.sharerobot.bean.AgencyIncomeBaen;
 import com.example.aiqing.sharerobot.bean.AibotNumBean;
 import com.example.aiqing.sharerobot.bean.AngentyBean;
 import com.example.aiqing.sharerobot.bean.ApplyBean;
@@ -518,6 +520,20 @@ public interface ApiService {
      */
     @POST("http://120.132.117.157:8083/distributor/sureDistributorSend.shtml")
     Call<ScanDisSendBean> scanSend(@Header("JSESSIONID") String JSESSIONID, @Query("paId") String paId, @Query("product_Id") String product_Id, @Query("distributorId") String distributorId);
+
+
+    /**
+     * 代理商管理2.0（下级投放商）接口
+     */
+    @POST("http://120.132.117.157:8083/agency/selectAgencyJunior.shtml")
+    Call<AgencyDisBean> agenceNext(@Header("JSESSIONID") String JSESSIONID, @Query("agencyId") String agencyId, @Query("pageNum") String pageNum, @Query("pageSize") String pageSize);
+
+
+    /**
+     * 109、代理商管理2.0（收益流水）接口
+     */
+    @POST("http://120.132.117.157:8083/agency/selectAgencyAccount.shtml")
+    Call<AgencyIncomeBaen> agenceIncome(@Header("JSESSIONID") String JSESSIONID, @Query("agencyId") String agencyId, @Query("pageNum") String pageNum, @Query("pageSize") String pageSize);
 
 
 }

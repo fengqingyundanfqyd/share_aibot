@@ -149,6 +149,8 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
 
                 //intent.setClass(SearchAddressActivity.this, SubletReleaseActivity.class);
                 setResult(3, intent);
+
+                setResult(9, intent);
                 finish();
             }
         });
@@ -359,10 +361,10 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
         mViewMap.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//    }
 
     @Override
     public void onGetInputtips(List<Tip> list, int i) {

@@ -7,18 +7,19 @@ package com.example.aiqing.sharerobot.bean;
 
 public class ApplyJoinBean {
 
+
     /**
-     * coder : 0000
-     * obj : 1
-     * errorMsg : null
+     * coder : 10000
+     * obj : null
+     * errorMsg : 代理商投放商意向绑定失败！
      * transNo : null
      * sign : null
-     * success : true
+     * success : false
      */
 
     private String coder;
-    private int obj;
-    private Object errorMsg;
+    private Object obj;
+    private String errorMsg;
     private Object transNo;
     private Object sign;
     private boolean success;
@@ -31,19 +32,19 @@ public class ApplyJoinBean {
         this.coder = coder;
     }
 
-    public int getObj() {
+    public Object getObj() {
         return obj;
     }
 
-    public void setObj(int obj) {
+    public void setObj(Object obj) {
         this.obj = obj;
     }
 
-    public Object getErrorMsg() {
+    public String getErrorMsg() {
         return errorMsg;
     }
 
-    public void setErrorMsg(Object errorMsg) {
+    public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
     }
 

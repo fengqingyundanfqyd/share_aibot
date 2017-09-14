@@ -405,20 +405,20 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                 Toast.makeText(this, "用户指南", Toast.LENGTH_SHORT).show();
                 mQuesion.setImageResource(R.mipmap.icon_guide_pressed);
 
-                intent.setClass(this, DistributorManagerActivity.class);
+                intent.setClass(this, WebViewActivity.class);
                 startActivity(intent);
-                finish();
+//                finish();
                 break;
             case R.id.ll_scan:
                 //扫描二维码
                 if (getSharedPreferences("COOKIE", MODE_PRIVATE).getString("mCookie", "").equals("")) {
                     intent.setClass(Main2Activity.this, LoginActivity.class);
                     startActivity(intent);
-                    finish();
+                   // finish();
                 } else {
                     intent.setClass(this, ScanActivity.class);
                     startActivity(intent);
-                    finish();
+                    //finish();
                 }
                 break;
             case R.id.iv_robot:
@@ -427,11 +427,11 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                 if (getSharedPreferences("COOKIE", MODE_PRIVATE).getString("mCookie", "").equals("")) {
                     intent.setClass(Main2Activity.this, LoginActivity.class);
                     startActivity(intent);
-                    finish();
+                    //finish();
                 } else {
                     intent.setClass(this, ViewpagerActivity.class);
                     startActivity(intent);
-                    finish();
+                   // finish();
                 }
                 break;
             case R.id.iv_erweima:
@@ -444,31 +444,34 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             case R.id.iv_avatar:
                 intent.setClass(this, PersonalInfoActivity.class);
                 startActivity(intent);
-                finish();
+              //  finish();
                 break;
             case R.id.ll_toufangmanager:
                 //投放商管理
-                intent.setClass(this, PutManagerActivity.class);
+               // intent.setClass(this, PutManagerActivity.class);
+                //新
+                intent.setClass(this, DistributorManagerActivity.class);
                 startActivity(intent);
-                finish();
+               // finish();
                 break;
             case R.id.ll_daili_manager:
-                //代理商管理
-                intent.setClass(this, AgentyActivity.class);
+               // intent.setClass(this, AgentyActivity.class);
+                //新代理商管理
+                intent.setClass(this, AgencyManagerActivity.class);
                 startActivity(intent);
-                finish();
+              //  finish();
                 break;
             case R.id.ll_nav_trip:
                 //我的钱包
                 intent.setClass(this, MyWalletActivity.class);
                 startActivity(intent);
-                finish();
+               // finish();
                 break;
             case R.id.ll_nav_guide:
                 //设置
                 intent.setClass(this, SettingActivity.class);
                 startActivity(intent);
-                finish();
+               // finish();
                 break;
         }
     }

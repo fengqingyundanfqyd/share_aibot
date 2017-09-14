@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.aiqing.sharerobot.R;
 import com.example.aiqing.sharerobot.bean.ShopDataBean;
 import com.example.aiqing.sharerobot.inf.ApiService;
+import com.example.aiqing.sharerobot.inf.HttpTool;
 import com.example.aiqing.sharerobot.utils.DialogUtil;
 import com.example.aiqing.sharerobot.utils.TopMenuHeader;
 import com.wx.wheelview.adapter.ArrayWheelAdapter;
@@ -33,6 +34,7 @@ import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
+
 
 /**
  *
@@ -57,6 +59,7 @@ public class ShopDataActivity extends AppCompatActivity {
     private TextView mTvOpenHour;
     private TextView mTvOpenMinite;
     private Dialog mLoadingDialog;
+    private String distributorid;
 
 
     @Override
@@ -95,13 +98,17 @@ public class ShopDataActivity extends AppCompatActivity {
         mLoadingDialog = DialogUtil.createLoadingDialog(this, "加载中...");
         SharedPreferences preferences = getSharedPreferences("COOKIE", MODE_PRIVATE);
         mCookie = preferences.getString("mCookie", "");
+        HttpTool httpTool = new HttpTool(this);
+        SharedPreferences spDis = getSharedPreferences("DATA", MODE_PRIVATE);
+        distributorid = spDis.getString("distributorid", "");
 
         Retrofit builder = new Retrofit.Builder()
+                .client(httpTool.client())
                 .baseUrl("http://120.132.117.157:8083/distributor/selectDistributor.shtml")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiService apiService = builder.create(ApiService.class);
-        Call<ShopDataBean> call = apiService.getShopData(mCookie,"170725183828631009");
+        Call<ShopDataBean> call = apiService.getShopData(mCookie,distributorid);
 
         call.enqueue(new Callback<ShopDataBean>() {
             @Override
@@ -115,8 +122,8 @@ public class ShopDataActivity extends AppCompatActivity {
                     mTv_shop_name_t.setText(response.body().getObj().getName());
                     mTv_maplocation.setText(response.body().getObj().getAddress());
                     mTv_shop_phonenum.setText(response.body().getObj().getContact1());
-                    mTv_opentime.setText(response.body().getObj().getOpenTime2() + "");
-                    mTv_closetime_shop.setText(response.body().getObj().getClosedTime2() + "");
+//                    mTv_opentime.setText(response.body().getObj().getOpenTime2() + "");
+//                    mTv_closetime_shop.setText(response.body().getObj().getClosedTime2() + "");
                     String isStop = response.body().getObj().getIsStop();
                     if (isStop == "1") {
                         //关

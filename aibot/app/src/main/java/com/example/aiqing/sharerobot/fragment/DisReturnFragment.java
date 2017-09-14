@@ -70,7 +70,6 @@ public class DisReturnFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiService apiService = builder.create(ApiService.class);
-        Log.e("投放商id000000", "getData: "+ distributorid);
         Call<DisReturnBean> call = apiService.disReturn(mCookie,distributorid, "1", "5");
         call.enqueue(new Callback<DisReturnBean>() {
             @Override

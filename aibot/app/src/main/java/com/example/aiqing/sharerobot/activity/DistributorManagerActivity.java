@@ -48,6 +48,9 @@ public class DistributorManagerActivity extends AppCompatActivity implements Vie
 
         switch (v.getId()){
             case R.id.ll_return:
+//                Intent intent=new Intent();
+//                intent.setClass(DistributorManagerActivity.this, Main2Activity.class);
+//                startActivity(intent);
                 finish();
                 break;
             case R.id.tv_lend:

@@ -37,25 +37,27 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        Intent intent=new Intent();
-        switch (v.getId()){
+        Intent intent = new Intent();
+        switch (v.getId()) {
             case R.id.btn_detaile:
                 //明细
-                intent.setClass(this,MoneyDetailingActivity.class);
+                intent.setClass(this, MoneyDetailingActivity.class);
                 startActivity(intent);
                 break;
             case R.id.btn_putin:
                 //充值
-                intent.setClass(this,RechargeActivity.class);
+                intent.setClass(this, RechargeActivity.class);
                 startActivity(intent);
                 break;
             case R.id.btn_getout:
                 //提现
-                intent.setClass(this,WithdrawalsActivity.class);
+                intent.setClass(this, WithdrawalsActivity.class);
                 startActivity(intent);
                 break;
             case R.id.iv_mywallet_return:
-              finish();
+//                intent.setClass(this, Main2Activity.class);
+//                startActivity(intent);
+                finish();
                 break;
         }
     }

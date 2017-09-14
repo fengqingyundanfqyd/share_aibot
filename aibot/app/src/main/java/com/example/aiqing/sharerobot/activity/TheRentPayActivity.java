@@ -366,10 +366,10 @@ public class TheRentPayActivity extends AppCompatActivity implements View.OnClic
         mMapViewRentPay.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//    }
 
 
 }

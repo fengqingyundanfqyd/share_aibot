@@ -33,7 +33,7 @@ public class WebViewActivity extends AppCompatActivity {
         settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
         settings.setDefaultTextEncodingName("UTF-8");
-       mWebMyAibot.loadUrl("http://192.168.1.218:3032/#/myAiBot");
+        mWebMyAibot.loadUrl("https://shared.aqcome.com/#/userHelp");
         //mWebMyAibot.loadUrl("https://www.baidu.com/");
 
         mWebMyAibot.setWebViewClient(new WebViewClient() {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFC27F"
+    android:background="#4B8FC4"
     android:orientation="vertical"
     tools:context="com.example.aiqing.sharerobot.activity.TobeErweimaActivity">
 

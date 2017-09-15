@@ -1,8 +1,10 @@
 package com.example.aiqing.sharerobot.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -11,6 +13,18 @@ import android.widget.ListView;
 
 import com.example.aiqing.sharerobot.R;
 import com.example.aiqing.sharerobot.adapter.BankCardAdapter;
+import com.example.aiqing.sharerobot.bean.BankListBean;
+import com.example.aiqing.sharerobot.inf.ApiService;
+import com.example.aiqing.sharerobot.inf.HttpTool;
+import com.example.aiqing.sharerobot.utils.DialogUtil;
+
+import java.util.List;
+
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * 选择银行卡
@@ -25,7 +39,37 @@ public class SelectCardActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_card);
         initId();
+        getData();
 
+    }
+
+    private void getData() {
+        final Dialog loadingDialog = DialogUtil.createLoadingDialog(this, "加载中...");
+        SharedPreferences spcookie = getSharedPreferences("COOKIE", MODE_PRIVATE);
+        String cookie = spcookie.getString("mCookie", "");
+        HttpTool httpTool = new HttpTool(this);
+
+        Retrofit builder = new Retrofit.Builder()
+                .client(httpTool.client())
+                .baseUrl("http://120.132.117.157:8083/bank/bankList.shtml")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        ApiService apiService = builder.create(ApiService.class);
+        Call<BankListBean> call = apiService.getBanklist(cookie);
+        call.enqueue(new Callback<BankListBean>() {
+            @Override
+            public void onResponse(Response<BankListBean> response, Retrofit retrofit) {
+                if (response.body().getCoder().equals("0000")){
+                    List<?> obj = response.body().getObj();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
     }
 
     private void initId() {

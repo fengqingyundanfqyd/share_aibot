@@ -79,7 +79,7 @@ public class AgencyManagerActivity extends AppCompatActivity implements View.OnC
                     double balance = response.body().getBalance();
                     mTvNowmoney.setText(balance + "");
                     String changeMoney = response.body().getChangeMoney();
-                    mTvHistory.setText(changeMoney+"");
+                    mTvHistory.setText(changeMoney + "");
                     List<AgencyIncomeBaen.ResultBeanX.ResultBean> beanList = response.body().getResult().getResult();
                     AgencyIncomeAdapter incomeAdapter = new AgencyIncomeAdapter(AgencyManagerActivity.this, beanList);
                     mLvIncome.setAdapter(incomeAdapter);

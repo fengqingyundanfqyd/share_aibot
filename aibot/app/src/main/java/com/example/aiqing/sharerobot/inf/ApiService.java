@@ -1,5 +1,6 @@
 package com.example.aiqing.sharerobot.inf;
 
+import com.example.aiqing.sharerobot.bean.AccountInfoBean;
 import com.example.aiqing.sharerobot.bean.AddAddressBean;
 import com.example.aiqing.sharerobot.bean.AgencyDisBean;
 import com.example.aiqing.sharerobot.bean.AgencyIncomeBaen;
@@ -7,6 +8,8 @@ import com.example.aiqing.sharerobot.bean.AibotNumBean;
 import com.example.aiqing.sharerobot.bean.AngentyBean;
 import com.example.aiqing.sharerobot.bean.ApplyBean;
 import com.example.aiqing.sharerobot.bean.ApplyJoinBean;
+import com.example.aiqing.sharerobot.bean.BankCardNumBean;
+import com.example.aiqing.sharerobot.bean.BankListBean;
 import com.example.aiqing.sharerobot.bean.ChangeRentBean;
 import com.example.aiqing.sharerobot.bean.ChangeRentReleaseBean;
 import com.example.aiqing.sharerobot.bean.CommitBean;
@@ -40,6 +43,7 @@ import com.example.aiqing.sharerobot.bean.OrderBean;
 import com.example.aiqing.sharerobot.bean.OverRentBean;
 import com.example.aiqing.sharerobot.bean.PersonalInfoBean;
 import com.example.aiqing.sharerobot.bean.PlatformSendBean;
+import com.example.aiqing.sharerobot.bean.PrivateKeyBean;
 import com.example.aiqing.sharerobot.bean.ProblemBean;
 import com.example.aiqing.sharerobot.bean.PutManagerBean;
 import com.example.aiqing.sharerobot.bean.RentPayBean;
@@ -534,6 +538,32 @@ public interface ApiService {
      */
     @POST("http://120.132.117.157:8083/agency/selectAgencyAccount.shtml")
     Call<AgencyIncomeBaen> agenceIncome(@Header("JSESSIONID") String JSESSIONID, @Query("agencyId") String agencyId, @Query("pageNum") String pageNum, @Query("pageSize") String pageSize);
+
+
+    /**
+     * 110、获取支付宝应用 私钥（APP支付宝认证使用）
+     */
+    @POST("http://120.132.117.157:8083/pay/getPrkey.shtml")
+    Call<PrivateKeyBean> getPrivateKey(@Header("JSESSIONID") String JSESSIONID);
+
+
+    /**
+     * 112、获取账户信息
+     */
+    @POST("http://120.132.117.157:8083/account/getAccInfo.shtml")
+    Call<AccountInfoBean> getAccountinfo(@Header("JSESSIONID") String JSESSIONID);
+
+    /**
+     * 114、银行卡列表
+     */
+    @POST("http://120.132.117.157:8083/bank/bankList.shtml")
+    Call<BankListBean> getBanklist(@Header("JSESSIONID") String JSESSIONID);
+
+    /**
+     * 117、判断银行卡所处银行（POST）
+     */
+    @POST("http://120.132.117.157:8083/bank/bankType.shtml")
+    Call<BankCardNumBean> banknum(@Header("JSESSIONID") String JSESSIONID, @Query("cardNo") String cardNo);
 
 
 }

@@ -67,6 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <TextView
+        android:id="@+id/tv_balance_mine"
         android:textColor="#46403e"
        android:layout_marginTop="16dp"
         android:layout_gravity="center"
@@ -124,6 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_cdeposit"
                 android:layout_marginRight="5dp"
                 android:text="999"
                 android:textSize="15sp"

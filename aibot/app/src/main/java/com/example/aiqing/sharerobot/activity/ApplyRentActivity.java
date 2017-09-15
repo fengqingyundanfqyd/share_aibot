@@ -65,7 +65,7 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
         topMenu.topMenuLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               finish();
+                finish();
             }
         });
 
@@ -89,12 +89,12 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiService apiService = builder.create(ApiService.class);
-        Call<UsersAddressBean> call = apiService.getAddressData(sid,"","");
+        Call<UsersAddressBean> call = apiService.getAddressData(sid, "", "");
         call.enqueue(new Callback<UsersAddressBean>() {
             @Override
             public void onResponse(Response<UsersAddressBean> response, Retrofit retrofit) {
                 DialogUtil.closeDialog(mLoadingDialog);
-                if (response.body()!=null) {
+                if (response.body() != null) {
                     mResult = response.body().getObj().getResult();
                     for (int i = 0; i < mResult.size(); i++) {
                         UsersAddressBean.ObjBean.ResultBean list = mResult.get(i);
@@ -125,6 +125,7 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
                     }
                 }
             }
+
             @Override
             public void onFailure(Throwable t) {
                 Toast.makeText(ApplyRentActivity.this, "网络连接失败，请检查您的网络！", Toast.LENGTH_SHORT).show();
@@ -137,8 +138,9 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        mDistributorId = bundle.getString("mDistributorId");
-
+        if (bundle != null) {
+            mDistributorId = bundle.getString("mDistributorId");
+        }
         mLlAddnewAddress = (LinearLayout) findViewById(R.id.ll_addnewaddress);
         mBtnNext = (Button) findViewById(R.id.btn_next);
         mLlShangmen = (LinearLayout) findViewById(R.id.ll_shangmen);
@@ -170,8 +172,8 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.btn_next:
                 intent.setClass(ApplyRentActivity.this, PayDepositActivity.class);
-                intent.putExtra("mAddressId",mAddressId);
-                intent.putExtra("mDistributorId",mDistributorId);
+                intent.putExtra("mAddressId", mAddressId);
+                intent.putExtra("mDistributorId", mDistributorId);
                 startActivity(intent);
                 ApplyRentActivity.this.finish();
                 break;
@@ -192,11 +194,11 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 250) {
             Bundle bundle = data.getExtras();
-           String mName = bundle.getString("name");
+            String mName = bundle.getString("name");
             String mNumber = bundle.getString("number");
             String mDetaadd = bundle.getString("detaadd");
 
-            AddressAdapter addressAdapter = new AddressAdapter(this,mName,mNumber,mDetaadd,mResult);
+            AddressAdapter addressAdapter = new AddressAdapter(this, mName, mNumber, mDetaadd, mResult);
             mListviewGetAdd.setAdapter(addressAdapter);
         }
         super.onActivityResult(requestCode, resultCode, data);

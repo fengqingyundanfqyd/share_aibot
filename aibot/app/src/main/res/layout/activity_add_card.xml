@@ -283,7 +283,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
-                android:text="工商银行储蓄卡"
                 android:textSize="15sp"/>
         </LinearLayout>
 

@@ -101,10 +101,6 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"/>
 
-    <View
-        android:background="#999999"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"/>
     <ListView
         android:choiceMode="singleChoice"
         android:id="@+id/listview_card"

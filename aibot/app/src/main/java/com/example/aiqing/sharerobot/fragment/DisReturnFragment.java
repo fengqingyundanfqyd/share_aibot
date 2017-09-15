@@ -74,12 +74,10 @@ public class DisReturnFragment extends Fragment {
         call.enqueue(new Callback<DisReturnBean>() {
             @Override
             public void onResponse(Response<DisReturnBean> response, Retrofit retrofit) {
-
-                int size = response.body().getObj().getSize();
-                Log.e("归还数", "onResponse: "+size );
-
-//                DisReturnBean.ObjBean obj = response.body().getObj();
-//                Log.e("投放商", "onResponse: "+ obj);
+                if ( response.body().getObj()!=null) {
+                    int size = response.body().getObj().getSize();
+                    Log.e("归还数", "onResponse: " + size);
+                }
                 if (response.body().getObj() != null) {
                     mResult = response.body().getObj().getResult();
                     DisreturnAdapter disreturnAdapter = new DisreturnAdapter(getActivity(), mResult);

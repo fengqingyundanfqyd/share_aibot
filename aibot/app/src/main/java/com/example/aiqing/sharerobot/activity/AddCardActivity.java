@@ -1,5 +1,7 @@
 package com.example.aiqing.sharerobot.activity;
 
+import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,6 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aiqing.sharerobot.R;
+import com.example.aiqing.sharerobot.bean.BankCardNumBean;
+import com.example.aiqing.sharerobot.inf.ApiService;
+import com.example.aiqing.sharerobot.inf.HttpTool;
+import com.example.aiqing.sharerobot.utils.DialogUtil;
+
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * 添加银行卡
@@ -35,6 +47,9 @@ public class AddCardActivity extends AppCompatActivity implements View.OnClickLi
     private Button mBtnComplete;
     private String mPhonenum;
     private String mBankcardnum;
+    private String mCookie;
+    private HttpTool mHttpTool;
+    private String mBankAddr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +65,7 @@ public class AddCardActivity extends AppCompatActivity implements View.OnClickLi
 //        mLlYanzhengma.setVisibility(View.GONE);
 
         mIvReturn.setOnClickListener(this);
-        //输入的银行卡号
-        mBankcardnum = mEtPutCardnum.getText().toString().trim();
+
 
         mBtnNextOne.setOnClickListener(this);
         Toast.makeText(this, "银行卡号"+mBankcardnum, Toast.LENGTH_SHORT).show();
@@ -87,6 +101,11 @@ public class AddCardActivity extends AppCompatActivity implements View.OnClickLi
         mEtZanzhengma_get = (EditText) findViewById(R.id.et_zanzhengma_get);
         mBtnGetYanzhengma = (Button) findViewById(R.id.btn_get_yanzhengma);
         mBtnComplete = (Button) findViewById(R.id.btn_complete);
+
+
+        SharedPreferences spcookie = getSharedPreferences("COOKIE", MODE_PRIVATE);
+        mCookie = spcookie.getString("mCookie", "");
+        mHttpTool = new HttpTool(this);
     }
 
     @Override
@@ -97,7 +116,10 @@ public class AddCardActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.btn_next_step_put_cardnum:
 
-                Log.e("银行卡", "onClick: "+mBankcardnum);
+                //输入的银行卡号
+                mBankcardnum = mEtPutCardnum.getText().toString().trim();
+
+                checkBankCard(mBankcardnum);
                 mLlCardId.setVisibility(View.GONE);
                 mLlYanzhengmessage.setVisibility(View.VISIBLE);
                 mLlYanzhengma.setVisibility(View.GONE);
@@ -119,5 +141,34 @@ public class AddCardActivity extends AppCompatActivity implements View.OnClickLi
                finish();
                 break;
         }
+    }
+    //验证银行卡号
+    private void checkBankCard(String bankcardnum) {
+        final Dialog loadingDialog = DialogUtil.createLoadingDialog(this, "加载中...");
+        Retrofit builder = new Retrofit.Builder()
+                .client(mHttpTool.client())
+                .baseUrl("http://120.132.117.157:8083/bank/bankType.shtml")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        ApiService apiService = builder.create(ApiService.class);
+        Call<BankCardNumBean> call = apiService.banknum(mCookie, bankcardnum);
+        call.enqueue(new Callback<BankCardNumBean>() {
+            @Override
+            public void onResponse(Response<BankCardNumBean> response, Retrofit retrofit) {
+                DialogUtil.closeDialog(loadingDialog);
+                if (response.body().getCoder().equals("0000")){
+                    //银行名称
+                    mBankAddr = response.body().getObj().getBankAddr();
+                    mTvCardtypename.setText(mBankAddr);
+                }else {
+                    Toast.makeText(AddCardActivity.this, response.body().getErrorMsg().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
     }
 }

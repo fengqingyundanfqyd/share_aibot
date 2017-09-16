@@ -2,11 +2,13 @@ package com.example.aiqing.sharerobot.activity;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.aiqing.sharerobot.R;
 import com.example.aiqing.sharerobot.bean.ShopDataBean;
+import com.example.aiqing.sharerobot.bean.UpdataShopDataBean;
 import com.example.aiqing.sharerobot.inf.ApiService;
 import com.example.aiqing.sharerobot.inf.HttpTool;
 import com.example.aiqing.sharerobot.utils.DialogUtil;
@@ -35,12 +38,13 @@ import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
+import static com.example.aiqing.sharerobot.R.mipmap.switch_off;
+
 
 /**
- *
  * 店铺资料
  */
-public class ShopDataActivity extends AppCompatActivity {
+public class ShopDataActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView mIvShopHeader;
     private TextView mTv_shop_name_t;
@@ -60,6 +64,14 @@ public class ShopDataActivity extends AppCompatActivity {
     private TextView mTvOpenMinite;
     private Dialog mLoadingDialog;
     private String distributorid;
+    private RelativeLayout mRlUpdataName;
+    private RelativeLayout mRlLocationaddress;
+    private RelativeLayout mRlDetailaddress;
+    private RelativeLayout mRlPhone;
+    private HttpTool mHttpTool;
+    private String mLongitude;
+    private String mLatitude;
+    private String mDistrict;
 
 
     @Override
@@ -68,90 +80,55 @@ public class ShopDataActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_shop_data);
 
+        SharedPreferences preferences = getSharedPreferences("COOKIE", MODE_PRIVATE);
+        mCookie = preferences.getString("mCookie", "");
+        mHttpTool = new HttpTool(this);
+        SharedPreferences spDis = getSharedPreferences("DATA", MODE_PRIVATE);
+        distributorid = spDis.getString("distributorid", "");
+
         TopMenuHeader topMenu = new TopMenuHeader(getWindow().getDecorView());
         topMenu.topMenuTitle.setText("店铺资料");
         topMenu.topMenuRight.setVisibility(View.GONE);
         topMenu.topMenuLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               finish();
+                if (TextUtils.isEmpty(mTv_shop_name_t.getText()) && TextUtils.isEmpty(mTv_shop_phonenum.getText())) {
+                    finish();
+                } else {
+                    Retrofit builder = new Retrofit.Builder()
+                            .client(mHttpTool.client())
+                            .baseUrl("http://120.132.117.157:8083/distributor/saveDistributorId.shtml")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    ApiService apiService = builder.create(ApiService.class);
+                    Call<UpdataShopDataBean> call = apiService.updatashopdata(mCookie, distributorid, mTv_shop_name_t.getText().toString(), mTv_detail_address.getText().toString(), mLongitude, mLatitude, mDistrict, mTv_shop_phonenum.getText().toString(), mIv_canzu.getTag().toString(), mIv_accepte.getTag().toString(), "", "");
+                    call.enqueue(new Callback<UpdataShopDataBean>() {
+                        @Override
+                        public void onResponse(Response<UpdataShopDataBean> response, Retrofit retrofit) {
+                            if (response.body().getCoder().equals("0000")) {
+
+                            }
+                        }
+                        @Override
+                        public void onFailure(Throwable t) {
+
+                        }
+                    });
+                }
+                finish();
             }
         });
 
         initId();
+
+        mIv_canzu.setTag("0");
+        mIv_accepte.setTag("0");
+
         initHttp();
         initData();
+
+        setData();
     }
-
-    private void initData() {
-        mRlOpentime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SetTimePopWin setTimePopWin=new SetTimePopWin(ShopDataActivity.this);
-                setTimePopWin.showAtLocation(findViewById(R.id.ll_shopdata), Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL,0,0);
-
-            }
-        });
-    }
-
-    private void initHttp() {
-        mLoadingDialog = DialogUtil.createLoadingDialog(this, "加载中...");
-        SharedPreferences preferences = getSharedPreferences("COOKIE", MODE_PRIVATE);
-        mCookie = preferences.getString("mCookie", "");
-        HttpTool httpTool = new HttpTool(this);
-        SharedPreferences spDis = getSharedPreferences("DATA", MODE_PRIVATE);
-        distributorid = spDis.getString("distributorid", "");
-
-        Retrofit builder = new Retrofit.Builder()
-                .client(httpTool.client())
-                .baseUrl("http://120.132.117.157:8083/distributor/selectDistributor.shtml")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        ApiService apiService = builder.create(ApiService.class);
-        Call<ShopDataBean> call = apiService.getShopData(mCookie,distributorid);
-
-        call.enqueue(new Callback<ShopDataBean>() {
-            @Override
-            public void onResponse(Response<ShopDataBean> response, Retrofit retrofit) {
-                DialogUtil.closeDialog(mLoadingDialog);
-                if (response.body()!=null) {
-                    Log.e("店铺资料", "onResponse: " + response.body().getObj().getName());
-                    Log.e("店铺资料", "onResponse: " + response.body().getObj().getAddress());
-                    //Bitmap bm = BitmapFactory.decodeFile(response.body().getObj().getHeadImg().toString());
-                    // mIvShopHeader.setImageBitmap(bm);
-                    mTv_shop_name_t.setText(response.body().getObj().getName());
-                    mTv_maplocation.setText(response.body().getObj().getAddress());
-                    mTv_shop_phonenum.setText(response.body().getObj().getContact1());
-//                    mTv_opentime.setText(response.body().getObj().getOpenTime2() + "");
-//                    mTv_closetime_shop.setText(response.body().getObj().getClosedTime2() + "");
-                    String isStop = response.body().getObj().getIsStop();
-                    if (isStop == "1") {
-                        //关
-                        mIv_canzu.setImageResource(R.mipmap.switch_off);
-                    } else if (isStop == "0") {
-                        //开
-                        mIv_canzu.setImageResource(R.mipmap.switch_on);
-                    }
-                    String isAllowed = response.body().getObj().getIsAllowed();
-                    if (isAllowed == "0") {
-                        //不接受
-                        mIv_accepte.setImageResource(R.mipmap.switch_off);
-                    } else if (isAllowed == "1") {
-                        //接受
-                        mIv_accepte.setImageResource(R.mipmap.switch_on);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                DialogUtil.closeDialog(mLoadingDialog);
-                Toast.makeText(ShopDataActivity.this, "网络连接失败，请检查您的网络！", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-    }
-
 
     private void initId() {
         mIvShopHeader = (ImageView) findViewById(R.id.iv_shop_header);
@@ -172,6 +149,154 @@ public class ShopDataActivity extends AppCompatActivity {
         TextView tvCloseHour = (TextView) findViewById(R.id.tv_closetime_hour);
         TextView tvCloseMinite = (TextView) findViewById(R.id.tv_closetime_minite);
 
+        mRlUpdataName = (RelativeLayout) findViewById(R.id.rl_updataname);
+        mRlLocationaddress = (RelativeLayout) findViewById(R.id.rl_locationaddress);
+        mRlDetailaddress = (RelativeLayout) findViewById(R.id.rl_detailaddress);
+        mRlPhone = (RelativeLayout) findViewById(R.id.rl_phone);
+    }
+
+    private void setData() {
+        mIv_canzu.setOnClickListener(this);
+        mIv_accepte.setOnClickListener(this);
+        mRlUpdataName.setOnClickListener(this);
+        mRlLocationaddress.setOnClickListener(this);
+        mRlDetailaddress.setOnClickListener(this);
+        mRlPhone.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent();
+        switch (v.getId()) {
+            //运营租赁业务
+            case R.id.iv_canzu:
+                if (mIv_canzu.getTag().equals("0")) {
+                    mIv_canzu.setTag("1");
+                    mIv_canzu.setImageResource(R.mipmap.switch_off);
+                } else {
+                    mIv_canzu.setTag("0");
+                    mIv_canzu.setImageResource(R.mipmap.switch_on);
+                }
+                break;
+            //接受
+            case R.id.iv_accepte:
+                if (mIv_accepte.getTag().equals("0")) {
+                    mIv_accepte.setTag("1");
+                    mIv_accepte.setImageResource(R.mipmap.switch_off);
+                } else {
+                    mIv_accepte.setTag("0");
+                    mIv_accepte.setImageResource(R.mipmap.switch_on);
+                }
+                break;
+            case R.id.rl_updataname:
+                //名称
+                intent.setClass(ShopDataActivity.this, UpdataNameActivity.class);
+                startActivityForResult(intent, 11);
+                break;
+            case R.id.rl_locationaddress:
+                //地图定位
+                intent.setClass(ShopDataActivity.this, SearchAddressActivity.class);
+                startActivityForResult(intent, 12);
+                break;
+            case R.id.rl_detailaddress:
+                //详细地址
+                intent.setClass(ShopDataActivity.this, DisDetailAddressActivity.class);
+                startActivityForResult(intent, 13);
+                break;
+            case R.id.rl_phone:
+                //联系方式
+                intent.setClass(ShopDataActivity.this, UpdataPhoneActivity.class);
+                startActivityForResult(intent, 14);
+                break;
+        }
+    }
+
+    //wheelview
+    private void initData() {
+        mRlOpentime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SetTimePopWin setTimePopWin = new SetTimePopWin(ShopDataActivity.this);
+                setTimePopWin.showAtLocation(findViewById(R.id.ll_shopdata), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+
+            }
+        });
+    }
+
+    private void initHttp() {
+        mLoadingDialog = DialogUtil.createLoadingDialog(this, "加载中...");
+        Retrofit builder = new Retrofit.Builder()
+                .client(mHttpTool.client())
+                .baseUrl("http://120.132.117.157:8083/distributor/selectDistributor.shtml")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        ApiService apiService = builder.create(ApiService.class);
+        Call<ShopDataBean> call = apiService.getShopData(mCookie, distributorid);
+
+        call.enqueue(new Callback<ShopDataBean>() {
+            @Override
+            public void onResponse(Response<ShopDataBean> response, Retrofit retrofit) {
+                DialogUtil.closeDialog(mLoadingDialog);
+                if (response.body() != null) {
+                    Log.e("店铺资料", "onResponse: " + response.body().getObj().getName());
+                    Log.e("店铺资料", "onResponse: " + response.body().getObj().getAddress());
+                    //Bitmap bm = BitmapFactory.decodeFile(response.body().getObj().getHeadImg().toString());
+                    // mIvShopHeader.setImageBitmap(bm);
+                    mTv_shop_name_t.setText(response.body().getObj().getName());
+                    mTv_maplocation.setText(response.body().getObj().getAddress());
+                    mTv_shop_phonenum.setText(response.body().getObj().getContact1());
+//                    mTv_opentime.setText(response.body().getObj().getOpenTime2() + "");
+//                    mTv_closetime_shop.setText(response.body().getObj().getClosedTime2() + "");
+                    String isStop = response.body().getObj().getIsStop();
+                    if (isStop == "1") {
+                        //关
+                        mIv_canzu.setImageResource(switch_off);
+                    } else if (isStop == "0") {
+                        //开
+                        mIv_canzu.setImageResource(R.mipmap.switch_on);
+                    }
+                    String isAllowed = response.body().getObj().getIsAllowed();
+                    if (isAllowed == "0") {
+                        //不接受
+                        mIv_accepte.setImageResource(switch_off);
+                    } else if (isAllowed == "1") {
+                        //接受
+                        mIv_accepte.setImageResource(R.mipmap.switch_on);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                DialogUtil.closeDialog(mLoadingDialog);
+                Toast.makeText(ShopDataActivity.this, "网络连接失败，请检查您的网络！", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Bundle bundle = data.getExtras();
+        if (requestCode == 11) {
+
+            String name = bundle.getString("name");
+            mTv_shop_name_t.setText(name);
+        } else if (requestCode == 12) {
+            mLatitude = bundle.getString("mLatitude");
+            mLongitude = bundle.getString("mLongitude");
+            mDistrict = bundle.getString("mDistrict");
+            String province = bundle.getString("mProvince");
+            String city = bundle.getString("mCity");
+            mTv_maplocation.setText(mDistrict);
+        } else if (requestCode == 13) {
+            String address = bundle.getString("address");
+            mTv_detail_address.setText(address);
+        } else if (requestCode == 14) {
+            String phone = bundle.getString("phone");
+            mTv_shop_phonenum.setText(phone);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public class SetTimePopWin extends PopupWindow {
@@ -189,8 +314,8 @@ public class ShopDataActivity extends AppCompatActivity {
         private String mHour1;
 
         public SetTimePopWin(Context context) {
-            this.context=context;
-            this.mView = LayoutInflater.from(context).inflate(R.layout.settime,null);
+            this.context = context;
+            this.mView = LayoutInflater.from(context).inflate(R.layout.settime, null);
             mHour = (WheelView) mView.findViewById(R.id.wheel_hour);
             mMinite = (WheelView) mView.findViewById(R.id.wheel_minite);
             mSettime = (RelativeLayout) mView.findViewById(R.id.tv_settime);
@@ -221,7 +346,7 @@ public class ShopDataActivity extends AppCompatActivity {
 
             // 实例化一个ColorDrawable颜色为半透明
             //ColorDrawable dw = new ColorDrawable(0xb0000000);
-            ColorDrawable dw=new ColorDrawable(0xffff0000);
+            ColorDrawable dw = new ColorDrawable(0xffff0000);
             // 设置弹出窗体的背景
             this.setBackgroundDrawable(dw);
 
@@ -231,8 +356,8 @@ public class ShopDataActivity extends AppCompatActivity {
         }
 
         private void initView() {
-            hour = (WheelView)mView.findViewById(R.id.wheel_hour);
-            minite = (WheelView)mView.findViewById(R.id.wheel_minite);
+            hour = (WheelView) mView.findViewById(R.id.wheel_hour);
+            minite = (WheelView) mView.findViewById(R.id.wheel_minite);
 
             mHour.setWheelAdapter(new ArrayWheelAdapter(context));
             mHour.setSkin(WheelView.Skin.Holo);
@@ -246,15 +371,14 @@ public class ShopDataActivity extends AppCompatActivity {
             mHour.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
                 @Override
                 public void onItemSelected(int position, Object o) {
-                    if (!mListHour.get(position).equals("00")){
+                    if (!mListHour.get(position).equals("00")) {
                         mHour1 = mListHour.get(position);
-                        Log.e("时", "onItemSelected: "+ mHour1);
+                        Log.e("时", "onItemSelected: " + mHour1);
                         mTvOpenHour.setText(mHour1);
 
                     }
                 }
             });
-
 
 
             mMinite.setWheelAdapter(new ArrayWheelAdapter(context));
@@ -265,9 +389,9 @@ public class ShopDataActivity extends AppCompatActivity {
             mMinite.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
                 @Override
                 public void onItemSelected(int position, Object o) {
-                    if (!mListMinutes.get(position).equals("00")){
+                    if (!mListMinutes.get(position).equals("00")) {
                         mMinute = mListMinutes.get(position);
-                        Log.e("分", "onItemSelected: "+ mMinute);
+                        Log.e("分", "onItemSelected: " + mMinute);
                         mTvOpenMinite.setText(mMinute);
                     }
                 }
@@ -285,6 +409,7 @@ public class ShopDataActivity extends AppCompatActivity {
             }
             return mListHour;
         }
+
         private ArrayList<String> createMinutes() {
             mListMinutes = new ArrayList<>();
             for (int i = 0; i < 60; i++) {

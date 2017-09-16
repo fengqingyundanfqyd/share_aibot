@@ -8,6 +8,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.aiqing.sharerobot.R;
+import com.example.aiqing.sharerobot.bean.BankListBean;
+
+import java.util.List;
+
+import static android.R.attr.name;
 
 /**
  * Created by aiqing on 2017/7/6.
@@ -15,14 +20,16 @@ import com.example.aiqing.sharerobot.R;
 
 public class BankCardAdapter extends BaseAdapter {
     private final Context context;
+    private final List<BankListBean.ObjBean> list;
 
-    public BankCardAdapter(Context context) {
+    public BankCardAdapter(Context context, List<BankListBean.ObjBean> list) {
         this.context=context;
+        this.list=list;
     }
 
     @Override
     public int getCount() {
-        return 5;
+        return list.size();
     }
 
     @Override
@@ -53,8 +60,11 @@ public class BankCardAdapter extends BaseAdapter {
             viewHolder= (ViewHolder) convertView.getTag();
         }
         viewHolder.iv_card_header.setImageResource(R.mipmap.header);
-        viewHolder.tv_bank_name.setText("中国银行");
-        viewHolder.tv_bank_lastnum.setText("9999");
+        viewHolder.tv_bank_name.setText(list.get(position).getAccountName());
+        String cardNo = list.get(position).getCardNo();
+        String num = cardNo.substring(cardNo.length() - 4, cardNo.length());
+
+        viewHolder.tv_bank_lastnum.setText(num);
         viewHolder.iv_bank_status.setImageResource(R.mipmap.check_icon);
 
 

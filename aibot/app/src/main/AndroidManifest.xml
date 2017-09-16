@@ -34,7 +34,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/logo"
+        android:icon="@mipmap/logonew"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -188,6 +188,12 @@
         <activity android:name=".activity.GetGoodsLogActivity">
         </activity>
         <activity android:name=".activity.AgencyManagerActivity">
+        </activity>
+        <activity android:name=".activity.UpdataNameActivity">
+        </activity>
+        <activity android:name=".activity.DisDetailAddressActivity">
+        </activity>
+        <activity android:name=".activity.UpdataPhoneActivity">
         </activity>
     </application>
 

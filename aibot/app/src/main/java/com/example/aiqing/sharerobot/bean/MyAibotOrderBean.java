@@ -8,14 +8,15 @@ import java.util.List;
 
 public class MyAibotOrderBean {
 
+
     /**
-     * all : 33
-     * notSend : 6
-     * hasUse : 6
-     * notUse : 1
+     * all : 582
+     * notSend : 58
+     * hasUse : 4
+     * notUse : 0
      * coder : 0000
      * msg : 查询成功
-     * useHistory : {"size":5,"total":10,"currentPage":1,"totalPage":2,"currentResult":0,"result":[{"id":null,"type":null,"productId":"lKF421hM8cbI5rjzEql4xgK7sEpe8AXH","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"99","timestamp":"2017-08-08 11:16:07","pTypeName":"小宝","timestamp2":"2017-08-08 11:16","paId":null,"remark":null,"productIds":null},{"id":null,"type":null,"productId":"eQANWe4Unmwq1VlT0rcd7NZGJpD6GVlb","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-08 10:52:16","pTypeName":"小宝","timestamp2":"2017-08-08 10:52","paId":null,"remark":null,"productIds":null},{"id":null,"type":null,"productId":"Ts8jRyvaxNzDMbBLuNunz7VOIOn7ycAx","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"99","timestamp":"2017-08-08 09:58:04","pTypeName":"小宝","timestamp2":"2017-08-08 09:58","paId":null,"remark":null,"productIds":null},{"id":null,"type":null,"productId":"f5HsIKKbH1sjIReuj5CfmAuKJ1U9YORX","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-07 11:56:34","pTypeName":"小宝","timestamp2":"2017-08-07 11:56","paId":null,"remark":null,"productIds":null},{"id":null,"type":null,"productId":"M2IOkSK1suxbofPcjsiCfEPvOklE3Z6W","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-07 11:49:16","pTypeName":"小宝","timestamp2":"2017-08-07 11:49","paId":null,"remark":null,"productIds":null}]}
+     * useHistory : {"size":15,"total":21,"currentPage":1,"totalPage":2,"currentResult":0,"result":[{"id":null,"type":null,"productId":"ZghFLhv3j9OUG4FzT9TQXzEjH3f9MfHJ","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-09-16 10:26:00","pTypeName":"小宝","timestamp2":"2017-09-16 10:26","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"l6HPaZX3KFaEEgKQOyroxro1iIImYejz","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-09-05 17:47:13","pTypeName":"小宝","timestamp2":"2017-09-05 17:47","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"vwp35n1XuPHaORoCUX5dgR5E7WFzZHq5","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-09-05 11:34:19","pTypeName":"小宝","timestamp2":"2017-09-05 11:34","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"fba152ea9bd5cfe254a9659a6e9e0b16","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"99","timestamp":"2017-08-28 17:11:38","pTypeName":"小宝","timestamp2":"2017-08-28 17:11","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"6n99tw2s52utLtAhdcy1TF2Yqk7gbmpG","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"99","timestamp":"2017-08-22 11:39:13","pTypeName":"小宝","timestamp2":"2017-08-22 11:39","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"6n92tw9s52utLtAhdcy1TF2Yqk7gbmpG","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-21 14:29:37","pTypeName":"小宝","timestamp2":"2017-08-21 14:29","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"6n92tw2s52utLtAhdcy1TF2Yqk7gbmpG","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-21 14:13:41","pTypeName":"小宝","timestamp2":"2017-08-21 14:13","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"9nI2tw2s52utLtAhdcy1TF2Yqk7gbmpG","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-19 15:49:14","pTypeName":"小宝","timestamp2":"2017-08-19 15:49","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"6nI2tw2s52utLtAhdcy1TF2Yqk7gbmpG","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-19 14:20:01","pTypeName":"小宝","timestamp2":"2017-08-19 14:20","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"ssybVrmninEgLJSUe4TDgYITEgrugTjj","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-18 16:44:04","pTypeName":"小宝","timestamp2":"2017-08-18 16:44","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"bjCbVrmninEgLJSUe4TDgYITEgrugTjj","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-17 16:33:21","pTypeName":"小宝","timestamp2":"2017-08-17 16:33","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"Vesf2GJ0P92uGaXQZ2J4H2bqYCYQaWcN","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-17 15:45:01","pTypeName":"小宝","timestamp2":"2017-08-17 15:45","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"7uPyNS2xisERcXoycr14J44PJDw2ZAIb","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-17 15:25:45","pTypeName":"小宝","timestamp2":"2017-08-17 15:25","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"Iae9NzpaBp6ONzDuU2WA0znaLo32GbdU","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-17 15:17:54","pTypeName":"小宝","timestamp2":"2017-08-17 15:17","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"yysGijkyXWprxDii8Z6RHN7eV7uteBfg","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-17 15:08:58","pTypeName":"小宝","timestamp2":"2017-08-17 15:08","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null}]}
      */
 
     private int all;
@@ -84,12 +85,12 @@ public class MyAibotOrderBean {
 
     public static class UseHistoryBean {
         /**
-         * size : 5
-         * total : 10
+         * size : 15
+         * total : 21
          * currentPage : 1
          * totalPage : 2
          * currentResult : 0
-         * result : [{"id":null,"type":null,"productId":"lKF421hM8cbI5rjzEql4xgK7sEpe8AXH","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"99","timestamp":"2017-08-08 11:16:07","pTypeName":"小宝","timestamp2":"2017-08-08 11:16","paId":null,"remark":null,"productIds":null},{"id":null,"type":null,"productId":"eQANWe4Unmwq1VlT0rcd7NZGJpD6GVlb","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-08 10:52:16","pTypeName":"小宝","timestamp2":"2017-08-08 10:52","paId":null,"remark":null,"productIds":null},{"id":null,"type":null,"productId":"Ts8jRyvaxNzDMbBLuNunz7VOIOn7ycAx","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"99","timestamp":"2017-08-08 09:58:04","pTypeName":"小宝","timestamp2":"2017-08-08 09:58","paId":null,"remark":null,"productIds":null},{"id":null,"type":null,"productId":"f5HsIKKbH1sjIReuj5CfmAuKJ1U9YORX","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-07 11:56:34","pTypeName":"小宝","timestamp2":"2017-08-07 11:56","paId":null,"remark":null,"productIds":null},{"id":null,"type":null,"productId":"M2IOkSK1suxbofPcjsiCfEPvOklE3Z6W","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-07 11:49:16","pTypeName":"小宝","timestamp2":"2017-08-07 11:49","paId":null,"remark":null,"productIds":null}]
+         * result : [{"id":null,"type":null,"productId":"ZghFLhv3j9OUG4FzT9TQXzEjH3f9MfHJ","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-09-16 10:26:00","pTypeName":"小宝","timestamp2":"2017-09-16 10:26","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"l6HPaZX3KFaEEgKQOyroxro1iIImYejz","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-09-05 17:47:13","pTypeName":"小宝","timestamp2":"2017-09-05 17:47","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"vwp35n1XuPHaORoCUX5dgR5E7WFzZHq5","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-09-05 11:34:19","pTypeName":"小宝","timestamp2":"2017-09-05 11:34","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"fba152ea9bd5cfe254a9659a6e9e0b16","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"99","timestamp":"2017-08-28 17:11:38","pTypeName":"小宝","timestamp2":"2017-08-28 17:11","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"6n99tw2s52utLtAhdcy1TF2Yqk7gbmpG","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"99","timestamp":"2017-08-22 11:39:13","pTypeName":"小宝","timestamp2":"2017-08-22 11:39","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"6n92tw9s52utLtAhdcy1TF2Yqk7gbmpG","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-21 14:29:37","pTypeName":"小宝","timestamp2":"2017-08-21 14:29","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"6n92tw2s52utLtAhdcy1TF2Yqk7gbmpG","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-21 14:13:41","pTypeName":"小宝","timestamp2":"2017-08-21 14:13","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"9nI2tw2s52utLtAhdcy1TF2Yqk7gbmpG","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-19 15:49:14","pTypeName":"小宝","timestamp2":"2017-08-19 15:49","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"6nI2tw2s52utLtAhdcy1TF2Yqk7gbmpG","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-19 14:20:01","pTypeName":"小宝","timestamp2":"2017-08-19 14:20","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"ssybVrmninEgLJSUe4TDgYITEgrugTjj","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-18 16:44:04","pTypeName":"小宝","timestamp2":"2017-08-18 16:44","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"bjCbVrmninEgLJSUe4TDgYITEgrugTjj","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-17 16:33:21","pTypeName":"小宝","timestamp2":"2017-08-17 16:33","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"Vesf2GJ0P92uGaXQZ2J4H2bqYCYQaWcN","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-17 15:45:01","pTypeName":"小宝","timestamp2":"2017-08-17 15:45","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"7uPyNS2xisERcXoycr14J44PJDw2ZAIb","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-17 15:25:45","pTypeName":"小宝","timestamp2":"2017-08-17 15:25","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"Iae9NzpaBp6ONzDuU2WA0znaLo32GbdU","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-17 15:17:54","pTypeName":"小宝","timestamp2":"2017-08-17 15:17","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null},{"id":null,"type":null,"productId":"yysGijkyXWprxDii8Z6RHN7eV7uteBfg","ptypeId":null,"agencyId":null,"acustId":null,"aresetTime":null,"distributorId":null,"bcustId":null,"bresetTime":null,"reletCustId":null,"depositCustId":null,"lockCustId":null,"custId":null,"leaseFrom":null,"leaseTo":null,"lgt":null,"lat":null,"address":null,"status":"5","timestamp":"2017-08-17 15:08:58","pTypeName":"小宝","timestamp2":"2017-08-17 15:08","paId":null,"remark":null,"productIds":null,"nickname":null,"money":null,"mobile":null,"headImg":null,"name":null}]
          */
 
         private int size;
@@ -151,7 +152,7 @@ public class MyAibotOrderBean {
             /**
              * id : null
              * type : null
-             * productId : lKF421hM8cbI5rjzEql4xgK7sEpe8AXH
+             * productId : ZghFLhv3j9OUG4FzT9TQXzEjH3f9MfHJ
              * ptypeId : null
              * agencyId : null
              * acustId : null
@@ -168,13 +169,18 @@ public class MyAibotOrderBean {
              * lgt : null
              * lat : null
              * address : null
-             * status : 99
-             * timestamp : 2017-08-08 11:16:07
+             * status : 5
+             * timestamp : 2017-09-16 10:26:00
              * pTypeName : 小宝
-             * timestamp2 : 2017-08-08 11:16
+             * timestamp2 : 2017-09-16 10:26
              * paId : null
              * remark : null
              * productIds : null
+             * nickname : null
+             * money : null
+             * mobile : null
+             * headImg : null
+             * name : null
              */
 
             private Object id;
@@ -203,6 +209,11 @@ public class MyAibotOrderBean {
             private Object paId;
             private Object remark;
             private Object productIds;
+            private Object nickname;
+            private Object money;
+            private Object mobile;
+            private Object headImg;
+            private Object name;
 
             public Object getId() {
                 return id;
@@ -410,6 +421,46 @@ public class MyAibotOrderBean {
 
             public void setProductIds(Object productIds) {
                 this.productIds = productIds;
+            }
+
+            public Object getNickname() {
+                return nickname;
+            }
+
+            public void setNickname(Object nickname) {
+                this.nickname = nickname;
+            }
+
+            public Object getMoney() {
+                return money;
+            }
+
+            public void setMoney(Object money) {
+                this.money = money;
+            }
+
+            public Object getMobile() {
+                return mobile;
+            }
+
+            public void setMobile(Object mobile) {
+                this.mobile = mobile;
+            }
+
+            public Object getHeadImg() {
+                return headImg;
+            }
+
+            public void setHeadImg(Object headImg) {
+                this.headImg = headImg;
+            }
+
+            public Object getName() {
+                return name;
+            }
+
+            public void setName(Object name) {
+                this.name = name;
             }
         }
     }

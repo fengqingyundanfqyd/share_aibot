@@ -77,7 +77,7 @@ public class MyAibotOMActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onResponse(Response<MyAibotOrderBean> response, Retrofit retrofit) {
                 DialogUtil.closeDialog(mLoadingDialog);
-                if (response.body()!=null) {
+                if (response.body()!=null&&response.body().getUseHistory().getResult()!=null) {
                     int all = response.body().getAll();
                     int notSend = response.body().getNotSend();//未发货
                     int notUse = response.body().getNotUse();//为租用

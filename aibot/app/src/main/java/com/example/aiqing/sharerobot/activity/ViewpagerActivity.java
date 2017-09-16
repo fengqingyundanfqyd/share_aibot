@@ -100,7 +100,10 @@ public class ViewpagerActivity extends AppCompatActivity implements View.OnClick
             public void onResponse(Response<MyAibotBean> response, Retrofit retrofit) {
                 if (response.body() == null) {
                     //没有小宝
-                    mLlVp.setVisibility(View.GONE);
+//                    mLlVp.setVisibility(View.GONE);
+//                    mLlVp.setVisibility(View.GONE);
+//                    mIvNodata.setVisibility(View.VISIBLE);
+
                     mLlVp.setVisibility(View.GONE);
                     mIvNodata.setVisibility(View.VISIBLE);
                 } else {
@@ -189,7 +192,9 @@ public class ViewpagerActivity extends AppCompatActivity implements View.OnClick
 
                     }
                     mVpnew.setCurrentItem(0);
-                    mDots.get(0).setImageResource(R.mipmap.dot_o);//设置启动后显示的第一个点
+                    if (mDots.size()>0) {
+                        mDots.get(0).setImageResource(R.mipmap.dot_o);//设置启动后显示的第一个点
+                    }
                     DialogUtil.closeDialog(loadingDialog);
 
                     // int subletNum = response.body().getSubletNum();//转租数量

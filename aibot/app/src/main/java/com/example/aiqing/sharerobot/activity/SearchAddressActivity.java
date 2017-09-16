@@ -151,6 +151,8 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
                 setResult(3, intent);
 
                 setResult(9, intent);
+
+                setResult(12, intent);
                 finish();
             }
         });

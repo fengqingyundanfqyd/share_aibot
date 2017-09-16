@@ -39,6 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"/>
     <RelativeLayout
+        android:id="@+id/rl_updataname"
         android:layout_width="match_parent"
         android:layout_height="50dp">
         <TextView
@@ -68,6 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"/>
     <RelativeLayout
+        android:id="@+id/rl_locationaddress"
         android:layout_width="match_parent"
         android:layout_height="50dp">
         <TextView
@@ -98,6 +100,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"/>
     <RelativeLayout
+        android:id="@+id/rl_detailaddress"
         android:layout_width="match_parent"
         android:layout_height="50dp">
         <TextView
@@ -126,31 +129,37 @@
         android:background="#999999"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"/>
+
     <RelativeLayout
+        android:id="@+id/rl_phone"
         android:layout_width="match_parent"
         android:layout_height="50dp">
+
         <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_centerVertical="true"
-            android:text="联系方式"
-            android:textSize="15sp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="联系方式"
+            android:textSize="15sp"/>
+
         <TextView
             android:id="@+id/tv_shop_phonenum"
-            android:layout_marginRight="20dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"/>
+
         <ImageView
-            android:layout_marginRight="10dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:src="@mipmap/go_to"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/go_to"/>
     </RelativeLayout>
+
     <View
         android:background="#999999"
         android:layout_width="match_parent"
@@ -263,7 +272,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:src="@mipmap/switch_on"/>
+            android:src="@mipmap/switch_off"/>
     </RelativeLayout>
     <View
         android:background="#999999"

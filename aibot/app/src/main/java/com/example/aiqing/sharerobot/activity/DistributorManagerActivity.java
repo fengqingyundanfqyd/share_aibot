@@ -1,5 +1,6 @@
 package com.example.aiqing.sharerobot.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -48,10 +49,10 @@ public class DistributorManagerActivity extends AppCompatActivity implements Vie
 
         switch (v.getId()){
             case R.id.ll_return:
-//                Intent intent=new Intent();
-//                intent.setClass(DistributorManagerActivity.this, Main2Activity.class);
-//                startActivity(intent);
-                finish();
+                Intent intent=new Intent();
+                intent.setClass(DistributorManagerActivity.this, Main2Activity.class);
+                startActivity(intent);
+//                finish();
                 break;
             case R.id.tv_lend:
                 //出租

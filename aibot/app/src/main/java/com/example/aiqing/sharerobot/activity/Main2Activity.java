@@ -240,7 +240,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onResponse(Response<AibotNumBean> response, Retrofit retrofit) {
 
-                if (response.body() != null) {
+                if (response.body()!= null&&response.body().getMdList()!=null) {
                     //投放
                     mMdList = response.body().getMdList();
 

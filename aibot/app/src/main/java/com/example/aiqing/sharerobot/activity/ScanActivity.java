@@ -209,23 +209,24 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
 
     @Override
     public void onScanQRCodeSuccess(String result) {
-        if (isScan) {
-            //扫一扫
-            initScan(result);
-        } else if (isTouScan) {
-            //投放商扫一扫初始化小宝
-            initTou(result);
-        } else if (isDaiTouScan) {
-            //代理商和投放商初始化小宝
-            initDaiAndTou(result);
-        } else if (isDaiScan) {
-            //代理商扫一扫初始化小宝
-            initDai(result);
-        }
+//        if (isScan) {
+//            //扫一扫
+//            initScan(result);
+//        } else if (isTouScan) {
+//            //投放商扫一扫初始化小宝
+//            initTou(result);
+//        } else if (isDaiTouScan) {
+//            //代理商和投放商初始化小宝
+//            initDaiAndTou(result);
+//        } else if (isDaiScan) {
+//            //代理商扫一扫初始化小宝
+//            initDai(result);
+//        }
+
+        initScan(result);
 
         //投放商归还
         disReturn(result);
-
 
         //投放商申请平台发货
         disScanSend(result);
@@ -513,7 +514,10 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
             } else if (s.equals("d")) {
                 //投放商码   跳转到商家详情页面
                 //initHttpTou(s1);
+                String[] dis = result.split("=");
+                String distributorId = dis[1];
                 Intent intent = new Intent(ScanActivity.this, BusinessInfoActivity.class);
+                intent.putExtra("distributorId",distributorId);
                 startActivity(intent);
             } else if (s.equals("p")) {
                 //租用码
@@ -522,7 +526,7 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
                 applyNum(productId);
             }
         } else {
-            Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
             return;
         }
     }

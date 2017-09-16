@@ -77,8 +77,6 @@ public class TojoininApplyActivity extends AppCompatActivity implements View.OnC
     //邀请者信息
     private void initYaoqingzheData() {
 
-
-
         mLoadingDialog = DialogUtil.createLoadingDialog(this, "加载中...");
         Retrofit builder = new Retrofit.Builder()
                 .client(mHttpTool.client())

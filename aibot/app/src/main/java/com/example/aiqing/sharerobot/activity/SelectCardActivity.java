@@ -33,6 +33,7 @@ public class SelectCardActivity extends AppCompatActivity implements View.OnClic
 
     private ListView mLvCard;
     private ImageView mIvStatus;
+    private List<BankListBean.ObjBean> mList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +60,11 @@ public class SelectCardActivity extends AppCompatActivity implements View.OnClic
         call.enqueue(new Callback<BankListBean>() {
             @Override
             public void onResponse(Response<BankListBean> response, Retrofit retrofit) {
+                DialogUtil.closeDialog(loadingDialog);
                 if (response.body().getCoder().equals("0000")){
-                    List<?> obj = response.body().getObj();
+                    mList = response.body().getObj();
+                    BankCardAdapter bankCardAdapter = new BankCardAdapter(SelectCardActivity.this, mList);
+                    mLvCard.setAdapter(bankCardAdapter);
                 }
 
             }
@@ -70,15 +74,24 @@ public class SelectCardActivity extends AppCompatActivity implements View.OnClic
 
             }
         });
+
+        mLvCard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String cardId = mList.get(position).getCardId();
+                Intent intent=new Intent();
+                intent.putExtra("cardId",cardId);
+                intent.setClass(SelectCardActivity.this,WithdrawalsActivity.class);
+                setResult(15,intent);
+                finish();
+            }
+        });
     }
 
     private void initId() {
         Button btnAddcard = (Button) findViewById(R.id.btn_add_card);
         ImageView ivReturn = (ImageView) findViewById(R.id.iv_select_card);
         mLvCard = (ListView) findViewById(R.id.listview_card);
-
-        BankCardAdapter bankCardAdapter = new BankCardAdapter(this);
-        mLvCard.setAdapter(bankCardAdapter);
 
         btnAddcard.setOnClickListener(this);
         ivReturn.setOnClickListener(this);

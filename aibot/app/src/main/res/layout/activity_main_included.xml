@@ -25,83 +25,90 @@
        </FrameLayout>
         <ImageView
             android:layout_gravity="center"
-           android:src="@mipmap/aibot"
+           android:src="@mipmap/aiqingjiadao"
             android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </android.support.v7.widget.Toolbar>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <com.amap.api.maps.MapView
             android:id="@+id/map_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-       <!-- <ImageView
+        <!-- <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#999"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"/>-->
-            <ImageView
-                android:id="@+id/iv_robot"
-                android:layout_marginBottom="80dp"
-                android:layout_marginRight="22dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:src="@mipmap/icon_aibot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/iv_robot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="80dp"
+            android:layout_marginRight="22dp"
+            android:src="@mipmap/icon_aibot"/>
+
         <LinearLayout
             android:id="@+id/ll_bottom_main"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-
-        <ImageView
-            android:layout_marginRight="20dp"
-            android:id="@+id/iv_refresh"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginBottom="5dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:src="@mipmap/icon_refresh"
-           />
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:background="@drawable/shape_location"
+                android:id="@+id/iv_refresh"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="20dp"
+                android:src="@mipmap/icon_refresh"
+                />
 
             <LinearLayout
-                android:layout_marginBottom="10dp"
                 android:id="@+id/ll_scan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerInParent="true"
+                android:layout_marginBottom="10dp"
                 android:background="@mipmap/scan"
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                    <ImageView
-                        android:layout_gravity="center"
-                       android:layout_marginLeft="50dp"
-                        android:src="@mipmap/icon_scan_main"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="50dp"
+                    android:src="@mipmap/icon_scan_main"/>
+
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
-                    android:textSize="20sp"
                     android:text="扫码开机"
                     android:textColor="#ffffff"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textSize="20sp"/>
             </LinearLayout>
+
             <ImageView
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="20dp"
                 android:id="@+id/iv_quesion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="20dp"
                 android:src="@mipmap/icon_guide"
                 />
         </LinearLayout>

@@ -25,6 +25,7 @@ import com.example.aiqing.sharerobot.bean.DisReturnBean;
 import com.example.aiqing.sharerobot.bean.DisWaitLendBean;
 import com.example.aiqing.sharerobot.bean.DistributorGetGoodsBean;
 import com.example.aiqing.sharerobot.bean.DistributorMineBean;
+import com.example.aiqing.sharerobot.bean.DoCashApplyBean;
 import com.example.aiqing.sharerobot.bean.GetGoodsYuanBean;
 import com.example.aiqing.sharerobot.bean.GetYanzhengmaBean;
 import com.example.aiqing.sharerobot.bean.HavaLeaseBean;
@@ -48,6 +49,7 @@ import com.example.aiqing.sharerobot.bean.ProblemBean;
 import com.example.aiqing.sharerobot.bean.PutManagerBean;
 import com.example.aiqing.sharerobot.bean.RentPayBean;
 import com.example.aiqing.sharerobot.bean.ReturnAibotBean;
+import com.example.aiqing.sharerobot.bean.SaveBankinfoBean;
 import com.example.aiqing.sharerobot.bean.ScanDisSendBean;
 import com.example.aiqing.sharerobot.bean.ScanRentBean;
 import com.example.aiqing.sharerobot.bean.ScanReturnBean;
@@ -61,6 +63,7 @@ import com.example.aiqing.sharerobot.bean.TouInitRobotBean;
 import com.example.aiqing.sharerobot.bean.TouOrderBean;
 import com.example.aiqing.sharerobot.bean.UpDataNickName;
 import com.example.aiqing.sharerobot.bean.UpDataSexBean;
+import com.example.aiqing.sharerobot.bean.UpdataShopDataBean;
 import com.example.aiqing.sharerobot.bean.UpdateAddressBean;
 import com.example.aiqing.sharerobot.bean.UploadHeaderBean;
 import com.example.aiqing.sharerobot.bean.UploadImaBean;
@@ -564,6 +567,27 @@ public interface ApiService {
      */
     @POST("http://120.132.117.157:8083/bank/bankType.shtml")
     Call<BankCardNumBean> banknum(@Header("JSESSIONID") String JSESSIONID, @Query("cardNo") String cardNo);
+
+
+    /**
+     * 37、修改投放商店铺资料（图片21-0）
+     */
+    @POST("http://120.132.117.157:8083/distributor/saveDistributorId.shtml")
+    Call<UpdataShopDataBean> updatashopdata(@Header("JSESSIONID") String JSESSIONID, @Query("distributorId") String distributorId, @Query("name") String name, @Query("address") String address, @Query("lgt") String lgt, @Query("lat") String lat, @Query("building") String building, @Query("contact1") String contact1, @Query("isStop") String isStop, @Query("isAllowed") String isAllowed, @Query("openTime2") String openTime2, @Query("closedTime2") String closedTime2);
+
+
+    /**
+     * 115、新增银行卡
+     */
+    @POST("http://120.132.117.157:8083/bank/saveBankCard.shtml")
+    Call<SaveBankinfoBean> savebankinfo(@Header("JSESSIONID") String JSESSIONID, @Query("cardNo") String cardNo, @Query("bindingMobile") String bindingMobile, @Query("accountName") String accountName, @Query("bankName") String bankName, @Query("yzCode") String yzCode);
+
+
+    /**
+     * 116、提现保存接口（POST）
+     */
+    @POST("http://120.132.117.157:8083/pay/doCashApply.shtml")
+    Call<DoCashApplyBean> doCashApply(@Header("JSESSIONID") String JSESSIONID, @Query("amount") String amount, @Query("cardId") String cardId);
 
 
 }

@@ -15,13 +15,15 @@ import com.example.aiqing.sharerobot.R;
 public class MoneyDetailingAdapter extends BaseAdapter {
     private final Context context;
 
+
     public MoneyDetailingAdapter(Context context) {
         this.context=context;
+
     }
 
     @Override
     public int getCount() {
-        return 20;
+        return 10;
     }
 
     @Override
@@ -53,7 +55,7 @@ public class MoneyDetailingAdapter extends BaseAdapter {
         viewHolder.tv_money_detail.setText("-900");
         viewHolder.tv_data_detail.setText("2017-7-9");
         viewHolder.tv_time_detail.setText("14:30");
-        viewHolder.tv_zhifustyle.setText("支付宝支付");
+        viewHolder.tv_zhifustyle.setText("支付宝");
         return convertView;
     }
     class ViewHolder{

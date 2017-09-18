@@ -26,6 +26,7 @@ import com.example.aiqing.sharerobot.bean.DisWaitLendBean;
 import com.example.aiqing.sharerobot.bean.DistributorGetGoodsBean;
 import com.example.aiqing.sharerobot.bean.DistributorMineBean;
 import com.example.aiqing.sharerobot.bean.DoCashApplyBean;
+import com.example.aiqing.sharerobot.bean.DoCashDetailBean;
 import com.example.aiqing.sharerobot.bean.GetGoodsYuanBean;
 import com.example.aiqing.sharerobot.bean.GetYanzhengmaBean;
 import com.example.aiqing.sharerobot.bean.HavaLeaseBean;
@@ -588,6 +589,14 @@ public interface ApiService {
      */
     @POST("http://120.132.117.157:8083/pay/doCashApply.shtml")
     Call<DoCashApplyBean> doCashApply(@Header("JSESSIONID") String JSESSIONID, @Query("amount") String amount, @Query("cardId") String cardId);
+
+
+
+    /**
+     * 119、提现流水记录
+     */
+    @POST("http://120.132.117.157:8083/cust/getwithdrawRec.shtml")
+    Call<DoCashDetailBean> doCashDetail(@Header("JSESSIONID") String JSESSIONID, @Query("pageNum") String pageNum, @Query("pageSize") String pageSize);
 
 
 }

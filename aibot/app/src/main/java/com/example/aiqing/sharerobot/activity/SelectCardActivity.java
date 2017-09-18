@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.aiqing.sharerobot.R;
 import com.example.aiqing.sharerobot.adapter.BankCardAdapter;
@@ -79,9 +80,17 @@ public class SelectCardActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String cardId = mList.get(position).getCardId();
+                ImageView ivStatus = (ImageView) view.findViewById(R.id.iv_bank_status);
+                TextView bankAddr = (TextView) view.findViewById(R.id.tv_bank_name);
+                String bankname = bankAddr.getText().toString();
+                TextView tvlastnum = (TextView) view.findViewById(R.id.tv_bank_lastnum);
+                String banknum = tvlastnum.getText().toString();
+                ivStatus.setVisibility(View.VISIBLE);
                 Intent intent=new Intent();
                 intent.putExtra("cardId",cardId);
-                intent.setClass(SelectCardActivity.this,WithdrawalsActivity.class);
+                intent.putExtra("banknum",banknum);
+                intent.putExtra("bankname",bankname);
+              //  intent.setClass(SelectCardActivity.this,WithdrawalsActivity.class);
                 setResult(15,intent);
                 finish();
             }

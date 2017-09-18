@@ -13,8 +13,27 @@
         android:id="@+id/rl_add_ic_card"
         android:layout_width="match_parent"
         android:layout_height="64dp">
-
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/ll_bankinfo"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_bankname"
+                android:text="中国工商银行"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tv_cardnum"
+                android:text="8888"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
         <TextView
+            android:id="@+id/tv_addbankcard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -74,16 +93,16 @@
 
                 <EditText
                     android:id="@+id/et_withdrawals"
-                    android:background="@null"
-                    android:layout_width="wrap_content"
+                    android:layout_width="260dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="11dp"
-                    android:text="10000.00"
+                    android:background="@null"
                     android:textColor="#0d0d0d"
                     android:textSize="36sp"/>
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/iv_clean"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -93,9 +112,9 @@
         </RelativeLayout>
 
         <View
-            android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
+            android:layout_marginTop="30dp"
             android:background="#999999"/>
 
         <LinearLayout
@@ -123,18 +142,20 @@
         </LinearLayout>
 
     </LinearLayout>
+
     <View
 
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="#999999"/>
+
     <Button
         android:id="@+id/btn_sure_withdrawals"
-        android:textSize="17sp"
-        android:background="@mipmap/icon_putin"
-        android:layout_marginTop="50dp"
-        android:layout_gravity="center"
-        android:text="确认提现"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:background="@mipmap/icon_putin"
+        android:text="确认提现"
+        android:textSize="17sp"/>
 </LinearLayout>

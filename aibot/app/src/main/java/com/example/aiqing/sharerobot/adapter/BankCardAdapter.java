@@ -12,8 +12,6 @@ import com.example.aiqing.sharerobot.bean.BankListBean;
 
 import java.util.List;
 
-import static android.R.attr.name;
-
 /**
  * Created by aiqing on 2017/7/6.
  */

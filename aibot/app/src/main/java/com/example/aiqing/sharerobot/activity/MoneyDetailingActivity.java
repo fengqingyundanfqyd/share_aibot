@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.example.aiqing.sharerobot.R;
-import com.example.aiqing.sharerobot.adapter.MoneyDetailingAdapter;
 import com.example.aiqing.sharerobot.utils.TopMenuHeader;
 
 /**
@@ -31,12 +30,6 @@ public class MoneyDetailingActivity extends AppCompatActivity {
         });
         initId();
 
-        initData();
-    }
-
-    private void initData() {
-        MoneyDetailingAdapter moneyDetailingAdapter = new MoneyDetailingAdapter(this);
-        mLvDetailing.setAdapter(moneyDetailingAdapter);
     }
 
     private void initId() {

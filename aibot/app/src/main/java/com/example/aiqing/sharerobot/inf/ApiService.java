@@ -28,6 +28,7 @@ import com.example.aiqing.sharerobot.bean.DistributorMineBean;
 import com.example.aiqing.sharerobot.bean.DoCashApplyBean;
 import com.example.aiqing.sharerobot.bean.DoCashDetailBean;
 import com.example.aiqing.sharerobot.bean.GetGoodsYuanBean;
+import com.example.aiqing.sharerobot.bean.GetSystemTimeBean;
 import com.example.aiqing.sharerobot.bean.GetYanzhengmaBean;
 import com.example.aiqing.sharerobot.bean.HavaLeaseBean;
 import com.example.aiqing.sharerobot.bean.InAndOutBean;
@@ -598,6 +599,12 @@ public interface ApiService {
     @POST("http://120.132.117.157:8083/cust/getwithdrawRec.shtml")
     Call<DoCashDetailBean> doCashDetail(@Header("JSESSIONID") String JSESSIONID, @Query("pageNum") String pageNum, @Query("pageSize") String pageSize);
 
+
+    /**
+     * 118、字典表通用接口
+     */
+    @POST("http://120.132.117.157:8083/comm/dictionaryGeneric.shtml")
+    Call<GetSystemTimeBean> getTime(@Header("JSESSIONID") String JSESSIONID, @Query("code") String code);
 
 }
 

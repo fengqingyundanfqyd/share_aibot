@@ -19,6 +19,7 @@ import com.example.aiqing.sharerobot.inf.ApiService;
 import com.example.aiqing.sharerobot.inf.HttpTool;
 import com.example.aiqing.sharerobot.utils.DialogUtil;
 
+import java.io.Serializable;
 import java.util.List;
 
 import retrofit.Call;
@@ -79,6 +80,7 @@ public class SelectCardActivity extends AppCompatActivity implements View.OnClic
         mLvCard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 String cardId = mList.get(position).getCardId();
                 ImageView ivStatus = (ImageView) view.findViewById(R.id.iv_bank_status);
                 TextView bankAddr = (TextView) view.findViewById(R.id.tv_bank_name);
@@ -86,10 +88,18 @@ public class SelectCardActivity extends AppCompatActivity implements View.OnClic
                 TextView tvlastnum = (TextView) view.findViewById(R.id.tv_bank_lastnum);
                 String banknum = tvlastnum.getText().toString();
                 ivStatus.setVisibility(View.VISIBLE);
+                BankListBean.ObjBean bean = mList.get(position);
                 Intent intent=new Intent();
-                intent.putExtra("cardId",cardId);
-                intent.putExtra("banknum",banknum);
-                intent.putExtra("bankname",bankname);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("bean", (Serializable) bean);
+                bundle.putString("banknum",banknum);
+                bundle.putString("bankname",bankname);
+                intent.putExtras(bundle);
+               // intent.putExtra("bean",(Serializable) bean);
+              //  intent.putExtra("cardId",cardId);
+               // intent.putExtra("banknum",banknum);
+                //intent.putExtra("bankname",bankname);
+
               //  intent.setClass(SelectCardActivity.this,WithdrawalsActivity.class);
                 setResult(15,intent);
                 finish();

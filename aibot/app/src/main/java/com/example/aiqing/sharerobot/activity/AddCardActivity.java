@@ -62,15 +62,11 @@ public class AddCardActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void initData() {
-//        mLlCardId.setVisibility(View.VISIBLE);
-//        mLlYanzhengmessage.setVisibility(View.GONE);
-//        mLlYanzhengma.setVisibility(View.GONE);
 
         mIvReturn.setOnClickListener(this);
 
-
         mBtnNextOne.setOnClickListener(this);
-        Toast.makeText(this, "银行卡号" + mBankcardnum, Toast.LENGTH_SHORT).show();
+
         //持卡人姓名
         String personsname = mEtCardmansName.getText().toString().trim();
         //持卡人身份证
@@ -130,22 +126,8 @@ public class AddCardActivity extends AppCompatActivity implements View.OnClickLi
                 // 输入持卡人  身份证  手机号
                 commit();
 
-
-//                Log.e("银行卡号", "onClick: "+mBankcardnum);
-//                Log.e("银行预留电话", "onClick: "+mPhonenum );
-//                mLlCardId.setVisibility(View.GONE);
-//                mLlYanzhengmessage.setVisibility(View.GONE);
-//                mLlYanzhengma.setVisibility(View.VISIBLE);
-
                 break;
-//            case R.id.btn_get_yanzhengma:
-//
-//                //发送验证码
-//                String yanzhengma = mEtZanzhengma_get.getText().toString().trim();
-//                break;
-//            case R.id.btn_complete:
-//               finish();
-//                break;
+
         }
     }
 

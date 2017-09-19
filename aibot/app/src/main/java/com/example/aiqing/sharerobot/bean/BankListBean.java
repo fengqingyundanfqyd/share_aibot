@@ -1,12 +1,13 @@
 package com.example.aiqing.sharerobot.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by aiqing on 2017/9/15.
  */
 
-public class BankListBean {
+public class BankListBean  implements Serializable {
 
     /**
      * coder : 0000
@@ -72,7 +73,7 @@ public class BankListBean {
         this.obj = obj;
     }
 
-    public static class ObjBean {
+    public static class ObjBean implements Serializable{
         /**
          * cardId : 3
          * custId : 170814204152864028

@@ -5,11 +5,140 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#F5F5F5"
     tools:context="com.example.aiqing.sharerobot.activity.WithdrawalsActivity">
 
-    <include layout="@layout/public_header"/>
-
+   <!-- <include layout="@layout/public_header"/>-->
     <RelativeLayout
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+        <ImageView
+            android:id="@+id/iv_withdrawal_return"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="left"
+            android:background="@mipmap/fanhui"
+            android:layout_marginLeft="10dp"
+            />
+
+        <!-- 文本标题控件，设置布局为居中 -->
+
+        <TextView
+            android:text="提现"
+            android:id="@+id/top_menu_title"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:textColor="#000"
+            android:textSize="20sp" />
+
+        <!-- 按钮控件，设置布局为偏右 -->
+
+        <Button
+            android:text="历史"
+            android:background="@null"
+            android:id="@+id/btn_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            />
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:background="#cccccc" >
+        </View>
+
+    </RelativeLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+                <RelativeLayout
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_centerInParent="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                               <TextView
+                                   android:id="@+id/tv_today"
+                                   android:textColor="#666666"
+                                   android:textSize="18sp"
+                                   android:gravity="center"
+                                   android:text="今日09-19:"
+                                   android:layout_width="wrap_content"
+                                   android:layout_height="wrap_content"/>
+                            <TextView
+                                android:id="@+id/tv_docash_data"
+                                android:textColor="#ff824c"
+                                android:layout_marginLeft="5dp"
+                                android:textSize="18sp"
+                                android:gravity="center"
+                                android:text="提现日"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textColor="#666666"
+                        android:textSize="15sp"
+                        android:gravity="center"
+                        android:text="距离下一提现日还有"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/tv_lessday"
+                        android:textColor="#ff824c"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="15sp"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                    <TextView
+                        android:id="@+id/tv_docash_detail_time"
+                        android:layout_centerInParent="true"
+                        android:textColor="#b6b6b6"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:text="(提现日:每月的6号，13号，20号，28号)"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </RelativeLayout>
+        </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#999999"/>
+    <RelativeLayout
+        android:background="#ffffff"
         android:id="@+id/rl_add_ic_card"
         android:layout_width="match_parent"
         android:layout_height="64dp">
@@ -61,6 +190,7 @@
         android:background="#999999"/>
 
     <LinearLayout
+        android:background="#ffffff"
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:orientation="vertical">
@@ -131,14 +261,14 @@
                 android:textColor="#999999"
                 android:textSize="15sp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="16sp"
-                android:text="999.00"
-                android:textColor="#999999"
-                android:textSize="15sp"/>
+                    <TextView
+                        android:id="@+id/tv_balance_docash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="16sp"
+                        android:textColor="#999999"
+                        android:textSize="15sp"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -150,6 +280,7 @@
         android:background="#999999"/>
 
     <Button
+        android:textColor="#ffffff"
         android:id="@+id/btn_sure_withdrawals"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

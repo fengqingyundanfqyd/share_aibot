@@ -15,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -519,6 +521,33 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                String lattuide = String.valueOf(lat);
+                String longtitid = String.valueOf(lon);
+
+
+                Intent intent=new Intent();
+                intent.setClass(Main2Activity.this, NearbyShopActivity.class);
+
+                intent.putExtra("lattuide",lattuide);
+                intent.putExtra("longtitid",longtitid);
+                Log.e("首页地址", "onOptionsItemSelected: "+ lattuide+longtitid);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     //判断是否登录
     private void initLogin() {
         if (getSharedPreferences("COOKIE", MODE_PRIVATE).getString("mCookie", "").equals("")) {
@@ -597,7 +626,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                     Log.e("11111111", "onLocationChanged: " + amapLocation.getAoiName() + " " + amapLocation.getAddress());
                     lat = mLatitude;
                     lon = amapLocation.getLongitude();
-                    Log.v("pcw", "lat : " + lat + " lon : " + lon);
+                    Log.e("pcw", "lat : " + lat + " lon : " + lon);
 
                     Log.e("经纬度", "onLocationChanged: " + "经度" + lat + "纬度" + lon);
 

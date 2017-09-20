@@ -1,6 +1,7 @@
 package com.example.aiqing.sharerobot.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,7 @@ public class SearchAdapter extends BaseAdapter {
         }
         mViewHolder.detail.setText(list.get(position).getName());
         mViewHolder.city.setText(list.get(position).getAddress());
+        Log.e("搜索地址2", "getView: "+ list.get(1).getName());
 //        mViewHolder.detail.setText(("中大银泰城"));
 //        mViewHolder.city.setText(("杭州下城区"));
         return convertView;

@@ -62,6 +62,8 @@ public class LocationAdapter extends BaseAdapter {
 
         mViewHolder.detail.setText(pois.get(position).getProvinceName());
         mViewHolder.city.setText(pois.get(position).getCityName()+pois.get(position).getAdName());
+
+
 //        mViewHolder.detail.setText(("中大银泰城"));
 //        mViewHolder.city.setText(("杭州下城区"));
         return convertView;

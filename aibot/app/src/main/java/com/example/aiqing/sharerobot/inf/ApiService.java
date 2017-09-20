@@ -40,6 +40,7 @@ import com.example.aiqing.sharerobot.bean.MainBean;
 import com.example.aiqing.sharerobot.bean.MyAddressBean;
 import com.example.aiqing.sharerobot.bean.MyAibotBean;
 import com.example.aiqing.sharerobot.bean.MyAibotOrderBean;
+import com.example.aiqing.sharerobot.bean.NearbyShopBean;
 import com.example.aiqing.sharerobot.bean.NoSendBean;
 import com.example.aiqing.sharerobot.bean.NotUsedBean;
 import com.example.aiqing.sharerobot.bean.OrderBean;
@@ -605,6 +606,15 @@ public interface ApiService {
      */
     @POST("http://120.132.117.157:8083/comm/dictionaryGeneric.shtml")
     Call<GetSystemTimeBean> getTime(@Header("JSESSIONID") String JSESSIONID, @Query("code") String code);
+
+
+
+    /**
+     * 113、LBS搜索功能
+     */
+    @POST("http://120.132.117.157:8083/comm/lbsSearch.shtml")
+    Call<NearbyShopBean> nearbyData(@Query("lgt") String lgt, @Query("lat") String lat, @Query("range") String range, @Query("pageNum") String pageNum, @Query("pageSize") String pageSize);
+
 
 }
 

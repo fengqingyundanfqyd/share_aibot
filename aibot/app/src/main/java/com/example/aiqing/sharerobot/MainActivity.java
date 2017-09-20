@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -370,6 +371,10 @@ public class MainActivity extends AppCompatActivity implements AMap.OnMapTouchLi
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
     //点击跳到信息界面
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {

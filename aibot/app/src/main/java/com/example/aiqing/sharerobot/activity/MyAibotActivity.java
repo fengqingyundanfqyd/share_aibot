@@ -296,7 +296,7 @@ public class MyAibotActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //加载地图
-        if (requestCode == 110) {
+        if (requestCode == 110 && data!=null) {
             //initMap();
             initAMap();
             mLlReturn.setVisibility(View.VISIBLE);

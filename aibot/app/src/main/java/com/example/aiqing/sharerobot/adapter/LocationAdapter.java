@@ -7,10 +7,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.amap.api.services.core.PoiItem;
+import com.amap.api.services.help.Tip;
 import com.example.aiqing.sharerobot.R;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by aiqing on 2017/6/27.
@@ -18,7 +18,8 @@ import java.util.ArrayList;
 
 public class LocationAdapter extends BaseAdapter {
 
-    private final ArrayList<PoiItem> pois;
+  //  private final ArrayList<PoiItem> pois;
+    private final List<Tip> list;
     private LayoutInflater mInflater = null;
 
 //    public LocationAdapter(Context context) {
@@ -26,14 +27,19 @@ public class LocationAdapter extends BaseAdapter {
 //
 //    }
 
-    public LocationAdapter(Context context, ArrayList<PoiItem> pois) {
+//    public LocationAdapter(Context context, ArrayList<PoiItem> pois) {
+//        this.mInflater = LayoutInflater.from(context);
+//        this.pois = pois;
+//    }
+
+    public LocationAdapter(Context context, List<Tip> list) {
         this.mInflater = LayoutInflater.from(context);
-        this.pois = pois;
+        this.list = list;
     }
 
     @Override
     public int getCount() {
-        return pois.size();
+        return list.size();
     }
 
     @Override
@@ -60,8 +66,11 @@ public class LocationAdapter extends BaseAdapter {
             mViewHolder = (ViewHolder) convertView.getTag();
         }
 
-        mViewHolder.detail.setText(pois.get(position).getProvinceName());
-        mViewHolder.city.setText(pois.get(position).getCityName()+pois.get(position).getAdName());
+//        mViewHolder.detail.setText(pois.get(position).getProvinceName());
+//        mViewHolder.city.setText(pois.get(position).getCityName()+pois.get(position).getAdName());
+
+        mViewHolder.detail.setText(list.get(position).getName());
+        mViewHolder.city.setText(list.get(position).getAddress());
 
 
 //        mViewHolder.detail.setText(("中大银泰城"));

@@ -95,30 +95,31 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
                             .build();
                     ApiService apiService = builder.create(ApiService.class);
 
-                    Call<AddAddressBean> call = apiService.saveaddress(sid,mName1,mNum,mMProvince,mMCity,mMDistrict,mMStreetNum,mMStreetNum,mMStreetNum,mDeadd,mMStreetNum,mIvSwitch.getTag().toString(),mMLongitude,mMLatitude,mMStreetNum);
+                    Call<AddAddressBean> call = apiService.saveaddress(sid, mName1, mNum, mMProvince, mMCity, mMDistrict, mMStreetNum, mMStreetNum, mMStreetNum, mDeadd, mMStreetNum, mIvSwitch.getTag().toString(), mMLongitude, mMLatitude, mMStreetNum);
                     call.enqueue(new Callback<AddAddressBean>() {
                         @Override
                         public void onResponse(Response<AddAddressBean> response, Retrofit retrofit) {
                             DialogUtil.closeDialog(mLoadingDialog);
-                            Log.e("测试", "onResponse: "+response.body().isSuccess() );
+                            Log.e("测试", "onResponse: " + response.body().isSuccess());
 //                            Intent intent=new Intent(AddAddressActivity.this,PersonalInfoActivity.class);
 //                            startActivity(intent);
                             finish();
                         }
+
                         @Override
                         public void onFailure(Throwable t) {
-                            Log.e("测试", "onFailure: "+"666" );
+                            Log.e("测试", "onFailure: " + "666");
                             Toast.makeText(AddAddressActivity.this, "网络连接失败，请检查您的网络！", Toast.LENGTH_SHORT).show();
                         }
                     });
                     mIntent = new Intent();
-                   // mIntent.setClass(AddAddressActivity.this, ApplyRentActivity.class);
+                    // mIntent.setClass(AddAddressActivity.this, ApplyRentActivity.class);
 
                     mIntent.putExtra("name", mEtName.getText().toString().trim());
                     mIntent.putExtra("number", mEtNumber.getText().toString().trim());
                     mIntent.putExtra("detaadd", mEtDetailAdd.getText().toString().trim());
 
-                    setResult(250,mIntent);
+                    setResult(250, mIntent);
 
                 }
             }
@@ -165,7 +166,7 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode==2){
+        if (requestCode == 2 && data != null) {
             Bundle bundle = data.getExtras();
             mMLatitude = bundle.getString("mLatitude");
             mMLongitude = bundle.getString("mLongitude");
@@ -173,22 +174,26 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
             mMCity = bundle.getString("mCity");
             mMDistrict = bundle.getString("mDistrict");//街道信息
             mMStreetNum = bundle.getString("mStreetNum");//街道门牌号信息
-            Toast.makeText(this, "收到999"+ mMCity, Toast.LENGTH_SHORT).show();
+            String mCity = bundle.getString("mCity");
+            String cityinfo = bundle.getString("cityinfo");
+            Toast.makeText(this, mCity, Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "收到999"+ mMCity, Toast.LENGTH_SHORT).show();
 
             mLlDetailAddress.setVisibility(View.GONE);
             mTvGetDetail.setVisibility(View.VISIBLE);
-            mTvGetDetail.setText(mMProvince+mMCity+mMStreetNum);
-            Log.e("姓名", "onActivityResult: "+ mMLatitude+mMLongitude);
+            mTvGetDetail.setText(mMProvince + mMCity + mMDistrict + cityinfo);
+            Log.e("姓名", "onActivityResult: " + mMLatitude + mMLongitude);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ll_detailaddress:
                 Intent intent = new Intent();
                 intent.setClass(AddAddressActivity.this, SearchAddressActivity.class);
-                startActivityForResult(intent,2);
+                startActivityForResult(intent, 2);
                 break;
             case R.id.ll_name:
 
@@ -197,10 +202,10 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
 
                 break;
             case R.id.iv_switch:
-                if (mIvSwitch.getTag().equals("0")){
+                if (mIvSwitch.getTag().equals("0")) {
                     mIvSwitch.setTag("1");
                     mIvSwitch.setImageResource(R.mipmap.switch_on);
-                }else {
+                } else {
                     mIvSwitch.setTag("0");
                     mIvSwitch.setImageResource(R.mipmap.switch_off);
                 }
@@ -216,11 +221,11 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onGeocodeSearched(GeocodeResult geocodeResult, int rCode) {
-        if (rCode== AMapException.CODE_AMAP_SUCCESS){
-            if (geocodeResult!=null&&geocodeResult.getGeocodeAddressList()!=null&&geocodeResult.getGeocodeAddressList().size()>0){
+        if (rCode == AMapException.CODE_AMAP_SUCCESS) {
+            if (geocodeResult != null && geocodeResult.getGeocodeAddressList() != null && geocodeResult.getGeocodeAddressList().size() > 0) {
                 GeocodeAddress address = geocodeResult.getGeocodeAddressList().get(0);
                 mAddressName = "经纬度值:" + address.getLatLonPoint() + "\n位置描述:" + address.getFormatAddress();
-                Log.e("位置描述", "onGeocodeSearched: "+ mAddressName);
+                Log.e("位置描述", "onGeocodeSearched: " + mAddressName);
             }
         }
 

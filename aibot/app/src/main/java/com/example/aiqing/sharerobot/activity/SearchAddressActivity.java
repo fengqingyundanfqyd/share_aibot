@@ -24,18 +24,28 @@ import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.core.SuggestionCity;
+import com.amap.api.services.geocoder.GeocodeAddress;
+import com.amap.api.services.geocoder.GeocodeQuery;
+import com.amap.api.services.geocoder.GeocodeResult;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeQuery;
+import com.amap.api.services.geocoder.RegeocodeResult;
 import com.amap.api.services.help.Inputtips;
 import com.amap.api.services.help.InputtipsQuery;
 import com.amap.api.services.help.Tip;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
+import com.esaysidebar.EasySideBarBuilder;
 import com.example.aiqing.sharerobot.R;
 import com.example.aiqing.sharerobot.adapter.LocationAdapter;
 import com.example.aiqing.sharerobot.adapter.SearchAdapter;
+import com.example.aiqing.sharerobot.utils.AMapUtil;
 import com.example.aiqing.sharerobot.utils.TopMenuHeader;
 
 import java.text.SimpleDateFormat;
@@ -43,11 +53,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.example.aiqing.sharerobot.utils.ChString.address;
+
 /*
 * 搜索地址界面
 * */
-public class SearchAddressActivity extends AppCompatActivity implements View.OnClickListener, Inputtips.InputtipsListener {
-
+public class SearchAddressActivity extends AppCompatActivity implements View.OnClickListener, Inputtips.InputtipsListener, GeocodeSearch.OnGeocodeSearchListener {
+    private final String[] mIndexItems = {};//头部额外的索引
     private MapView mViewMap;
     private AMap aMap;
     private AMapLocationClientOption mLocationClientOption;
@@ -66,6 +78,14 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
     private PoiSearch mPoiSearch;
     private ImageView mSearch;
     private ArrayList<PoiItem> mPois;
+    private GeocodeSearch geocoderSearch;
+
+    private double mLatitude1;
+    private double mLongitude1;
+    private Marker regeoMarker;
+    private TextView mTvCityName;
+    private String mGetCity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +111,12 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
         });
         topMenu.topMenuRight.setVisibility(View.GONE);
 
+        //地址列表
+        InputtipsQuery inputtipsQuery = new InputtipsQuery(address, "杭州");
+        inputtipsQuery.setCityLimit(true);
+        Inputtips inputtips = new Inputtips(SearchAddressActivity.this, inputtipsQuery);
+        inputtips.setInputtipsListener(SearchAddressActivity.this);
+        inputtips.requestInputtipsAsyn();
 
         initData();
 
@@ -99,22 +125,24 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
     private void queryAddress() {
         String s = "190000|190700|190600|190500|190403|190402|190401|190400|190311|190310|190309|190308|190307|190306|190305|190304|190303|190302|190301|190300|190205|190204|190203|190202|190201|190200|190109|190108|190107|190106|190105|190104|190103|190102|190101|190100";
         PoiSearch.Query query = new PoiSearch.Query(s, "");
-        query.setPageSize(10);// 设置每页最多返回多少条poiitem
+        query.setPageSize(15);// 设置每页最多返回多少条poiitem
         //  mQuery1.setPageNum(currentPage);//设置查询页码
         mPoiSearch = new PoiSearch(this, query);
-
         mPoiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(mLatitude, mLongitude), 1000));
         mPoiSearch.searchPOIAsyn();
         mPoiSearch.setOnPoiSearchListener(new PoiSearch.OnPoiSearchListener() {
             @Override
             public void onPoiSearched(PoiResult poiResult, int i) {
-                Log.e("检索", "onPoiSearched: " + poiResult.getPois().get(1).getCityName()+poiResult.getPois().get(1).getAdName());
+                Log.e("检索", "onPoiSearched: " + poiResult.getPois().get(1).getCityName() + poiResult.getPois().get(1).getAdName());
+
+                //mCityinfo = poiResult.getPois().get(i).getCityName() + poiResult.getPois().get(i).getAdName();
+
                 Log.e("检索2", "onPoiSearched: " + poiResult.getPois().get(0).getAdName());
 
 
-                mPois = poiResult.getPois();
-                LocationAdapter locationAdapter = new LocationAdapter(SearchAddressActivity.this, mPois);
-                 mLvLocation.setAdapter(locationAdapter);
+//                mPois = poiResult.getPois();
+//                LocationAdapter locationAdapter = new LocationAdapter(SearchAddressActivity.this, mPois);
+//                 mLvLocation.setAdapter(locationAdapter);
 
             }
 
@@ -133,17 +161,19 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
                 Toast.makeText(SearchAddressActivity.this, "你点击了" + position, Toast.LENGTH_SHORT).show();
                 TextView tv = (TextView) view.findViewById(R.id.tv);
                 TextView info = (TextView) view.findViewById(R.id.info);
-                String mStreetNum = tv.getText().toString();
-                String mCity = info.getText().toString();
+                //   String mStreetNum = tv.getText().toString();
+                String cityinfo = info.getText().toString();
                 Intent intent = new Intent();
                 intent.putExtra("mLatitude", mLatitude + "");
                 intent.putExtra("mLongitude", mLongitude + "");
                 intent.putExtra("mProvince", mProvince);//省
+                intent.putExtra("cityinfo", cityinfo);
                 intent.putExtra("mCity", mCity);//城区信息
                 intent.putExtra("mDistrict", mDistrict);//街道信息
                 intent.putExtra("mStreetNum", mStreetNum);//街道门牌号信息
+                intent.putExtra("mCity", mCity);
                 Toast.makeText(SearchAddressActivity.this, "经纬度" + mLongitude, Toast.LENGTH_SHORT).show();
-               // intent.setClass(SearchAddressActivity.this, AddAddressActivity.class);
+                // intent.setClass(SearchAddressActivity.this, AddAddressActivity.class);
                 setResult(2, intent);
 
 
@@ -161,11 +191,12 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onClick(View v) {
                 String address = mEtSearchLocation.getText().toString().trim();
-                InputtipsQuery inputtipsQuery = new InputtipsQuery(address, "杭州");
+                InputtipsQuery inputtipsQuery = new InputtipsQuery(address, mCity);
                 inputtipsQuery.setCityLimit(true);
                 Inputtips inputtips = new Inputtips(SearchAddressActivity.this, inputtipsQuery);
                 inputtips.setInputtipsListener(SearchAddressActivity.this);
                 inputtips.requestInputtipsAsyn();
+
             }
         });
 
@@ -178,6 +209,37 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
         mEtSearchLocation = (EditText) findViewById(R.id.et_searchlocation);
         mLvLocation = (ListView) findViewById(R.id.lv_location);
         mLvLocationSearch = (ListView) findViewById(R.id.lv_location_search);
+        mTvCityName = (TextView) findViewById(R.id.tv_hangzhou);
+
+        ImageView ivAllCity = (ImageView) findViewById(R.id.iv_allcity);
+        ivAllCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO 显示全国城市列表
+                ArrayList<String> hotCityList = new ArrayList<>();
+//                hotCityList.add("北京");
+//                hotCityList.add("上海");
+//                hotCityList.add("广州");
+//                hotCityList.add("深圳");
+//                hotCityList.add("杭州");
+//                hotCityList.add("成都");
+//                hotCityList.add("厦门");
+//                hotCityList.add("天津");
+//                hotCityList.add("武汉");
+//                hotCityList.add("长沙");
+
+                new EasySideBarBuilder(SearchAddressActivity.this)
+                        .setTitle("城市选择")
+                        /*.setIndexColor(Color.BLUE)*/
+                        .setIndexColor(0xFF0095EE)
+                       /* .isLazyRespond(true) //懒加载模式*/
+                        .setHotCityList(hotCityList)//热门城市列表
+                        .setIndexItems(mIndexItems)//索引字母
+                        .setLocationCity(mCity)//定位城市
+                        .setMaxOffset(60)//索引的最大偏移量
+                        .start();
+            }
+        });
 
 //        LocationAdapter locationAdapter = new LocationAdapter(this);
 //        mLvLocation.setAdapter(locationAdapter);
@@ -194,8 +256,8 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
                     //TODO 点击输入法搜索  进行匹配  隐藏地图  显示地址列表
                     mViewMap.setVisibility(View.GONE);
                     mLvLocationSearch.setVisibility(View.VISIBLE);
-                    LocationAdapter locationAdapter = new LocationAdapter(SearchAddressActivity.this,mPois);
-                    mLvLocationSearch.setAdapter(locationAdapter);
+//                    LocationAdapter locationAdapter = new LocationAdapter(SearchAddressActivity.this,mPois);
+//                    mLvLocationSearch.setAdapter(locationAdapter);
                 }
                 return false;
             }
@@ -212,8 +274,12 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
     private void initAMap() {
         if (aMap == null) {
             aMap = mViewMap.getMap();
+            regeoMarker = aMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
+                    .icon(BitmapDescriptorFactory
+                            .defaultMarker(BitmapDescriptorFactory.HUE_RED)));
         }
         setUpMap();
+
     }
 
     private void setUpMap() {
@@ -246,7 +312,6 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
         //启动定位
         mLocationClient.startLocation();
 
-
     }
 
     private double lat;
@@ -277,6 +342,7 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
                     mProvince = amapLocation.getProvince();
                     //城市信息
                     mCity = amapLocation.getCity();
+                    Log.e("杭州市", "onLocationChanged: " + mCity);
                     //城区信息
                     mDistrict = amapLocation.getDistrict();
                     //街道信息
@@ -363,14 +429,84 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
         mViewMap.onSaveInstanceState(outState);
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//    }
 
     @Override
     public void onGetInputtips(List<Tip> list, int i) {
         SearchAdapter searchAdapter = new SearchAdapter(this, list);
         mLvLocation.setAdapter(searchAdapter);
+        LocationAdapter locationAdapter = new LocationAdapter(SearchAddressActivity.this, list);
+        mLvLocationSearch.setAdapter(locationAdapter);
+    }
+
+    //数据回调
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case EasySideBarBuilder.CODE_SIDEREQUEST:
+                if (data != null) {
+                    mGetCity = data.getStringExtra("selected");
+                    Toast.makeText(this, "选择的城市：" + mGetCity, Toast.LENGTH_SHORT).show();
+                    getLatlgt(mGetCity);
+                }
+                break;
+
+            default:
+                break;
+        }
+
+    }
+        //根据城市名获取经纬度
+    private void getLatlgt(String mGetCity) {
+        geocoderSearch = new GeocodeSearch(this);
+        geocoderSearch.setOnGeocodeSearchListener(this);
+        GeocodeQuery query = new GeocodeQuery(mGetCity.trim(), "29");
+        geocoderSearch.getFromLocationNameAsyn(query);
+    }
+
+    //逆地理编码回调
+    @Override
+    public void onRegeocodeSearched(RegeocodeResult result, int rCode) {
+        LatLonPoint latLonPoint = new LatLonPoint(mLatitude1, mLongitude1);
+        if (rCode == AMapException.CODE_AMAP_SUCCESS) {
+            if (result != null && result.getRegeocodeAddress() != null
+                    && result.getRegeocodeAddress().getFormatAddress() != null) {
+              String  addressName = result.getRegeocodeAddress().getFormatAddress()
+                        + "附近";
+                aMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                        AMapUtil.convertToLatLng(latLonPoint), 15));
+                regeoMarker.setPosition(AMapUtil.convertToLatLng(latLonPoint));
+                Toast.makeText(SearchAddressActivity.this, addressName, Toast.LENGTH_SHORT).show();
+                mTvCityName.setText(mGetCity);
+            } else {
+                Toast.makeText(SearchAddressActivity.this, "没有结果", Toast.LENGTH_SHORT).show();
+
+            }
+        } else {
+            Toast.makeText(SearchAddressActivity.this, rCode, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
+        if (i == 1000) {
+            if (geocodeResult != null) {
+                if (geocodeResult.getGeocodeAddressList() != null) {
+                    if (geocodeResult.getGeocodeAddressList().size() > 0) {
+                        GeocodeAddress geocodeAddress = geocodeResult.getGeocodeAddressList().get(0);
+                        mLatitude1 = geocodeAddress.getLatLonPoint().getLatitude();
+                        mLongitude1 = geocodeAddress.getLatLonPoint().getLongitude();
+                       Log.e("武汉市", "onGeocodeSearched: " + mLatitude1 + "   " + mLongitude1);
+                        LatLonPoint latLonPoint = new LatLonPoint(mLatitude1, mLongitude1);
+                        getAddress(latLonPoint);
+                    }
+                }
+            }
+        }
+    }
+
+    private void getAddress(LatLonPoint latLonPoint) {
+        RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 200,
+                GeocodeSearch.AMAP);// 第一个参数表示一个Latlng，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
+        geocoderSearch.getFromLocationAsyn(query);// 设置异步逆地理编码请求
     }
 }

@@ -176,12 +176,14 @@
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateHidden">
         </activity>
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name=".activity.SplashActivity"
+            android:theme="@style/Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
         </activity>
         <activity android:name=".activity.RecharActivity">
         </activity>

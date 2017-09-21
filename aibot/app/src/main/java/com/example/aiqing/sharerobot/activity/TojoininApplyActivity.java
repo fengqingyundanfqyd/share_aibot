@@ -43,7 +43,7 @@ public class TojoininApplyActivity extends AppCompatActivity implements View.OnC
     private ImageView mIvYaoqingHeader;
     private TextView mTvYaoqingdetail;
     private Dialog mLoadingDialog;
-   // private String mAgencyid;
+    // private String mAgencyid;
     private HttpTool mHttpTool;
     private String mAgencyId;
     private String mLatitude;
@@ -70,10 +70,11 @@ public class TojoininApplyActivity extends AppCompatActivity implements View.OnC
         mAgencyId = spDis.getString("agencyId", "");
         mHttpTool = new HttpTool(this);
         initFindId();
-       // initData();
+        // initData();
 
         initYaoqingzheData();
     }
+
     //邀请者信息
     private void initYaoqingzheData() {
 
@@ -84,24 +85,24 @@ public class TojoininApplyActivity extends AppCompatActivity implements View.OnC
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiService apiService = builder.create(ApiService.class);
-        Call<YaoqingManBean> call = apiService.yaoqinzhe(mCookie,mAgencyId);
+        Call<YaoqingManBean> call = apiService.yaoqinzhe(mCookie, mAgencyId);
 
         call.enqueue(new Callback<YaoqingManBean>() {
-
 
 
             @Override
             public void onResponse(Response<YaoqingManBean> response, Retrofit retrofit) {
                 DialogUtil.closeDialog(mLoadingDialog);
-                if (response.body()!=null){
+                if (response.body() != null) {
                     mPhone = response.body().getObj().getMobile().toString();
-                    Log.e("电话", "onResponse: "+mPhone );
+                    Log.e("电话", "onResponse: " + mPhone);
 //                    Bitmap bm = BitmapFactory.decodeFile(response.body().getObj().getHeadImg());
 //                    mIvYaoqingHeader.setImageBitmap(bm);
                     mTvYaoqingdetail.setText(response.body().getObj().getRealName());
                 }
 
             }
+
             @Override
             public void onFailure(Throwable t) {
                 DialogUtil.closeDialog(mLoadingDialog);
@@ -119,21 +120,22 @@ public class TojoininApplyActivity extends AppCompatActivity implements View.OnC
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiService apiService = builder.create(ApiService.class);
-        Call<ApplyJoinBean> call = apiService.toJiameng(mCookie,mAgencyId,mEtShopname.getText().toString(),mPhone,"0","08：00","21：00","",mLongitude,mLatitude,"","中大银泰城");
+        Call<ApplyJoinBean> call = apiService.toJiameng(mCookie, mAgencyId, mEtShopname.getText().toString(), mPhone, "0", "08：00", "21：00", "", mLongitude, mLatitude, "", "中大银泰城");
 
         call.enqueue(new Callback<ApplyJoinBean>() {
             @Override
             public void onResponse(Response<ApplyJoinBean> response, Retrofit retrofit) {
                 DialogUtil.closeDialog(mLoadingDialog);
-                Log.e("申请投放商", "onResponse: "+response.body().getCoder() );
-                if (response.body().getCoder().equals("0000")){
+                Log.e("申请投放商", "onResponse: " + response.body().getCoder());
+                if (response.body().getCoder().equals("0000")) {
                     Toast.makeText(TojoininApplyActivity.this, "您已成功申请投放商。", Toast.LENGTH_SHORT).show();
                     finish();
-                }else {
+                } else {
                     Toast.makeText(TojoininApplyActivity.this, response.body().getErrorMsg().toString(), Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
+
             @Override
             public void onFailure(Throwable t) {
                 DialogUtil.closeDialog(mLoadingDialog);
@@ -169,25 +171,25 @@ public class TojoininApplyActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.rl_starttime:
-               // mLlStartandEnd.setVisibility(View.VISIBLE);
+                // mLlStartandEnd.setVisibility(View.VISIBLE);
 //                initHours();
 //                initMinuts();
                 break;
             case R.id.rl_endtime:
-               // mLlStartandEnd.setVisibility(View.VISIBLE);
+                // mLlStartandEnd.setVisibility(View.VISIBLE);
 //                initHours();
 //                initMinuts();
                 break;
             case R.id.rl_chooseaddress:
-               //选择地址  跳转我的地址
-                Intent intent=new Intent();
-                intent.setClass(TojoininApplyActivity.this,SearchAddressActivity.class);
-                startActivityForResult(intent,9);
+                //选择地址  跳转我的地址
+                Intent intent = new Intent();
+                intent.setClass(TojoininApplyActivity.this, SearchAddressActivity.class);
+                startActivityForResult(intent, 9);
                 break;
             case R.id.iv_return_apply:
-              finish();
+                finish();
                 break;
             case R.id.btn_apply_join:
                 //申请加盟
@@ -198,7 +200,7 @@ public class TojoininApplyActivity extends AppCompatActivity implements View.OnC
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 9) {
+        if (requestCode == 9 && data != null) {
             Bundle bundle = data.getExtras();
             mLatitude = bundle.getString("mLatitude");
             mLongitude = bundle.getString("mLongitude");
@@ -207,11 +209,11 @@ public class TojoininApplyActivity extends AppCompatActivity implements View.OnC
             String district = bundle.getString("mDistrict");//街道信息
             //街道门牌号信息
             mStreetNum = bundle.getString("mStreetNum");
-            mAddress = mProvince+mCity+mStreetNum;
-            Log.e("加盟地址", "onActivityResult: "+ mAddress);
+            mAddress = mProvince + mCity + mStreetNum;
+            Log.e("加盟地址", "onActivityResult: " + mAddress);
             mLlAdd.setVisibility(View.GONE);
             tvNewadd.setVisibility(View.VISIBLE);
-            tvNewadd.setText(mProvince+mCity);
+            tvNewadd.setText(mProvince + mCity);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

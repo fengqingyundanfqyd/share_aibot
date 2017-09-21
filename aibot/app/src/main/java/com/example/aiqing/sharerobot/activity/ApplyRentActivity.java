@@ -168,14 +168,14 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
             case R.id.ll_addnewaddress:
                 intent.setClass(ApplyRentActivity.this, AddAddressActivity.class);
                 startActivityForResult(intent, 250);
-              //  ApplyRentActivity.this.finish();
+                //  ApplyRentActivity.this.finish();
                 break;
             case R.id.btn_next:
                 intent.setClass(ApplyRentActivity.this, PayDepositActivity.class);
                 intent.putExtra("mAddressId", mAddressId);
                 intent.putExtra("mDistributorId", mDistributorId);
                 startActivity(intent);
-             //   ApplyRentActivity.this.finish();
+                //   ApplyRentActivity.this.finish();
                 break;
             case R.id.ll_shangmen:
                 mIvShangmen.setVisibility(View.VISIBLE);
@@ -192,7 +192,7 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 250) {
+        if (requestCode == 250 && data != null) {
             Bundle bundle = data.getExtras();
             String mName = bundle.getString("name");
             String mNumber = bundle.getString("number");

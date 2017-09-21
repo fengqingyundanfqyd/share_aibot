@@ -104,11 +104,11 @@ public class SubletReleaseActivity extends AppCompatActivity implements View.OnC
     private void toSave() {
         mNumber = mEtChangePhone.getText().toString().trim();
         mBeizhu = mEtZhuanBei.getText().toString();
-        if (!mNumber.equals("")&&!mBeizhu.equals("")){
+        if (!mNumber.equals("") && !mBeizhu.equals("")) {
             initHttp();
-        }else if (mNumber.equals("")){
+        } else if (mNumber.equals("")) {
             Toast.makeText(this, "请填写手机号码", Toast.LENGTH_SHORT).show();
-        }else if (mBeizhu.equals("")){
+        } else if (mBeizhu.equals("")) {
             Toast.makeText(this, "请填写备注信息", Toast.LENGTH_SHORT).show();
         }
 
@@ -131,12 +131,12 @@ public class SubletReleaseActivity extends AppCompatActivity implements View.OnC
             public void onResponse(Response<ChangeRentReleaseBean> response, Retrofit retrofit) {
                 Object obj = response.body().getObj();
                 String s = String.valueOf(obj);
-                if (s.equals("1.0")){
-                   Toast.makeText(SubletReleaseActivity.this, "转租发布成功。", Toast.LENGTH_SHORT).show();
-                   Intent intent=new Intent();
-                   intent.setClass(SubletReleaseActivity.this, MainActivity.class);
-                   startActivity(intent);
-               }
+                if (s.equals("1.0")) {
+                    Toast.makeText(SubletReleaseActivity.this, "转租发布成功。", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.setClass(SubletReleaseActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
             }
 
             @Override
@@ -149,7 +149,7 @@ public class SubletReleaseActivity extends AppCompatActivity implements View.OnC
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 3) {
+        if (requestCode == 3 && data != null) {
             Bundle bundle = data.getExtras();
             mLatitude = bundle.getString("mLatitude");
             mLongitude = bundle.getString("mLongitude");
@@ -158,7 +158,7 @@ public class SubletReleaseActivity extends AppCompatActivity implements View.OnC
             String district = bundle.getString("mDistrict");//街道信息
             //街道门牌号信息
             mStreetNum = bundle.getString("mStreetNum");
-            mAddress = mProvince+mCity+mStreetNum;
+            mAddress = mProvince + mCity + mStreetNum;
 
             mLlAddress.setVisibility(View.GONE);
             mTvAddress.setVisibility(View.VISIBLE);

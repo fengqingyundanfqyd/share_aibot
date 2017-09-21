@@ -278,7 +278,7 @@ public class ShopDataActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Bundle bundle = data.getExtras();
-        if (requestCode == 11) {
+        if (requestCode == 11 && data!=null) {
 
             String name = bundle.getString("name");
             mTv_shop_name_t.setText(name);

@@ -40,6 +40,7 @@ public class BusinessInfoActivity extends AppCompatActivity implements View.OnCl
     private String mCookie;
     private Dialog mLoadingDialog;
     private String mDistributorId;
+    private TextView mTvName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,7 @@ public class BusinessInfoActivity extends AppCompatActivity implements View.OnCl
             public void onResponse(Response<MainBean> response, Retrofit retrofit) {
                     DialogUtil.closeDialog(mLoadingDialog);
                 if (response.body().getObj()!=null){
+                    mTvName.setText(response.body().getObj().getName());
                     mTvYizu.setText(response.body().getObj().getYzNum());
                     mTvKezu.setText(response.body().getObj().getDzNum());
                     mTvBussAddress.setText(response.body().getObj().getAddress());
@@ -94,6 +96,7 @@ public class BusinessInfoActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void initFindId() {
+        mTvName = (TextView) findViewById(R.id.tv_distributorname);
         mTvApplyRent = (TextView) findViewById(R.id.tv_apply_rent);
         mIvReturn = (ImageView) findViewById(R.id.iv_return);
         mTvYizu = (TextView) findViewById(R.id.tv_yizu);

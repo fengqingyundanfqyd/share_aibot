@@ -184,7 +184,7 @@ public class MyAddressActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return mResult.size();
+            return 5;
         }
 
         @Override

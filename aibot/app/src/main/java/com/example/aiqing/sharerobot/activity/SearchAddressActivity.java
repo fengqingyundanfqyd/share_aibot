@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -210,9 +211,10 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
         mLvLocation = (ListView) findViewById(R.id.lv_location);
         mLvLocationSearch = (ListView) findViewById(R.id.lv_location_search);
         mTvCityName = (TextView) findViewById(R.id.tv_hangzhou);
+        LinearLayout llAllCity = (LinearLayout) findViewById(R.id.ll_allcity);
 
         ImageView ivAllCity = (ImageView) findViewById(R.id.iv_allcity);
-        ivAllCity.setOnClickListener(new View.OnClickListener() {
+        llAllCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO 显示全国城市列表
@@ -279,7 +281,8 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
                             .defaultMarker(BitmapDescriptorFactory.HUE_RED)));
         }
         setUpMap();
-
+        //去掉高德地图右下角隐藏的缩放按钮
+        aMap.getUiSettings().setZoomControlsEnabled(false);
     }
 
     private void setUpMap() {
@@ -368,7 +371,7 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
                     markerOptions.position(new LatLng(lat, lon));
                     markerOptions.title("当前位置");
                     markerOptions.visible(true);
-                    BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.shop));
+                    BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.now));
                     markerOptions.icon(bitmapDescriptor);
                     aMap.addMarker(markerOptions);
                     initData();

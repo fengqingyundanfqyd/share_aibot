@@ -95,7 +95,7 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
                             .build();
                     ApiService apiService = builder.create(ApiService.class);
 
-                    Call<AddAddressBean> call = apiService.saveaddress(sid, mName1, mNum, mMProvince, mMCity, mMDistrict, mMStreetNum, mMStreetNum, mMStreetNum, mDeadd, mMStreetNum, mIvSwitch.getTag().toString(), mMLongitude, mMLatitude, mMStreetNum);
+                    Call<AddAddressBean> call = apiService.saveaddress(sid, mName1, mNum, mMProvince, mMCity, mMDistrict, "", "", "", mDeadd, mDeadd, mIvSwitch.getTag().toString(), mMLongitude, mMLatitude, mMStreetNum);
                     call.enqueue(new Callback<AddAddressBean>() {
                         @Override
                         public void onResponse(Response<AddAddressBean> response, Retrofit retrofit) {
@@ -103,7 +103,13 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
                             Log.e("测试", "onResponse: " + response.body().isSuccess());
 //                            Intent intent=new Intent(AddAddressActivity.this,PersonalInfoActivity.class);
 //                            startActivity(intent);
-                            finish();
+                            if (response.body().getCoder().equals("0000")){
+                                Toast.makeText(AddAddressActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }else {
+                                Toast.makeText(AddAddressActivity.this, response.body().getErrorMsg()+"", Toast.LENGTH_SHORT).show();
+                            }
+
                         }
 
                         @Override

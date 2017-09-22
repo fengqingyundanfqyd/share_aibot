@@ -108,7 +108,7 @@ public interface ApiService {
     /**
      * 获取客户收货地址信息接口
      */
-    @POST("http://relay.aqcome.com/account/getCustAddInfo.shtml")
+    @POST("http://120.132.117.157:8083/account/getCustAddInfo.shtml")
     Call<UsersAddressBean> getAddressData(@Header("JSESSIONID") String JSESSIONID, @Query("pageNum") String pageNum, @Query("pageSize ") String pageSize);
 
     /**

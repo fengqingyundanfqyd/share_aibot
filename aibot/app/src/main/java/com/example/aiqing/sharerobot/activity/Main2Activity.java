@@ -49,6 +49,7 @@ import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
+import com.bumptech.glide.Glide;
 import com.example.aiqing.sharerobot.R;
 import com.example.aiqing.sharerobot.bean.AibotNumBean;
 import com.example.aiqing.sharerobot.bean.PersonalInfoBean;
@@ -184,6 +185,9 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         }
         setUpMap();
 
+        //去掉高德地图右下角隐藏的缩放按钮
+        aMap.getUiSettings().setZoomControlsEnabled(false);
+
 
         aMap.setOnMapLoadedListener(new AMap.OnMapLoadedListener() {
             @Override
@@ -222,6 +226,11 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
                 //小宝初始化点
                 addEmulateData();
+
+                if (mRefresh.isSelected()) {
+                    //加载菊花结束
+                    mRefresh.setImageResource(R.mipmap.icon_refresh);
+                }
 
             }
         });
@@ -398,6 +407,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         Intent intent = new Intent();
         switch (v.getId()) {
             case R.id.iv_refresh:
+                mRefresh.setSelected(true);
                 clickRefresh();
                 break;
             case R.id.iv_person:
@@ -677,7 +687,8 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
     private void clickRefresh() {
         mLocationClient.startLocation();
-
+        Glide.with(this).load(R.drawable.loading).into(mRefresh);
+        //mRefresh.setImageResource(R.drawable.loading);
     }
 
     //点击marker

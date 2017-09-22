@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -30,6 +31,7 @@ public class NearbyShopActivity extends AppCompatActivity implements View.OnClic
     private LinearLayout mLlNearby;
     private ImageView mIvNearby;
     private ListView mLvNearbyShop;
+    private List<NearbyShopBean.DistributorBean.ResultBean> mResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class NearbyShopActivity extends AppCompatActivity implements View.OnClic
 
     private void initData() {
         final Dialog loadingDialog = DialogUtil.createLoadingDialog(this, "加载中...");
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         String lattuide = intent.getStringExtra("lattuide");
         String longtitid = intent.getStringExtra("longtitid");
 
@@ -58,8 +60,8 @@ public class NearbyShopActivity extends AppCompatActivity implements View.OnClic
                 @Override
                 public void onResponse(Response<NearbyShopBean> response, Retrofit retrofit) {
                     DialogUtil.closeDialog(loadingDialog);
-                    List<NearbyShopBean.DistributorBean.ResultBean> result = response.body().getDistributor().getResult();
-                    NearbyAdapter adapter = new NearbyAdapter(NearbyShopActivity.this, result);
+                    mResult = response.body().getDistributor().getResult();
+                    NearbyAdapter adapter = new NearbyAdapter(NearbyShopActivity.this, mResult);
                     mLvNearbyShop.setAdapter(adapter);
 
                 }
@@ -69,6 +71,17 @@ public class NearbyShopActivity extends AppCompatActivity implements View.OnClic
 
                 }
             });
+        //条目点击监听 跳转到申请租
+        mLvNearbyShop.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String mDistributorId = mResult.get(position).getDistributorId();
+                Intent intent1=new Intent();
+                intent1.putExtra("mDistributorId",mDistributorId);
+                intent1.setClass(NearbyShopActivity.this,BusinessInfoActivity.class);
+                startActivity(intent1);
+            }
+        });
 
     }
 

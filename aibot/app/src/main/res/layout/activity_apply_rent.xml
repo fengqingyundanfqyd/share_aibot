@@ -106,12 +106,14 @@
                 android:textSize="12sp"/>
 
             <View
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="2dp"
                 android:background="#F0F0F0"/>
 
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/ll_shangmen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -1,6 +1,7 @@
 package com.example.aiqing.sharerobot.activity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,14 +9,17 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aiqing.sharerobot.R;
-import com.example.aiqing.sharerobot.adapter.AddressAdapter;
 import com.example.aiqing.sharerobot.bean.UsersAddressBean;
 import com.example.aiqing.sharerobot.inf.ApiService;
 import com.example.aiqing.sharerobot.inf.HttpTool;
@@ -51,6 +55,10 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
     private String mAddressId;
     private Dialog mLoadingDialog;
     private String mDistributorId;
+    private AddressAdapter mAdapter;
+    private String mSid;
+    private HttpTool mClient;
+    private int selectPositon = -1;//用于记录用户选择的变量
 
 
     @Override
@@ -81,48 +89,26 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
     private void initGetData() {
         mLoadingDialog = DialogUtil.createLoadingDialog(this, "加载中...");
         SharedPreferences spcookie = getSharedPreferences("COOKIE", MODE_PRIVATE);
-        String sid = spcookie.getString("mCookie", "");
-        HttpTool client = new HttpTool(this);
+        mSid = spcookie.getString("mCookie", "");
+        mClient = new HttpTool(this);
         Retrofit builder = new Retrofit.Builder()
-                .client(client.client())
-                .baseUrl("http://relay.aqcome.com/account/getCustAddInfo.shtml")
+                .client(mClient.client())
+                .baseUrl("http://120.132.117.157:8083/account/getCustAddInfo.shtml")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiService apiService = builder.create(ApiService.class);
-        Call<UsersAddressBean> call = apiService.getAddressData(sid, "", "");
+        Call<UsersAddressBean> call = apiService.getAddressData(mSid, "1", "5");
         call.enqueue(new Callback<UsersAddressBean>() {
             @Override
             public void onResponse(Response<UsersAddressBean> response, Retrofit retrofit) {
                 DialogUtil.closeDialog(mLoadingDialog);
                 if (response.body() != null) {
                     mResult = response.body().getObj().getResult();
-                    for (int i = 0; i < mResult.size(); i++) {
-                        UsersAddressBean.ObjBean.ResultBean list = mResult.get(i);
-                        String name = list.getName();
-                        String mobile = list.getMobile();
-                        String fAddress = list.getFAddress();
-                        mAddressId = list.getAddressId();
+                    mAdapter = new AddressAdapter(ApplyRentActivity.this, mResult);
+                    mListviewGetAdd.setAdapter(mAdapter);
+                    mListviewGetAdd.setVisibility(View.VISIBLE);
+                    mIvShangmen.setVisibility(View.GONE);
 
-                        mListviewGetAdd.setVisibility(View.VISIBLE);
-                        mIvShangmen.setVisibility(View.GONE);
-
-                        AddressAdapter adapter = new AddressAdapter(ApplyRentActivity.this, name, mobile, fAddress, mResult);
-                        mListviewGetAdd.setAdapter(adapter);
-
-//                    mListviewGetAdd.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                        @Override
-//                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                            Toast.makeText(ApplyRentActivity.this, "点击了"+(position+1), Toast.LENGTH_SHORT).show();
-//                            LinearLayout view1 = (LinearLayout) parent.getChildAt(position);
-//                            ImageView ivNO = (ImageView) view1.findViewById(R.id.iv_no);
-//                            if (mResult.get(position).getIsDefault().equals(1)){
-//                                ivNO.setImageResource(R.mipmap.gou);
-//                            }else if (mResult.get(position).getIsDefault().equals(0)){
-//                                ivNO.setImageResource(R.mipmap.unselected);
-//                            }
-//                        }
-//                    });
-                    }
                 }
             }
 
@@ -132,6 +118,17 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
                 Log.e("失败", "失败" + t.getMessage());
             }
         });
+
+
+        mListviewGetAdd.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectPositon = position;
+                mAdapter.notifyDataSetChanged();
+
+            }
+        });
+
     }
 
     private void initFindId() {
@@ -171,10 +168,15 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
                 //  ApplyRentActivity.this.finish();
                 break;
             case R.id.btn_next:
-                intent.setClass(ApplyRentActivity.this, PayDepositActivity.class);
-                intent.putExtra("mAddressId", mAddressId);
-                intent.putExtra("mDistributorId", mDistributorId);
-                startActivity(intent);
+                //TODO 此处需判断
+                if (selectPositon==-1) {
+                    intent.setClass(ApplyRentActivity.this, PayDepositActivity.class);
+                    intent.putExtra("mAddressId", mAddressId);
+                    intent.putExtra("mDistributorId", mDistributorId);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(this, "请选择收货地址", Toast.LENGTH_SHORT).show();
+                }
                 //   ApplyRentActivity.this.finish();
                 break;
             case R.id.ll_shangmen:
@@ -193,14 +195,108 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 250 && data != null) {
+            mAdapter.notifyDataSetChanged();
             Bundle bundle = data.getExtras();
             String mName = bundle.getString("name");
             String mNumber = bundle.getString("number");
             String mDetaadd = bundle.getString("detaadd");
 
-            AddressAdapter addressAdapter = new AddressAdapter(this, mName, mNumber, mDetaadd, mResult);
-            mListviewGetAdd.setAdapter(addressAdapter);
+
+            getAddlist();
+
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    private void getAddlist() {
+        mLoadingDialog = DialogUtil.createLoadingDialog(this, "加载中...");
+        Retrofit builder = new Retrofit.Builder()
+                .client(mClient.client())
+                .baseUrl("http://120.132.117.157:8083/account/getCustAddInfo.shtml")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        ApiService apiService = builder.create(ApiService.class);
+        Call<UsersAddressBean> call = apiService.getAddressData(mSid, "1", "5");
+        call.enqueue(new Callback<UsersAddressBean>() {
+            @Override
+            public void onResponse(Response<UsersAddressBean> response, Retrofit retrofit) {
+                DialogUtil.closeDialog(mLoadingDialog);
+                if (response.body() != null) {
+                    mResult = response.body().getObj().getResult();
+                    mAdapter = new AddressAdapter(ApplyRentActivity.this, mResult);
+                    mListviewGetAdd.setAdapter(mAdapter);
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
+
+    public class AddressAdapter extends BaseAdapter {
+        private final Context context;
+        private final List<UsersAddressBean.ObjBean.ResultBean> result;
+
+        public AddressAdapter(Context context, List<UsersAddressBean.ObjBean.ResultBean> result) {
+            this.context=context;
+            this.result=result;
+        }
+
+        @Override
+        public int getCount() {
+            return 4;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return result.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            final ViewHolder viewHolder;
+            if (convertView==null){
+                viewHolder = new ViewHolder();
+                convertView=View.inflate(context, R.layout.item_getaddress,null);
+                viewHolder.tvName= (TextView) convertView.findViewById(R.id.tv_gername);
+                viewHolder.tvNumber= (TextView) convertView.findViewById(R.id.tv_getnum);
+                viewHolder.tvDetaadd= (TextView) convertView.findViewById(R.id.tv_detaadd);
+                viewHolder.iv_no= (ImageView) convertView.findViewById(R.id.iv_no);
+                convertView.setTag(viewHolder);
+
+            }else {
+                viewHolder= (ViewHolder) convertView.getTag();
+            }
+            viewHolder.tvName.setText(result.get(position).getName());
+            viewHolder.tvNumber.setText(result.get(position).getMobile());
+            viewHolder.tvDetaadd.setText(result.get(position).getFAddress());
+
+            if (selectPositon==position){
+                convertView.setSelected(true);
+                viewHolder.iv_no.setVisibility(View.VISIBLE);
+            }else {
+                convertView.setSelected(false);
+                viewHolder.iv_no.setVisibility(View.GONE);
+            }
+
+            return convertView;
+        }
+        class ViewHolder{
+            TextView tvName;
+            TextView tvNumber;
+            TextView tvDetaadd;
+            ImageView iv_no;
+        }
+    }
+
+
 }

@@ -563,7 +563,7 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
                     }
                 } else {
                     Toast.makeText(ScanActivity.this, response.body().getErrorMsg(), Toast.LENGTH_SHORT).show();
-                    return;
+
                 }
             }
 

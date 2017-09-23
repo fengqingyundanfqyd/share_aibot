@@ -257,6 +257,7 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -282,10 +283,10 @@
                         android:textSize="12sp"/>
 
                     <TextView
-                        android:layout_marginRight="10dp"
                         android:id="@+id/tv_yuedikou"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
                         android:text="100.00"
                         android:textSize="12sp"/>
                 </LinearLayout>
@@ -293,6 +294,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -300,7 +302,6 @@
                 android:orientation="horizontal">
 
                 <TextView
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="实付金额"
@@ -319,10 +320,10 @@
                         android:textSize="20sp"/>
 
                     <TextView
-                        android:layout_marginRight="10dp"
                         android:id="@+id/tv_shiji"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
                         android:text="899.00"
                         android:textColor="#FF824C"
                         android:textSize="15sp"/>
@@ -439,7 +440,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
@@ -457,7 +458,7 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:background="@drawable/shape_xinyongfen"
                     android:gravity="center"
                     android:text="芝麻分>650减押金"

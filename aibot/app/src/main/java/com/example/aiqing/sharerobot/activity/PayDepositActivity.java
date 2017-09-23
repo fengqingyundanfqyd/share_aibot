@@ -20,6 +20,7 @@ import com.alipay.sdk.app.AuthTask;
 import com.alipay.sdk.app.PayTask;
 import com.example.aiqing.sharerobot.R;
 import com.example.aiqing.sharerobot.bean.ApplyBean;
+import com.example.aiqing.sharerobot.bean.BalanceB2CBean;
 import com.example.aiqing.sharerobot.bean.PrivateKeyBean;
 import com.example.aiqing.sharerobot.bean.WeChatPayBean;
 import com.example.aiqing.sharerobot.bean.ZhifubaoB2CBean;
@@ -155,7 +156,6 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
         Log.e("地址id", "onCreate: " + mMAddressId);
         Log.e("投放商id", "onCreate: " + mDistributorId);
 
-
         mRelativeLayoutZhifubao.setSelected(true);
 
 
@@ -247,20 +247,28 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
-
         Intent intent = new Intent();
         switch (v.getId()) {
-
             case R.id.btn_pay:
                 //确认支付
                 if (mRelativeLayoutZhifubao.isSelected()) {
-                    Toast.makeText(this, "支付宝", Toast.LENGTH_SHORT).show();
+                    //支付宝支付
                     zhifubaoPay();
                 } else if (mRelativeLayoutWeixin.isSelected()) {
-                    Toast.makeText(this, "微信", Toast.LENGTH_SHORT).show();
+                    //微信支付
                     initPay();
                 } else if (mRlAccountbalance.isSelected()) {
-                    Toast.makeText(this, "余额", Toast.LENGTH_SHORT).show();
+                    String banlance = mTvYue.getText().toString();
+                    String needpay = mTvNumCen.getText().toString();
+                    Double dbalance = Double.valueOf(banlance);
+                    Double dneed = Double.valueOf(needpay);
+
+                    if (((dbalance-dneed)>=0)) {
+                        //余额支付
+                        balancePay();
+                    } else {
+                        Toast.makeText(this, "您余额不足，请用其他支付方式支付", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 break;
@@ -328,6 +336,35 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    //余额支付
+    private void balancePay() {
+        Retrofit builder = new Retrofit.Builder()
+                .client(mHttpTool.client())
+                .baseUrl("http://relay.aqcome.com/pay/depositBCAPPPay.shtml")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        ApiService apiService = builder.create(ApiService.class);
+        Call<BalanceB2CBean> call = apiService.balancePay(mSid, mDistributorId, "1", mMAddressId, "2", "3", mTvMoney.getText().toString().trim(), mTvNumCen.getText().toString().trim(), mTvNumTai.getText().toString().trim(), "3", "0");
+        call.enqueue(new Callback<BalanceB2CBean>() {
+            @Override
+            public void onResponse(Response<BalanceB2CBean> response, Retrofit retrofit) {
+                if (response.body().getCoder().equals("0000")) {
+                    Toast.makeText(PayDepositActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.setClass(PayDepositActivity.this, CompleteActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(PayDepositActivity.this, response.body().getErrorMsg().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Toast.makeText(PayDepositActivity.this, "网络连接失败，请检查您的网络！", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     //押金减免
     private void lessPayDeposit() {
         Retrofit builder = new Retrofit.Builder()
@@ -345,6 +382,7 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
                     Log.e("私钥", "onResponse: " + prkey);
                     //查询
                     check(prkey);
+
                 } else {
                     Toast.makeText(PayDepositActivity.this, response.body().getErrorMsg(), Toast.LENGTH_SHORT).show();
                 }
@@ -359,8 +397,6 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
 
     //查询
     private void check(final String prkey) {
-
-
         String pid = "2088721294401673";
         String appID = "2017062407561730";
 
@@ -393,15 +429,15 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
 
     //支付宝支付
     private void zhifubaoPay() {
-
         Retrofit builder = new Retrofit.Builder()
                 .client(mHttpTool.client())
                 .baseUrl("http://relay.aqcome.com/pay/depositBCAPPPay.shtml")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiService apiService = builder.create(ApiService.class);
+        Log.e("支付宝支付方式", "zhifubaoPay: " + mSid + "+" + mDistributorId + "+" + mMAddressId + "+" + mTvMoney.getText().toString().trim() + "+" + mTvNumCen.getText().toString().trim() + "+" + mTvNumTai.getText().toString().trim());
         //Call<ZhifubaoB2CBean> call = apiService.zhifubaoPay(mSid, "170814203827496019", "1", "170906142537979116", "2", "2", "0.03", "0.03", "1", "3", "0");
-        Call<ZhifubaoB2CBean> call = apiService.zhifubaoPay(mSid, mDistributorId, "1", mMAddressId, "2", "2", "0.03", "0.03", "1", "3", "0");
+        Call<ZhifubaoB2CBean> call = apiService.zhifubaoPay(mSid, mDistributorId, "1", mMAddressId, "2", "2", mTvMoney.getText().toString().trim(), mTvNumCen.getText().toString().trim(), mTvNumTai.getText().toString().trim(), "3", "0");
         call.enqueue(new Callback<ZhifubaoB2CBean>() {
             @Override
             public void onResponse(Response<ZhifubaoB2CBean> response, Retrofit retrofit) {
@@ -409,12 +445,10 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
                 orderInfo = body;
                 new AliPayThread().start();
             }
-
             @Override
             public void onFailure(Throwable t) {
             }
         });
-
     }
 
     private class AliPayThread extends Thread {
@@ -430,7 +464,6 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
             super.run();
         }
     }
-
     //微信支付
     private void initPay() {
         mLoadingDialog = DialogUtil.createLoadingDialog(this, "加载中...");
@@ -441,7 +474,8 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiService apiService = builder.create(ApiService.class);
-        Call<WeChatPayBean> call = apiService.wxPay(mSid, mDistributorId, "1", mMAddressId, "2", "1", mDeposit, mDeposit, "1", "3");
+        Log.e("微信支付参数", "initPay: " + mSid + "+" + mDistributorId + "+" + mMAddressId + "+" + mTvMoney.getText().toString().trim() + "+" + mTvNumCen.getText().toString().trim() + "+" + mTvNumTai.getText().toString().trim());
+        Call<WeChatPayBean> call = apiService.wxPay(mSid, mDistributorId, "1", mMAddressId, "2", "1", mTvMoney.getText().toString().trim(), mTvNumCen.getText().toString().trim(), mTvNumTai.getText().toString().trim(), "3");
         call.enqueue(new Callback<WeChatPayBean>() {
             @Override
             public void onResponse(Response<WeChatPayBean> response, Retrofit retrofit) {
@@ -480,6 +514,10 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
 
                 mWxapi.sendReq(payReq);
 
+                Intent intent = new Intent();
+                intent.setClass(PayDepositActivity.this, CompleteActivity.class);
+                startActivity(intent);
+
                 Log.e("成功", "onResponse: " + "成功");
 //                mWxapi.openWXApp();
             }
@@ -491,6 +529,5 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
                 Log.e("失败", "失败" + t.getMessage());
             }
         });
-
     }
 }

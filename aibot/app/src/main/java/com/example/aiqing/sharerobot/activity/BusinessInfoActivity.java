@@ -62,7 +62,7 @@ public class BusinessInfoActivity extends AppCompatActivity implements View.OnCl
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         mDistributorId = bundle.getString("mDistributorId");
-       // Log.e("投放商id", "initData: "+ mDistributorId);
+        Log.e("投放商id", "initData: "+ mDistributorId);
 
         Retrofit builder = new Retrofit.Builder()
                 .client(httpTool.client())
@@ -115,7 +115,7 @@ public class BusinessInfoActivity extends AppCompatActivity implements View.OnCl
         switch (v.getId()){
             case R.id.tv_apply_rent:
                 intent.setClass(BusinessInfoActivity.this,ApplyRentActivity.class);
-                intent.putExtra("distributorId",mDistributorId);
+                intent.putExtra("mDistributorId",mDistributorId);
                 startActivity(intent);
                 finish();
                 break;

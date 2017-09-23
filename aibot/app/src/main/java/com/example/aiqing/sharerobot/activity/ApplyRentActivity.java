@@ -52,14 +52,15 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
     private ListView mListViewAddress;
     private ListView mListviewGetAdd;
     private List<UsersAddressBean.ObjBean.ResultBean> mResult;
-    private String mAddressId;
+
     private Dialog mLoadingDialog;
     private String mDistributorId;
     private AddressAdapter mAdapter;
     private String mSid;
     private HttpTool mClient;
     private int selectPositon = -1;//用于记录用户选择的变量
-
+    boolean isClick = false;
+    private String mAddressId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -125,6 +126,8 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectPositon = position;
                 mAdapter.notifyDataSetChanged();
+                isClick = true;
+                mAddressId = mResult.get(position).getAddressId();
 
             }
         });
@@ -137,6 +140,7 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
             mDistributorId = bundle.getString("mDistributorId");
+            Log.e("申请投放商", "initFindId: "+ mDistributorId);
         }
         mLlAddnewAddress = (LinearLayout) findViewById(R.id.ll_addnewaddress);
         mBtnNext = (Button) findViewById(R.id.btn_next);
@@ -169,7 +173,7 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.btn_next:
                 //TODO 此处需判断
-                if (selectPositon==-1) {
+                if (isClick) {
                     intent.setClass(ApplyRentActivity.this, PayDepositActivity.class);
                     intent.putExtra("mAddressId", mAddressId);
                     intent.putExtra("mDistributorId", mDistributorId);
@@ -177,7 +181,6 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
                 } else {
                     Toast.makeText(this, "请选择收货地址", Toast.LENGTH_SHORT).show();
                 }
-                //   ApplyRentActivity.this.finish();
                 break;
             case R.id.ll_shangmen:
                 mIvShangmen.setVisibility(View.VISIBLE);
@@ -242,8 +245,8 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
         private final List<UsersAddressBean.ObjBean.ResultBean> result;
 
         public AddressAdapter(Context context, List<UsersAddressBean.ObjBean.ResultBean> result) {
-            this.context=context;
-            this.result=result;
+            this.context = context;
+            this.result = result;
         }
 
         @Override
@@ -264,33 +267,34 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             final ViewHolder viewHolder;
-            if (convertView==null){
+            if (convertView == null) {
                 viewHolder = new ViewHolder();
-                convertView=View.inflate(context, R.layout.item_getaddress,null);
-                viewHolder.tvName= (TextView) convertView.findViewById(R.id.tv_gername);
-                viewHolder.tvNumber= (TextView) convertView.findViewById(R.id.tv_getnum);
-                viewHolder.tvDetaadd= (TextView) convertView.findViewById(R.id.tv_detaadd);
-                viewHolder.iv_no= (ImageView) convertView.findViewById(R.id.iv_no);
+                convertView = View.inflate(context, R.layout.item_getaddress, null);
+                viewHolder.tvName = (TextView) convertView.findViewById(R.id.tv_gername);
+                viewHolder.tvNumber = (TextView) convertView.findViewById(R.id.tv_getnum);
+                viewHolder.tvDetaadd = (TextView) convertView.findViewById(R.id.tv_detaadd);
+                viewHolder.iv_no = (ImageView) convertView.findViewById(R.id.iv_no);
                 convertView.setTag(viewHolder);
 
-            }else {
-                viewHolder= (ViewHolder) convertView.getTag();
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
             }
             viewHolder.tvName.setText(result.get(position).getName());
             viewHolder.tvNumber.setText(result.get(position).getMobile());
             viewHolder.tvDetaadd.setText(result.get(position).getFAddress());
 
-            if (selectPositon==position){
+            if (selectPositon == position) {
                 convertView.setSelected(true);
                 viewHolder.iv_no.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 convertView.setSelected(false);
                 viewHolder.iv_no.setVisibility(View.GONE);
             }
 
             return convertView;
         }
-        class ViewHolder{
+
+        class ViewHolder {
             TextView tvName;
             TextView tvNumber;
             TextView tvDetaadd;

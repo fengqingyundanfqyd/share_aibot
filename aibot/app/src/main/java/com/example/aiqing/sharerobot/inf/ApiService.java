@@ -8,6 +8,7 @@ import com.example.aiqing.sharerobot.bean.AibotNumBean;
 import com.example.aiqing.sharerobot.bean.AngentyBean;
 import com.example.aiqing.sharerobot.bean.ApplyBean;
 import com.example.aiqing.sharerobot.bean.ApplyJoinBean;
+import com.example.aiqing.sharerobot.bean.BalanceB2CBean;
 import com.example.aiqing.sharerobot.bean.BankCardNumBean;
 import com.example.aiqing.sharerobot.bean.BankListBean;
 import com.example.aiqing.sharerobot.bean.ChangeRentBean;
@@ -614,6 +615,14 @@ public interface ApiService {
      */
     @POST("http://120.132.117.157:8083/comm/lbsSearch.shtml")
     Call<NearbyShopBean> nearbyData(@Query("lgt") String lgt, @Query("lat") String lat, @Query("range") String range, @Query("pageNum") String pageNum, @Query("pageSize") String pageSize);
+
+
+
+    /**
+     * 余额支付B2C押金支付
+     */
+    @POST("http://relay.aqcome.com/pay/depositBCAPPPay.shtml")
+    Call<BalanceB2CBean> balancePay(@Header("JSESSIONID") String JSESSIONID, @Query("distributorId") String distributorId, @Query("pTypeId") String pTypeId, @Query("addressId") String addressId, @Query("receiveType") String receiveType, @Query("payMent") String payMent, @Query("unitFee") String unitFee, @Query("payZe") String payZe, @Query("zyNum") String zyNum, @Query("source") String source, @Query("creditkey") String creditkey);
 
 
 }

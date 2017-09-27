@@ -65,4 +65,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.contrarywind:EasySideBar:1.1.0'//全国城市列表
     compile 'com.github.bumptech.glide:glide:3.7.0'//加载图片视频等
+    compile "com.daimajia.swipelayout:library:1.2.0@aar"//删除lv条目
 }

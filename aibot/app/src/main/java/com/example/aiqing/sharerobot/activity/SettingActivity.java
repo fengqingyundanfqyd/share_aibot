@@ -1,8 +1,10 @@
 package com.example.aiqing.sharerobot.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -11,8 +13,10 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.aiqing.sharerobot.R;
+import com.example.aiqing.sharerobot.utils.DialogUtil;
 
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
+    Handler handler=new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+
         Intent intent=new Intent();
         switch (v.getId()){
             case R.id.iv_return_setting:
@@ -44,6 +49,14 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.rl_clean_setting:
                 Toast.makeText(this, "清理缓存", Toast.LENGTH_SHORT).show();
+                final Dialog  clean= DialogUtil.createLoadingDialog(this, "正在清理...");
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        DialogUtil.closeDialog(clean);
+                        finish();
+                    }
+                },2000);
                 break;
             case R.id.rl_suggest_setting:
                 Toast.makeText(this, "意见", Toast.LENGTH_SHORT).show();

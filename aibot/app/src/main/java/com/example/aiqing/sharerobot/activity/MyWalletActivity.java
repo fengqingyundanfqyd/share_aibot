@@ -100,8 +100,9 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.btn_putin:
                 //充值
-                intent.setClass(this, RechargeActivity.class);
-                startActivity(intent);
+//                intent.setClass(this, RechargeActivity.class);
+//                startActivity(intent);
+                Toast.makeText(this, "正在开发中", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_getout:
                 //提现

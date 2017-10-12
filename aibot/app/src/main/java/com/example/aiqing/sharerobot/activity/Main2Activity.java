@@ -539,19 +539,21 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent=new Intent();
         switch (item.getItemId()) {
             case R.id.action_search:
                 String lattuide = String.valueOf(lat);
                 String longtitid = String.valueOf(lon);
-
-
-                Intent intent=new Intent();
-                intent.setClass(Main2Activity.this, NearbyShopActivity.class);
-
-                intent.putExtra("lattuide",lattuide);
-                intent.putExtra("longtitid",longtitid);
-                Log.e("首页地址", "onOptionsItemSelected: "+ lattuide+longtitid);
-                startActivity(intent);
+                if (getSharedPreferences("COOKIE", MODE_PRIVATE).getString("mCookie", "").equals("")) {
+                    intent.setClass(Main2Activity.this, LoginActivity.class);
+                    startActivity(intent);
+                }else if (lattuide!=null&&longtitid!=null){
+                    intent.setClass(Main2Activity.this, NearbyShopActivity.class);
+                    intent.putExtra("lattuide",lattuide);
+                    intent.putExtra("longtitid",longtitid);
+                    Log.e("首页地址", "onOptionsItemSelected: "+ lattuide+longtitid);
+                    startActivity(intent);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

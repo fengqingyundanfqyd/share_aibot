@@ -33,6 +33,7 @@
                 android:layout_height="50dp"
                 android:src="@mipmap/robot"/>
             <TextView
+                android:id="@+id/tv_nameagence"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -48,6 +49,7 @@
             android:layout_marginTop="10dp"/>
 
         <TextView
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

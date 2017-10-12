@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFC27F"
+    android:background="#47AD75"
     android:orientation="vertical"
     tools:context="com.example.aiqing.sharerobot.activity.TobeErweimaActivity">
 
@@ -31,6 +31,7 @@
                 android:layout_height="wrap_content"
                 android:src="@mipmap/robot"/>
             <TextView
+                android:id="@+id/tv_namedis"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -46,6 +47,7 @@
             android:layout_marginTop="10dp"/>
 
         <TextView
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

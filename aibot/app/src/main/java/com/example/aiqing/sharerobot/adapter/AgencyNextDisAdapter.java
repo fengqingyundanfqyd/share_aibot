@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.aiqing.sharerobot.R;
 import com.example.aiqing.sharerobot.bean.AgencyDisBean;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -60,7 +61,14 @@ public class AgencyNextDisAdapter extends BaseAdapter {
 //        viewHolder.iv_header_log.setImageResource(R.mipmap.header);
         viewHolder.tv_disname.setText(result.get(position).getName());
         viewHolder.tv_disphone.setText(result.get(position).getContact1()+"");
-        viewHolder.tv_history_get.setText(result.get(position).getMoney()+"");
+
+        if (result.get(position).getMoney()==null){
+            viewHolder.tv_history_get.setText("+"+"0.00");
+        }else {
+            DecimalFormat df = new DecimalFormat("0.00");
+            String format = df.format(Double.valueOf(result.get(position).getMoney().toString()));
+            viewHolder.tv_history_get.setText(format+"");
+        }
         viewHolder.tv_income.setText(result.get(position).getStock()+"");
         viewHolder.tv_dis_address.setText(result.get(position).getAddress());
         viewHolder.tv_discreatime.setText(result.get(position).getCreateTime()+"");

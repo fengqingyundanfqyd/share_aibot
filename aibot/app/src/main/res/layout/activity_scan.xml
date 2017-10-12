@@ -28,7 +28,6 @@
         app:qrcv_isShowTipTextAsSingleLine="false"
         app:qrcv_isTipTextBelowRect="false"
         app:qrcv_maskColor="#33FFFFFF"
-        app:qrcv_qrCodeTipText="将租金码/押金放入框内，即可自动扫描"
         app:qrcv_rectWidth="200dp"
         app:qrcv_scanLineColor="#8AF0FF"
         app:qrcv_scanLineMargin="0dp"
@@ -38,4 +37,5 @@
         app:qrcv_toolbarHeight="56dp"
         app:qrcv_topOffset="90dp"/>
     <include layout="@layout/view_control"/>
+    <!--app:qrcv_qrCodeTipText="将租金码/押金放入框内，即可自动扫描"-->
 </RelativeLayout>

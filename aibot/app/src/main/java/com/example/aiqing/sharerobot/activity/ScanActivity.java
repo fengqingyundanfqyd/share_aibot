@@ -246,7 +246,7 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
                 //扫描发货
                 ScanSend(productId);
             }else {
-                Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
                 mQRCodeView.stopCamera();
             }
         }else {
@@ -304,7 +304,7 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
                 //扫描归还
                 scanReturn(productId);
             }else {
-                Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
                 mQRCodeView.stopCamera();
             }
         }else {
@@ -357,7 +357,7 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
             if (s.equals("p")) {
                 agenceScan(productId);
             } else {
-                Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
@@ -406,7 +406,7 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
             if (s.equals("p")) {
                 daiAndTouScan(product);
             } else {
-                Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
@@ -454,7 +454,7 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
             if (s.equals("p")) {
                 distributorScan(distributor);
             } else {
-                Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
@@ -517,7 +517,7 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
                 String[] dis = result.split("=");
                 String distributorId = dis[1];
                 Intent intent = new Intent(ScanActivity.this, BusinessInfoActivity.class);
-                intent.putExtra("distributorId",distributorId);
+                intent.putExtra("mDistributorId",distributorId);
                 startActivity(intent);
             } else if (s.equals("p")) {
                 //租用码

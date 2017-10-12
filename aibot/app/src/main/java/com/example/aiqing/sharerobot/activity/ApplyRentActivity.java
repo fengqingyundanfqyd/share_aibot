@@ -105,6 +105,7 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
                 DialogUtil.closeDialog(mLoadingDialog);
                 if (response.body() != null) {
                     mResult = response.body().getObj().getResult();
+
                     mAdapter = new AddressAdapter(ApplyRentActivity.this, mResult);
                     mListviewGetAdd.setAdapter(mAdapter);
                     mListviewGetAdd.setVisibility(View.VISIBLE);
@@ -251,7 +252,7 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
 
         @Override
         public int getCount() {
-            return 4;
+            return result.size();
         }
 
         @Override

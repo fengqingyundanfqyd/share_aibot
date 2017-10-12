@@ -45,7 +45,7 @@
             android:background="#999"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"/>-->
-        <ImageView
+      <!--  <ImageView
             android:id="@+id/iv_robot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
             android:layout_marginBottom="80dp"
             android:layout_marginRight="22dp"
             android:src="@mipmap/icon_aibot"/>
-
+-->
         <LinearLayout
             android:id="@+id/ll_bottom_main"
             android:layout_width="match_parent"
@@ -62,7 +62,6 @@
             android:layout_alignParentBottom="true"
             android:gravity="center"
             android:orientation="horizontal">
-
 
             <ImageView
                 android:background="@drawable/shape_location"
@@ -102,15 +101,25 @@
                     android:textColor="#ffffff"
                     android:textSize="20sp"/>
             </LinearLayout>
-
-            <ImageView
-                android:id="@+id/iv_quesion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
+            <LinearLayout
                 android:layout_marginLeft="20dp"
-                android:src="@mipmap/icon_guide"
-                />
+               android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iv_robot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_aibot"/>
+
+                <ImageView
+                    android:id="@+id/iv_quesion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_guide"
+                    />
+            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

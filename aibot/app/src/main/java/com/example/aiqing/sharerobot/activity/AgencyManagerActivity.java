@@ -79,7 +79,11 @@ public class AgencyManagerActivity extends AppCompatActivity implements View.OnC
                     double balance = response.body().getBalance();
                     mTvNowmoney.setText(balance + "");
                     String changeMoney = response.body().getChangeMoney();
-                    mTvHistory.setText(changeMoney + "");
+                    if (changeMoney==null){
+                        mTvHistory.setText("0");
+                    }else {
+                        mTvHistory.setText(changeMoney);
+                    }
                     List<AgencyIncomeBaen.ResultBeanX.ResultBean> beanList = response.body().getResult().getResult();
                     AgencyIncomeAdapter incomeAdapter = new AgencyIncomeAdapter(AgencyManagerActivity.this, beanList);
                     mLvIncome.setAdapter(incomeAdapter);
@@ -185,9 +189,14 @@ public class AgencyManagerActivity extends AppCompatActivity implements View.OnC
                 finish();
                 break;
             case R.id.ll_tobedis:
-                intent.setClass(AgencyManagerActivity.this, TojoininApplyActivity.class);
-                startActivity(intent);
-                finish();
+                if (getSharedPreferences("DATA", MODE_PRIVATE).getString("distributorid","").equals("")){
+                    intent.setClass(AgencyManagerActivity.this, TojoininApplyActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    Toast.makeText(this, "您已经是投放商了！", Toast.LENGTH_SHORT).show();
+                }
+                
                 break;
         }
     }

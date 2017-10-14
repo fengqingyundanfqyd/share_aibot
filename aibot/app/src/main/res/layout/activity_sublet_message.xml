@@ -184,6 +184,7 @@
     </LinearLayout>
     <Button
         android:id="@+id/btn_rent"
+        android:visibility="gone"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:text="申请租"

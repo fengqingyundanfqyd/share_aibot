@@ -124,6 +124,7 @@
       <!-- 按钮控件，设置布局为偏右 -->
 
       <Button
+          android:visibility="gone"
           android:text="相册"
           android:background="@null"
           android:id="@+id/btn_openpic"

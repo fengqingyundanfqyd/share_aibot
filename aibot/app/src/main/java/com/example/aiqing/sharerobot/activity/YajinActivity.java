@@ -1,6 +1,8 @@
 package com.example.aiqing.sharerobot.activity;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -82,6 +84,13 @@ public class YajinActivity extends AppCompatActivity{
         ImageView ivYajin = (ImageView) findViewById(R.id.iv_yajin);
         mTvName = (TextView) findViewById(R.id.tv_namedis);
 
-        ivYajin.setImageBitmap(QRCodeUtil.createQRCode("https://shared.aqcome.com/?d="+mDistributorId));
+        String info="https://shared.aqcome.com/?d="+mDistributorId;
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.header);
+        Bitmap bitmap1 = QRCodeUtil.createQRCode(info);
+        Bitmap bitmap2 = QRCodeUtil.addLogo(bitmap1, bitmap);
+        ivYajin.setImageBitmap(bitmap2);
+
+       // ivYajin.setImageBitmap(QRCodeUtil.createQRCode("https://shared.aqcome.com/?d="+mDistributorId));
     }
 }

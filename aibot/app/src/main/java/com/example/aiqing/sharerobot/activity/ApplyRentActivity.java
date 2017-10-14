@@ -125,11 +125,11 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
         mListviewGetAdd.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 selectPositon = position;
                 mAdapter.notifyDataSetChanged();
                 isClick = true;
                 mAddressId = mResult.get(position).getAddressId();
-
             }
         });
 
@@ -275,6 +275,7 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
                 viewHolder.tvNumber = (TextView) convertView.findViewById(R.id.tv_getnum);
                 viewHolder.tvDetaadd = (TextView) convertView.findViewById(R.id.tv_detaadd);
                 viewHolder.iv_no = (ImageView) convertView.findViewById(R.id.iv_no);
+                viewHolder.tv_default_address = (TextView) convertView.findViewById(R.id.tv_default_address);
                 convertView.setTag(viewHolder);
 
             } else {
@@ -283,7 +284,13 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
             viewHolder.tvName.setText(result.get(position).getName());
             viewHolder.tvNumber.setText(result.get(position).getMobile());
             viewHolder.tvDetaadd.setText(result.get(position).getFAddress());
-
+            if (result.get(position).getIsDefault().equals("1")){
+                viewHolder.tv_default_address.setVisibility(View.VISIBLE);
+                viewHolder.iv_no.setVisibility(View.VISIBLE);
+            }else if (result.get(position).getIsDefault().equals("0")){
+                viewHolder.tv_default_address.setVisibility(View.GONE);
+                viewHolder.iv_no.setVisibility(View.GONE);
+            }
             if (selectPositon == position) {
                 convertView.setSelected(true);
                 viewHolder.iv_no.setVisibility(View.VISIBLE);
@@ -299,6 +306,7 @@ public class ApplyRentActivity extends AppCompatActivity implements View.OnClick
             TextView tvName;
             TextView tvNumber;
             TextView tvDetaadd;
+            TextView tv_default_address;
             ImageView iv_no;
         }
     }

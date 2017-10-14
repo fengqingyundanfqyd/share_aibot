@@ -1,7 +1,6 @@
 package com.example.aiqing.sharerobot.activity;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -89,9 +88,9 @@ public class TheRentPayActivity extends AppCompatActivity implements View.OnClic
 
     private void initData() {
 
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        String productId = bundle.getString("productId");
+//        Intent intent = getIntent();
+//        Bundle bundle = intent.getExtras();
+//        String productId = bundle.getString("productId");
 
         mLinearLayoutManager = new LinearLayoutManager(this);
         mLinearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);

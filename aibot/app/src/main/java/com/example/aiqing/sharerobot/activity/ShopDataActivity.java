@@ -277,24 +277,27 @@ public class ShopDataActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Bundle bundle = data.getExtras();
-        if (requestCode == 11 && data!=null) {
+        if (data!=null) {
 
-            String name = bundle.getString("name");
-            mTv_shop_name_t.setText(name);
-        } else if (requestCode == 12) {
-            mLatitude = bundle.getString("mLatitude");
-            mLongitude = bundle.getString("mLongitude");
-            mDistrict = bundle.getString("mDistrict");
-            String province = bundle.getString("mProvince");
-            String city = bundle.getString("mCity");
-            mTv_maplocation.setText(mDistrict);
-        } else if (requestCode == 13) {
-            String address = bundle.getString("address");
-            mTv_detail_address.setText(address);
-        } else if (requestCode == 14) {
-            String phone = bundle.getString("phone");
-            mTv_shop_phonenum.setText(phone);
+            Bundle bundle = data.getExtras();
+            if (requestCode == 11 && data != null) {
+
+                String name = bundle.getString("name");
+                mTv_shop_name_t.setText(name);
+            } else if (requestCode == 12) {
+                mLatitude = bundle.getString("mLatitude");
+                mLongitude = bundle.getString("mLongitude");
+                mDistrict = bundle.getString("mDistrict");
+                String province = bundle.getString("mProvince");
+                String city = bundle.getString("mCity");
+                mTv_maplocation.setText(mDistrict);
+            } else if (requestCode == 13) {
+                String address = bundle.getString("address");
+                mTv_detail_address.setText(address);
+            } else if (requestCode == 14) {
+                String phone = bundle.getString("phone");
+                mTv_shop_phonenum.setText(phone);
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

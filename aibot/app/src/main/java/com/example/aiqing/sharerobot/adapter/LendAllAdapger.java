@@ -8,11 +8,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aiqing.sharerobot.R;
-import com.example.aiqing.sharerobot.activity.ScanActivity;
+import com.example.aiqing.sharerobot.activity.ErweimaActivity;
 import com.example.aiqing.sharerobot.bean.DisAllLendBean;
 import com.example.aiqing.sharerobot.bean.PlatformSendBean;
 import com.example.aiqing.sharerobot.inf.ApiService;
@@ -45,7 +46,7 @@ public class LendAllAdapger extends BaseAdapter {
         this.lendresult = lendresult;
         SharedPreferences sp = context.getSharedPreferences("DATA", MODE_PRIVATE);
         mDistributorid = sp.getString("distributorid", "");
-        Log.e("投放商id", "sendGoodHttp: "+ mDistributorid);
+        Log.e("投放商id", "sendGoodHttp: " + mDistributorid);
         mHttpTool = new HttpTool(context);
         SharedPreferences preferences = context.getSharedPreferences("COOKIE", MODE_PRIVATE);
         mCookie = preferences.getString("mCookie", "");
@@ -82,6 +83,7 @@ public class LendAllAdapger extends BaseAdapter {
             viewHolder.tv_all_name = (TextView) convertView.findViewById(R.id.tv_all_name);
             viewHolder.tv_direct_send = (TextView) convertView.findViewById(R.id.tv_direct_send);
             viewHolder.tv_platform_send = (TextView) convertView.findViewById(R.id.tv_platform_send);
+            viewHolder.ll_send = (LinearLayout) convertView.findViewById(R.id.ll_send);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -96,29 +98,49 @@ public class LendAllAdapger extends BaseAdapter {
         viewHolder.tv_time_all.setText(lendresult.get(position).getCreateTime2() + "");
 
         String bdealType = lendresult.get(position).getBdealType();
+//        if (bdealType.equals("0")) {
+//            viewHolder.tv_send_style.setText("未选择发货方式");
+//        } else if (bdealType.equals("1")) {
+//            if (status.equals("待发货")) {
+//                viewHolder.tv_send_style.setText("等待平台发货");
+//            } else if (status.equals("已发货")) {
+//                viewHolder.tv_send_style.setText("平台代为发货");
+//                viewHolder.ll_send.setVisibility(View.GONE);
+//            }
+//        } else if (bdealType.equals("2")) {
+//            if (status.equals("已发货")) {
+//                viewHolder.ll_send.setVisibility(View.GONE);
+//                viewHolder.tv_send_style.setText("商家直接发货");
+//            } else if (status.equals("部分发货")) {
+//                int sendNum = lendresult.get(position).getSendNum();
+//                int hai = factNum - sendNum;
+//                viewHolder.tv_send_style.setText("已发货" + sendNum + "台，还有" + hai + "几台");
+//            }
+//        }
         if (bdealType.equals("0")) {
             viewHolder.tv_send_style.setText("未选择发货方式");
-        } else if (bdealType.equals("1")) {
-            if (status.equals("待发货")) {
-                viewHolder.tv_send_style.setText("等待平台发货");
-            } else if (status.equals("已发货")) {
-                viewHolder.tv_send_style.setText("平台代为发货");
-            }
-        } else if (bdealType.equals("2")) {
-            if (status.equals("已发货")) {
-                viewHolder.tv_send_style.setText("商家直接发货");
-            } else if (status.equals("部分发货")) {
-                int sendNum = lendresult.get(position).getSendNum();
-                int hai = factNum - sendNum;
-                viewHolder.tv_send_style.setText("已发货" + sendNum + "台，还有" + hai + "几台");
-            }
+        } else if (bdealType.equals("1") && lendresult.get(position).getStatus().equals("待发货")) {
+            viewHolder.tv_send_style.setText("等待平台发货");
+        } else if (bdealType.equals("1") && lendresult.get(position).getStatus().equals("已发货")) {
+            viewHolder.tv_send_style.setText("平台代为发货");
+        } else if (bdealType.equals("2") && lendresult.get(position).getStatus().equals("已发货")) {
+            viewHolder.tv_send_style.setText("商家直接发货");
+        } else if (bdealType.equals("2") && lendresult.get(position).getStatus().equals("部分发货")) {
+            int sendNum = lendresult.get(position).getSendNum();
+            int hai = factNum - sendNum;
+            viewHolder.tv_send_style.setText("已发货" + sendNum + "台，还有" + hai + "几台");
+        } else {
+            viewHolder.tv_send_style.setText("未选择发货方式");
+        }
+
+        if (lendresult.get(position).getStatus().equals("已发货")||lendresult.get(position).getStatus().equals("已取消")||lendresult.get(position).getStatus().equals("待发货")||lendresult.get(position).getStatus().equals("待收货")||lendresult.get(position).getStatus().equals("已完成")){
+            viewHolder.ll_send.setVisibility(View.GONE);
         }
 
 
         viewHolder.tv_all_address.setText(lendresult.get(position).getAddress());
-        viewHolder.tv_all_phone.setText(lendresult.get(position).getMobile()+"");
+        viewHolder.tv_all_phone.setText(lendresult.get(position).getMobile() + "");
         viewHolder.tv_all_name.setText(lendresult.get(position).getName());
-
 
 
         viewHolder.tv_platform_send.setOnClickListener(new View.OnClickListener() {
@@ -132,15 +154,16 @@ public class LendAllAdapger extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 //扫苗二维码
-                Intent intent=new Intent();
-                intent.setClass(context, ScanActivity.class);
-                intent.putExtra("paId",paId);
+                Intent intent = new Intent();
+                intent.setClass(context, ErweimaActivity.class);
+                intent.putExtra("paId", paId);
                 context.startActivity(intent);
             }
         });
 
         return convertView;
     }
+
     //平台申请
     private void sendGoodHttp(int position) {
 
@@ -161,16 +184,16 @@ public class LendAllAdapger extends BaseAdapter {
             @Override
             public void onResponse(Response<PlatformSendBean> response, Retrofit retrofit) {
                 String coder = response.body().getCoder();
-                Log.e("平台申请发货", "onResponse: "+coder );
+                Log.e("平台申请发货", "onResponse: " + coder);
 
                 DialogUtil.closeDialog(loadingDialog);
                 //if (coder!=null){
-                    if (coder.equals("0000")){
-                        Toast.makeText(context, "申请发货成功。", Toast.LENGTH_SHORT).show();
-                    }else if (coder.equals("10000")){
-                        Toast.makeText(context, response.body().getErrorMsg(), Toast.LENGTH_SHORT).show();
-                    }
-               // }
+                if (coder.equals("0000")) {
+                    Toast.makeText(context, "申请发货成功。", Toast.LENGTH_SHORT).show();
+                } else if (coder.equals("10000")) {
+                    Toast.makeText(context, response.body().getErrorMsg(), Toast.LENGTH_SHORT).show();
+                }
+                // }
             }
 
             @Override
@@ -193,5 +216,6 @@ public class LendAllAdapger extends BaseAdapter {
         TextView tv_all_name;
         TextView tv_direct_send;
         TextView tv_platform_send;
+        LinearLayout ll_send;
     }
 }

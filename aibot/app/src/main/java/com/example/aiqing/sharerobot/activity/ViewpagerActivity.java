@@ -241,8 +241,9 @@ public class ViewpagerActivity extends AppCompatActivity implements View.OnClick
                 finish();
                 break;
             case R.id.iv_myaibot_history:
-                intent.setClass(this, MyAibotOMActivity.class);
-                startActivity(intent);
+                //暂时先隐藏
+//                intent.setClass(this, MyAibotOMActivity.class);
+//                startActivity(intent);
                 break;
         }
     }

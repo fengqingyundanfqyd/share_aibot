@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,10 +21,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.aiqing.sharerobot.R;
-import com.example.aiqing.sharerobot.bean.DiaTouInitBean;
+import com.example.aiqing.sharerobot.bean.ScanDisSendBean;
 import com.example.aiqing.sharerobot.bean.ScanRentBean;
-import com.example.aiqing.sharerobot.bean.TouInitRobotBean;
-import com.example.aiqing.sharerobot.bean.daiInitRobotBean;
+import com.example.aiqing.sharerobot.bean.ScanReturnBean;
 import com.example.aiqing.sharerobot.bean.scanAgencyBean;
 import com.example.aiqing.sharerobot.inf.ApiService;
 import com.example.aiqing.sharerobot.inf.HttpTool;
@@ -68,6 +66,7 @@ public class ErweimaActivity extends AppCompatActivity implements QRCodeView.Del
     private boolean isDaiTouScan = false;
     private HttpTool mHttpTool;
     private String mAgencyid;
+    private String mDistributorid;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,6 +78,8 @@ public class ErweimaActivity extends AppCompatActivity implements QRCodeView.Del
         SharedPreferences spcookie = getSharedPreferences("COOKIE", MODE_PRIVATE);
         mSid = spcookie.getString("mCookie", "");
         mHttpTool = new HttpTool(this);
+
+        mDistributorid = getSharedPreferences("DATA", MODE_PRIVATE).getString("distributorid", "");
 
         initId();
     }
@@ -98,33 +99,33 @@ public class ErweimaActivity extends AppCompatActivity implements QRCodeView.Del
         LinearLayout llAllScan = (LinearLayout) findViewById(R.id.ll_all_scan);
 
         Log.e("555555", "initId: " + getSharedPreferences("DATA", MODE_PRIVATE).getString("agencyId", ""));
-        //既不是投放商也不是代理商
-        if (getSharedPreferences("DATA", MODE_PRIVATE).getString("distributorid", "").equals("") && getSharedPreferences("DATA", MODE_PRIVATE).getString("agencyId", "").equals("")) {
-            llAllScan.setVisibility(View.GONE);
-            mQRCodeView.startSpot();
-            isScan = true;
-        } else if (getSharedPreferences("DATA", MODE_PRIVATE).getString("distributorid", "") != null && getSharedPreferences("DATA", MODE_PRIVATE).getString("agencyId", "") != null) {
-            mLlScanandscan.setVisibility(View.VISIBLE);
-            mLlDailishangScan.setVisibility(View.VISIBLE);
-            mLloufangcan.setVisibility(View.VISIBLE);
-            mLlDaiAndTou.setVisibility(View.VISIBLE);
-        } else if (getSharedPreferences("DATA", MODE_PRIVATE).getString("distributorid", "") != null && getSharedPreferences("DATA", MODE_PRIVATE).getString("agencyId", "").equals("")) {
-            mLlScanandscan.setVisibility(View.VISIBLE);
-            mLlDailishangScan.setVisibility(View.GONE);
-            mLloufangcan.setVisibility(View.VISIBLE);
-            mLlDaiAndTou.setVisibility(View.GONE);
-        } else if (getSharedPreferences("DATA", MODE_PRIVATE).getString("distributorid", "").equals("") && getSharedPreferences("DATA", MODE_PRIVATE).getString("agencyId", "") != null) {
-            mLlScanandscan.setVisibility(View.VISIBLE);
-            mLlDailishangScan.setVisibility(View.VISIBLE);
-            mLloufangcan.setVisibility(View.GONE);
-            mLlDaiAndTou.setVisibility(View.GONE);
-        }
+//        //既不是投放商也不是代理商
+//        if (getSharedPreferences("DATA", MODE_PRIVATE).getString("distributorid", "").equals("") && getSharedPreferences("DATA", MODE_PRIVATE).getString("agencyId", "").equals("")) {
+//            llAllScan.setVisibility(View.GONE);
+//            mQRCodeView.startSpot();
+//            isScan = true;
+//        } else if (getSharedPreferences("DATA", MODE_PRIVATE).getString("distributorid", "") != null && getSharedPreferences("DATA", MODE_PRIVATE).getString("agencyId", "") != null) {
+//            mLlScanandscan.setVisibility(View.VISIBLE);
+//            mLlDailishangScan.setVisibility(View.VISIBLE);
+//            mLloufangcan.setVisibility(View.VISIBLE);
+//            mLlDaiAndTou.setVisibility(View.VISIBLE);
+//        } else if (getSharedPreferences("DATA", MODE_PRIVATE).getString("distributorid", "") != null && getSharedPreferences("DATA", MODE_PRIVATE).getString("agencyId", "").equals("")) {
+//            mLlScanandscan.setVisibility(View.VISIBLE);
+//            mLlDailishangScan.setVisibility(View.GONE);
+//            mLloufangcan.setVisibility(View.VISIBLE);
+//            mLlDaiAndTou.setVisibility(View.GONE);
+//        } else if (getSharedPreferences("DATA", MODE_PRIVATE).getString("distributorid", "").equals("") && getSharedPreferences("DATA", MODE_PRIVATE).getString("agencyId", "") != null) {
+//            mLlScanandscan.setVisibility(View.VISIBLE);
+//            mLlDailishangScan.setVisibility(View.VISIBLE);
+//            mLloufangcan.setVisibility(View.GONE);
+//            mLlDaiAndTou.setVisibility(View.GONE);
+//        }
 
-        mLlScanandscan.setOnClickListener(this);
-        mLlDaiAndTou.setOnClickListener(this);
-        mLlDailishangScan.setOnClickListener(this);
-        mLloufangcan.setOnClickListener(this);
-        btnOpenPic.setOnClickListener(this);
+//        mLlScanandscan.setOnClickListener(this);
+//        mLlDaiAndTou.setOnClickListener(this);
+//        mLlDailishangScan.setOnClickListener(this);
+//        mLloufangcan.setOnClickListener(this);
+//        btnOpenPic.setOnClickListener(this);
         ivReturn.setOnClickListener(this);
 
     }
@@ -132,59 +133,59 @@ public class ErweimaActivity extends AppCompatActivity implements QRCodeView.Del
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_scanandscan:
-                isScan = true;
-                isDaiScan = false;
-                isTouScan = false;
-                isDaiTouScan = false;
-                mQRCodeView.startSpot();
-                mIvScanW.setImageResource(R.mipmap.icon_scan);
-                mIvScanAB.setImageResource(R.mipmap.ab);
-                mIvScanB.setImageResource(R.mipmap.b);
-                mIvScanA.setImageResource(R.mipmap.a);
-                break;
-            case R.id.ll_dailishang_scan:
-                isDaiScan = true;
-                isScan = false;
-                isTouScan = false;
-                isDaiTouScan = false;
-                //代理商
-                mQRCodeView.startSpot();
-                mIvScanB.setImageResource(R.mipmap.b);
-                mIvScanA.setImageResource(R.mipmap.a_o);
-                mIvScanW.setImageResource(R.mipmap.icon_scan_w);
-                mIvScanAB.setImageResource(R.mipmap.ab);
-                break;
-            case R.id.ll_toufang_scan:
-                isTouScan = true;
-                isScan = false;
-                isDaiScan = false;
-                isDaiTouScan = false;
-                //投放商
-                mQRCodeView.startSpot();
-                mIvScanB.setImageResource(R.mipmap.b_o);
-                mIvScanW.setImageResource(R.mipmap.icon_scan_w);
-                mIvScanA.setImageResource(R.mipmap.a);
-                mIvScanAB.setImageResource(R.mipmap.ab);
-                break;
-            case R.id.ll_daiandtou_scan:
-                isDaiTouScan = true;
-                isScan = false;
-                isDaiScan = false;
-                isTouScan = false;
-                //待投
-                mQRCodeView.startSpot();
-                mIvScanAB.setImageResource(R.mipmap.ab_o);
-                mIvScanB.setImageResource(R.mipmap.b);
-                mIvScanW.setImageResource(R.mipmap.icon_scan_w);
-                mIvScanA.setImageResource(R.mipmap.a);
-                break;
-            case R.id.btn_openpic:
-                //打开相册
-                Intent albumIntent = new Intent(Intent.ACTION_PICK, null);
-                albumIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                startActivityForResult(albumIntent, PHOTO_REQUEST_GALLERY);
-                break;
+//            case R.id.ll_scanandscan:
+//                isScan = true;
+//                isDaiScan = false;
+//                isTouScan = false;
+//                isDaiTouScan = false;
+//                mQRCodeView.startSpot();
+//                mIvScanW.setImageResource(R.mipmap.icon_scan);
+//                mIvScanAB.setImageResource(R.mipmap.ab);
+//                mIvScanB.setImageResource(R.mipmap.b);
+//                mIvScanA.setImageResource(R.mipmap.a);
+//                break;
+//            case R.id.ll_dailishang_scan:
+//                isDaiScan = true;
+//                isScan = false;
+//                isTouScan = false;
+//                isDaiTouScan = false;
+//                //代理商
+//                mQRCodeView.startSpot();
+//                mIvScanB.setImageResource(R.mipmap.b);
+//                mIvScanA.setImageResource(R.mipmap.a_o);
+//                mIvScanW.setImageResource(R.mipmap.icon_scan_w);
+//                mIvScanAB.setImageResource(R.mipmap.ab);
+//                break;
+//            case R.id.ll_toufang_scan:
+//                isTouScan = true;
+//                isScan = false;
+//                isDaiScan = false;
+//                isDaiTouScan = false;
+//                //投放商
+//                mQRCodeView.startSpot();
+//                mIvScanB.setImageResource(R.mipmap.b_o);
+//                mIvScanW.setImageResource(R.mipmap.icon_scan_w);
+//                mIvScanA.setImageResource(R.mipmap.a);
+//                mIvScanAB.setImageResource(R.mipmap.ab);
+//                break;
+//            case R.id.ll_daiandtou_scan:
+//                isDaiTouScan = true;
+//                isScan = false;
+//                isDaiScan = false;
+//                isTouScan = false;
+//                //待投
+//                mQRCodeView.startSpot();
+//                mIvScanAB.setImageResource(R.mipmap.ab_o);
+//                mIvScanB.setImageResource(R.mipmap.b);
+//                mIvScanW.setImageResource(R.mipmap.icon_scan_w);
+//                mIvScanA.setImageResource(R.mipmap.a);
+//                break;
+//            case R.id.btn_openpic:
+//                //打开相册
+//                Intent albumIntent = new Intent(Intent.ACTION_PICK, null);
+//                albumIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+//                startActivityForResult(albumIntent, PHOTO_REQUEST_GALLERY);
+//                break;
             case R.id.iv_return_erwema:
                 finish();
                 break;
@@ -195,8 +196,6 @@ public class ErweimaActivity extends AppCompatActivity implements QRCodeView.Del
     protected void onStart() {
         super.onStart();
         mQRCodeView.startCamera();
-        //        mQRCodeView.startCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
-
         mQRCodeView.showScanRect();
     }
 
@@ -220,166 +219,137 @@ public class ErweimaActivity extends AppCompatActivity implements QRCodeView.Del
     //扫描结果
     @Override
     public void onScanQRCodeSuccess(String result) {
-        if (isScan) {
-            //扫一扫
-            initScan(result);
-        } else if (isTouScan) {
-            //投放商扫一扫初始化小宝
-            initTou(result);
-        } else if (isDaiTouScan) {
-            //代理商和投放商初始化小宝
-            initDaiAndTou(result);
-        } else if (isDaiScan) {
-            //代理商扫一扫初始化小宝
-            initDai(result);
-        }
+//        if (isScan) {
+//            //扫一扫
+//            initScan(result);
+//        } else if (isTouScan) {
+//            //投放商扫一扫初始化小宝
+//            initTou(result);
+//        } else if (isDaiTouScan) {
+//            //代理商和投放商初始化小宝
+//            initDaiAndTou(result);
+//        } else if (isDaiScan) {
+//            //代理商扫一扫初始化小宝
+//            initDai(result);
+//        }
 
+
+        initScan(result);
+
+        //投放商归还
+        disReturn(result);
+
+        //投放商申请平台发货
+        disScanSend(result);
 
         vibrate();
         mQRCodeView.startSpot();
     }
 
-    //代理商和投放商初始化小宝
-    private void initDaiAndTou(String result) {
-        if (result.contains("shared.aqcome.com")) {
-            String[] split = result.split("\\?");
-            String str = split[split.length - 1];
-            String[] split1 = str.split("=");
-            String s = split1[0];
-            String product = split1[1];
-            if (s.equals("p")) {
-                daiAndTouScan(product);
-            } else {
-                Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
-            return;
-        }
-    }
-
-    //代理商和投放商初始化小宝
-    private void daiAndTouScan(String product) {
-        final Dialog loadingDialog = DialogUtil.createLoadingDialog(this, "识别中...");
-        Retrofit builder = new Retrofit.Builder()
-                .client(mHttpTool.client())
-                .baseUrl("http://120.132.117.157:8083/distributor/addProductRec.shtml")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        ApiService apiService = builder.create(ApiService.class);
-        Call<DiaTouInitBean> call = apiService.daiAndTouInitRobot(mSid, "1", product);
-        call.enqueue(new Callback<DiaTouInitBean>() {
-            @Override
-            public void onResponse(Response<DiaTouInitBean> response, Retrofit retrofit) {
-                DialogUtil.closeDialog(loadingDialog);
-                if (response.body().getCoder().equals("0000")) {
-                    Toast.makeText(ErweimaActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(ErweimaActivity.this, response.body().getErrorMsg(), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                Toast.makeText(ErweimaActivity.this, "请检查您的网络", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    //投放商扫一扫初始化小宝
-    private void initTou(String result) {
-        if (result.contains("shared.aqcome.com")) {
-            String[] split = result.split("\\?");
-            String str = split[split.length - 1];
-            String[] split1 = str.split("=");
-            String s = split1[0];
-            String distributor = split1[1];
-            if (s.equals("p")) {
-                distributorScan(distributor);
-            } else {
-                Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
-            return;
-        }
-    }
-
-    //投放商初始化小宝
-    private void distributorScan(String distributor) {
-        final Dialog loadingDialog = DialogUtil.createLoadingDialog(this, "识别中...");
-        Retrofit builder = new Retrofit.Builder()
-                .client(mHttpTool.client())
-                .baseUrl("http://120.132.117.157:8083/distributor/addProduct.shtml")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        ApiService apiService = builder.create(ApiService.class);
-        Call<TouInitRobotBean> call = apiService.touInitRobot(mSid, "1", distributor);
-        call.enqueue(new Callback<TouInitRobotBean>() {
-            @Override
-            public void onResponse(Response<TouInitRobotBean> response, Retrofit retrofit) {
-                DialogUtil.closeDialog(loadingDialog);
-                if (response.body().getCoder().equals("0000")) {
-                    Toast.makeText(ErweimaActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(ErweimaActivity.this, response.body().getErrorMsg(), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                Toast.makeText(ErweimaActivity.this, "请检查您的网络", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    //代理商扫一扫初始化小宝扫一扫
-    private void initDai(String result) {
+    private void disScanSend(String result) {
         if (result.contains("shared.aqcome.com")) {
             String[] split = result.split("\\?");
             String str = split[split.length - 1];
             String[] split1 = str.split("=");
             String s = split1[0];
             String productId = split1[1];
-            if (s.equals("p")) {
-                agenceScan(productId);
-            } else {
-                Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
+            if (s.equals("p")){
+                //扫描发货
+                ScanSend(productId);
+            }else {
+                // Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
+                mQRCodeView.stopCamera();
             }
-        } else {
+        }else {
             Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
-            return;
+            mQRCodeView.stopCamera();
         }
     }
 
-    //代理商初始化小宝
-    private void agenceScan(String productId) {
+    private void ScanSend(String productId) {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        String paId = bundle.getString("paId");
+
         final Dialog loadingDialog = DialogUtil.createLoadingDialog(this, "识别中...");
         Retrofit builder = new Retrofit.Builder()
                 .client(mHttpTool.client())
-                .baseUrl("http://120.132.117.157:8083/agency/addProduct.shtml")
+                .baseUrl("http://120.132.117.157:8083/distributor/sureDistributorSend.shtml")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiService apiService = builder.create(ApiService.class);
-        Call<daiInitRobotBean> call = apiService.daiInitRobot(mSid, "1", productId);
-        call.enqueue(new Callback<daiInitRobotBean>() {
+        Call<ScanDisSendBean> call = apiService.scanSend(mSid, paId, productId, mDistributorid);
+        call.enqueue(new Callback<ScanDisSendBean>() {
             @Override
-            public void onResponse(Response<daiInitRobotBean> response, Retrofit retrofit) {
-                DialogUtil.closeDialog(loadingDialog);
-                Log.e("代理商初始化信息", "onResponse: " + response.body().getCoder());
-                if (response.body().getCoder().equals("0000")) {
-                    Toast.makeText(ErweimaActivity.this, "初始化成功！", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(ErweimaActivity.this, response.body().getErrorMsg(), Toast.LENGTH_SHORT).show();
-                    return;
+            public void onResponse(Response<ScanDisSendBean> response, Retrofit retrofit) {
+                if (response.body().getCoder().equals("0000")){
+                    mQRCodeView.stopCamera();
+                    DialogUtil.closeDialog(loadingDialog);
+                    Toast.makeText(ErweimaActivity.this, "申请成功", Toast.LENGTH_SHORT).show();
+
+                }else {
+                    mQRCodeView.stopCamera();
+                    Toast.makeText(ErweimaActivity.this,response.body().getErrorMsg(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                Toast.makeText(ErweimaActivity.this, "请检查您的网络", Toast.LENGTH_SHORT).show();
+                mQRCodeView.stopCamera();
+                DialogUtil.closeDialog(loadingDialog);
+                Toast.makeText(ErweimaActivity.this, "网络连接失败", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void disReturn(String result) {
+        if (result.contains("shared.aqcome.com")) {
+            String[] split = result.split("\\?");
+            String str = split[split.length - 1];
+            String[] split1 = str.split("=");
+            String s = split1[0];
+            String productId = split1[1];
+            if (s.equals("p")){
+                //扫描归还
+                scanReturn(productId);
+            }else {
+                // Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
+                mQRCodeView.stopCamera();
+            }
+        }else {
+            Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
+            mQRCodeView.stopCamera();
+        }
+    }
+
+    private void scanReturn(String productId) {
+        final Dialog loadingDialog = DialogUtil.createLoadingDialog(this, "识别中...");
+        Retrofit builder = new Retrofit.Builder()
+                .client(mHttpTool.client())
+                .baseUrl("http://120.132.117.157:8083/distributor/scanReceipt.shtml")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        ApiService apiService = builder.create(ApiService.class);
+        Call<ScanReturnBean> call = apiService.scanReturn(mSid, productId, mDistributorid);
+        call.enqueue(new Callback<ScanReturnBean>() {
+            @Override
+            public void onResponse(Response<ScanReturnBean> response, Retrofit retrofit) {
+                if (response.body().getCoder().equals("0000")){
+                    mQRCodeView.stopCamera();
+                    DialogUtil.closeDialog(loadingDialog);
+                    Toast.makeText(ErweimaActivity.this, "申请成功", Toast.LENGTH_SHORT).show();
+
+                }else {
+                    mQRCodeView.stopCamera();
+                    Toast.makeText(ErweimaActivity.this,response.body().getErrorMsg(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                mQRCodeView.stopCamera();
+                DialogUtil.closeDialog(loadingDialog);
+                Toast.makeText(ErweimaActivity.this, "网络连接失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -407,7 +377,10 @@ public class ErweimaActivity extends AppCompatActivity implements QRCodeView.Del
             } else if (s.equals("d")) {
                 //投放商码   跳转到商家详情页面
                 //initHttpTou(s1);
+                String[] dis = result.split("=");
+                String distributorId = dis[1];
                 Intent intent = new Intent(ErweimaActivity.this, BusinessInfoActivity.class);
+                intent.putExtra("mDistributorId",distributorId);
                 startActivity(intent);
             } else if (s.equals("p")) {
                 //租用码
@@ -416,14 +389,12 @@ public class ErweimaActivity extends AppCompatActivity implements QRCodeView.Del
                 applyNum(productId);
             }
         } else {
-            Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "无效二维码", Toast.LENGTH_SHORT).show();
             return;
         }
     }
 
-
-    //扫租用码
-    private void applyNum(String productId) {
+    private void applyNum(final String productId) {
         final Dialog loadingDialog = DialogUtil.createLoadingDialog(this, "识别中...");
         Retrofit builder = new Retrofit.Builder()
                 .client(mHttpTool.client())
@@ -437,23 +408,24 @@ public class ErweimaActivity extends AppCompatActivity implements QRCodeView.Del
             public void onResponse(Response<ScanRentBean> response, Retrofit retrofit) {
                 DialogUtil.closeDialog(loadingDialog);
                 Log.e("机器人码", "onResponse: " + response.body().getCoder());
+
+                String mDistributorId = response.body().getDistributorId();
+
                 if (response.body().getCoder().equals("0000")) {
-                    if (response.body().getPage().equals("1")) {
+                    if (response.body().getPage().equals("1")||response.body().getPage().equals("2")) {
                         //B2C押金支付页面
                         Intent intent = new Intent(ErweimaActivity.this, ApplyRentActivity.class);
-                        startActivity(intent);
-                    } else if (response.body().getPage().equals("2")) {
-                        //C2C押金支付页面
-                        Intent intent = new Intent(ErweimaActivity.this, ApplyRentActivity.class);
+                        intent.putExtra("mDistributorId",mDistributorId);
                         startActivity(intent);
                     } else if (response.body().getPage().equals("3")) {
                         //租金支付页面
                         Intent intent = new Intent(ErweimaActivity.this, TheRentPayActivity.class);
+                        intent.putExtra("productId",productId);
                         startActivity(intent);
                     }
                 } else {
                     Toast.makeText(ErweimaActivity.this, response.body().getErrorMsg(), Toast.LENGTH_SHORT).show();
-                    return;
+
                 }
             }
 
@@ -462,11 +434,9 @@ public class ErweimaActivity extends AppCompatActivity implements QRCodeView.Del
                 Toast.makeText(ErweimaActivity.this, "请检查网络！", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
-    //扫代理商码
-    private void scanAgence(String agencyId) {
+    private void scanAgence(String agencyid) {
         final Dialog loadingDialog = DialogUtil.createLoadingDialog(this, "识别中...");
         Retrofit builder = new Retrofit.Builder()
                 .client(mHttpTool.client())
@@ -475,7 +445,7 @@ public class ErweimaActivity extends AppCompatActivity implements QRCodeView.Del
                 .build();
         ApiService apiService = builder.create(ApiService.class);
 
-        Call<scanAgencyBean> call = apiService.scanAgency(mSid, agencyId);
+        Call<scanAgencyBean> call = apiService.scanAgency(mSid, agencyid);
         call.enqueue(new Callback<scanAgencyBean>() {
             @Override
             public void onResponse(Response<scanAgencyBean> response, Retrofit retrofit) {

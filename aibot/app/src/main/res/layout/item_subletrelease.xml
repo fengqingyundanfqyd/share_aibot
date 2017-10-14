@@ -7,10 +7,10 @@
               android:baselineAligned="false">
 
     <LinearLayout
-        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="20dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -18,27 +18,30 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:orientation="vertical">
+
             <RelativeLayout
-                android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
                 <TextView
                     android:id="@+id/tv_rent_status"
-                    android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:text="转租发货中......"
                     android:textSize="15sp"/>
+
                 <ImageView
-                    android:visibility="gone"
                     android:id="@+id/iv_more"
-                    android:layout_marginRight="20dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:src="@mipmap/icon_more"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:src="@mipmap/icon_more"
+                    android:visibility="gone"/>
             </RelativeLayout>
 
 
@@ -99,37 +102,41 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="25dp"
             android:orientation="vertical">
-                <LinearLayout
-                    android:orientation="horizontal"
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_marginLeft="10dp"
-                        android:text="发货信息"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                    <View
-                        android:layout_marginLeft="10dp"
-                        android:layout_gravity="center"
-                        android:layout_width="220dp"
-                        android:layout_height="0.5dp"
-                        android:background="#999999"/>
-                </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:text="发货信息"/>
+
+                <View
+                    android:visibility="gone"
+                    android:layout_width="220dp"
+                    android:layout_height="0.5dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:background="#999999"/>
+            </LinearLayout>
 
 
             <LinearLayout
-                android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
                 <RelativeLayout
-                    android:visibility="gone"
-                    android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"
                     >
 
                     <TextView
@@ -156,18 +163,18 @@
 
                     <TextView
                         android:id="@+id/tv_subletrelease_name"
-                        android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:textSize="12sp"
                         />
 
                     <TextView
-                        android:layout_marginRight="30dp"
                         android:id="@+id/tv_ubletrelease_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:layout_marginRight="30dp"
                         android:text="刚刚发布"
                         android:textSize="12sp"/>
                 </RelativeLayout>
@@ -194,9 +201,9 @@
 
                     <TextView
                         android:id="@+id/tv_ubletrelease_add"
-                        android:maxLines="3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:maxLines="3"
                         android:textSize="12sp"/>
                 </RelativeLayout>
 

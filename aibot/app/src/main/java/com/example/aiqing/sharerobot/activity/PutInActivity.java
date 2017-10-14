@@ -1,8 +1,11 @@
 package com.example.aiqing.sharerobot.activity;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,6 +42,7 @@ public class PutInActivity extends AppCompatActivity {
         topMenu.topMenuLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("返回按钮", "onClick: "+"点击了返回" );
                finish();
             }
         });
@@ -78,6 +82,14 @@ public class PutInActivity extends AppCompatActivity {
 
         ImageView ivPutIn = (ImageView) findViewById(R.id.iv_putin);
         mTvName = (TextView) findViewById(R.id.tv_nameagence);
-        ivPutIn.setImageBitmap(QRCodeUtil.createQRCode("https://shared.aqcome.com/?a="+agencyId));
+
+        String info="https://shared.aqcome.com/?a="+agencyId;
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.header);
+        Bitmap bitmap1 = QRCodeUtil.createQRCode(info);
+        Bitmap bitmap2 = QRCodeUtil.addLogo(bitmap1, bitmap);
+        ivPutIn.setImageBitmap(bitmap2);
+
+        //ivPutIn.setImageBitmap(QRCodeUtil.createQRCode("https://shared.aqcome.com/?a="+agencyId));
     }
 }

@@ -93,7 +93,7 @@ public class TojoininApplyActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onResponse(Response<YaoqingManBean> response, Retrofit retrofit) {
                 DialogUtil.closeDialog(mLoadingDialog);
-                if (response.body() != null) {
+                if (response.body().getObj()!= null) {
                     mPhone = response.body().getObj().getMobile().toString();
                     Log.e("电话", "onResponse: " + mPhone);
 //                    Bitmap bm = BitmapFactory.decodeFile(response.body().getObj().getHeadImg());

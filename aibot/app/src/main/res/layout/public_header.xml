@@ -15,7 +15,7 @@
         android:layout_centerVertical="true"
         android:layout_gravity="left"
         android:background="@mipmap/fanhui"
-       android:layout_marginLeft="10dp"
+       android:layout_marginLeft="15dp"
          />
 
     <!-- 文本标题控件，设置布局为居中 -->

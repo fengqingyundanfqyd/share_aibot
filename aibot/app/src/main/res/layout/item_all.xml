@@ -155,6 +155,7 @@
             android:background="#999999"/>
 
         <LinearLayout
+            android:id="@+id/ll_send"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="17dp"

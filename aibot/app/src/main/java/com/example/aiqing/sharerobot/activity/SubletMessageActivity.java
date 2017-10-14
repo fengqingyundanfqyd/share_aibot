@@ -43,6 +43,7 @@ public class SubletMessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sublet_message);
         initId();
         initData();
+
     }
 
     private void initData() {
@@ -72,6 +73,12 @@ public class SubletMessageActivity extends AppCompatActivity {
                     mTvPhone.setText(response.body().getObj().getMobile()+"");
                     mTvAddress.setText(response.body().getObj().getAddress());
                     mTvBei.setText(response.body().getObj().getRemark());
+
+                    if (response.body().getObj().getDzNum().equals("0")){
+                        mBtnRent.setVisibility(View.GONE);
+                    }else {
+                        mBtnRent.setVisibility(View.VISIBLE);
+                    }
                 }
                 DialogUtil.closeDialog(loadingDialog);
             }
@@ -82,6 +89,8 @@ public class SubletMessageActivity extends AppCompatActivity {
                 DialogUtil.closeDialog(loadingDialog);
             }
         });
+
+
     }
 
     private void initId() {

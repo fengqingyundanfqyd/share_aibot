@@ -3,6 +3,7 @@ package com.example.aiqing.sharerobot.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -36,6 +37,7 @@ public class TobeErweimaActivity extends AppCompatActivity implements View.OnCli
     private String mNewCookie;
     private HttpTool mHttpTool;
     private TextView mTvName;
+    private ImageView mIvQrcode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +58,15 @@ public class TobeErweimaActivity extends AppCompatActivity implements View.OnCli
         String custId = spDis.getString("custId", "");
         initFindId();
 
-        ImageView ivQrcode = (ImageView) findViewById(R.id.iv_qrcode);
-        ivQrcode.setImageBitmap(QRCodeUtil.createQRCode("https://shared.aqcome.com/?c="+custId));
+        String info="https://shared.aqcome.com/?c="+custId;
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.header);
+        Bitmap bitmap1 = QRCodeUtil.createQRCode(info);
+        Bitmap bitmap2 = QRCodeUtil.addLogo(bitmap1, bitmap);
+        mIvQrcode.setImageBitmap(bitmap2);
+
+
+//        mIvQrcode.setImageBitmap(QRCodeUtil.createQRCode("https://shared.aqcome.com/?c="+custId));
 
         getData();
     }
@@ -88,10 +97,21 @@ public class TobeErweimaActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initFindId() {
+        mIvQrcode = (ImageView) findViewById(R.id.iv_qrcode);
         mRelativelayouYajin = (RelativeLayout) findViewById(R.id.relativelayout_yajin);
         mRelativelayouPutin = (RelativeLayout) findViewById(R.id.relativelayout_putin);
         mTvName = (TextView) findViewById(R.id.tv_name_erweima);
 
+        if (getSharedPreferences("DATA", MODE_PRIVATE).getString("distributorid", "").equals("")){
+            mRelativelayouYajin.setVisibility(View.GONE);
+        }else {
+            mRelativelayouYajin.setVisibility(View.VISIBLE);
+        }
+        if (getSharedPreferences("DATA", MODE_PRIVATE).getString("agencyId", "").equals("")){
+            mRelativelayouPutin.setVisibility(View.GONE);
+        }else {
+            mRelativelayouPutin.setVisibility(View.VISIBLE);
+        }
 
         mRelativelayouYajin.setOnClickListener(this);
         mRelativelayouPutin.setOnClickListener(this);
@@ -125,4 +145,5 @@ public class TobeErweimaActivity extends AppCompatActivity implements View.OnCli
                 break;
         }
     }
+
 }

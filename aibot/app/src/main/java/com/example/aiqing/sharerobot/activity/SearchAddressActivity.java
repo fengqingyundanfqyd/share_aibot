@@ -2,11 +2,13 @@ package com.example.aiqing.sharerobot.activity;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Interpolator;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,9 +26,11 @@ import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.animation.TranslateAnimation;
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
@@ -42,6 +46,7 @@ import com.amap.api.services.help.InputtipsQuery;
 import com.amap.api.services.help.Tip;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
+import com.bumptech.glide.Glide;
 import com.esaysidebar.EasySideBarBuilder;
 import com.example.aiqing.sharerobot.R;
 import com.example.aiqing.sharerobot.adapter.LocationAdapter;
@@ -55,6 +60,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.example.aiqing.sharerobot.utils.ChString.address;
+import static com.wx.wheelview.util.WheelUtils.dip2px;
 
 /*
 * 搜索地址界面
@@ -86,6 +92,8 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
     private Marker regeoMarker;
     private TextView mTvCityName;
     private String mGetCity;
+    private Marker mScreenMarker;
+    private ImageView mIvFrash;
 
 
     @Override
@@ -212,6 +220,7 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
         mLvLocationSearch = (ListView) findViewById(R.id.lv_location_search);
         mTvCityName = (TextView) findViewById(R.id.tv_hangzhou);
         LinearLayout llAllCity = (LinearLayout) findViewById(R.id.ll_allcity);
+        mIvFrash = (ImageView) findViewById(R.id.iv_fresh);
 
         ImageView ivAllCity = (ImageView) findViewById(R.id.iv_allcity);
         llAllCity.setOnClickListener(new View.OnClickListener() {
@@ -265,6 +274,20 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
             }
         });
 
+        mIvFrash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mIvFrash.setSelected(true);
+                //刷新定位
+                clickRefresh();
+            }
+        });
+
+    }
+    //刷新定位
+    private void clickRefresh() {
+        mLocationClient.startLocation();
+        Glide.with(this).load(R.drawable.loading).into(mIvFrash);
     }
 
     @Override
@@ -283,6 +306,7 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
         setUpMap();
         //去掉高德地图右下角隐藏的缩放按钮
         aMap.getUiSettings().setZoomControlsEnabled(false);
+
     }
 
     private void setUpMap() {
@@ -315,6 +339,76 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
         //启动定位
         mLocationClient.startLocation();
 
+        aMap.setOnMapLoadedListener(new AMap.OnMapLoadedListener() {
+            @Override
+            public void onMapLoaded() {
+                addMarkersToMap();
+            }
+        });
+        aMap.setOnCameraChangeListener(new AMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+
+            }
+
+            @Override
+            public void onCameraChangeFinish(CameraPosition cameraPosition) {
+                addMarkersToMap();
+                //屏幕中心的Marker跳动
+                startJumpAnimation();
+
+                if (mIvFrash.isSelected()) {
+                    //加载菊花结束
+                    mIvFrash.setImageResource(R.mipmap.icon_refresh);
+                }
+            }
+        });
+
+    }
+    //屏幕中心的Marker跳动
+    private void startJumpAnimation() {
+        if (mScreenMarker != null) {
+            //根据屏幕距离计算需要移动的目标点
+            LatLng latLng = mScreenMarker.getPosition();
+            Point point = aMap.getProjection().toScreenLocation(latLng);
+            point.y -= dip2px(this, 125);
+            LatLng target = aMap.getProjection().fromScreenLocation(point);
+            //使用TranslateAnimation,填写一个需要移动的目标点
+            TranslateAnimation animation = new TranslateAnimation(target);
+            animation.setInterpolator(new Interpolator() {
+                @Override
+                public float getInterpolation(float input) {
+                    // 模拟重加速度的interpolator
+                    if (input <= 0.5) {
+                        return (float) (0.5f - 2 * (0.5 - input) * (0.5 - input));
+                    } else {
+                        return (float) (0.5f - Math.sqrt((input - 0.5f) * (1.5f - input)));
+                    }
+
+                }
+            });
+            //整个移动所需要的时间
+            animation.setDuration(600);
+            //设置动画
+            mScreenMarker.setAnimation(animation);
+            //开始动画
+            mScreenMarker.startAnimation();
+
+        }
+    }
+
+    //在地图上添加marker
+    private void addMarkersToMap() {
+        addMarkerInScreenCenter();
+    }
+
+    private void addMarkerInScreenCenter() {
+        LatLng latLng = aMap.getCameraPosition().target;
+        Point screenLocation = aMap.getProjection().toScreenLocation(latLng);
+        MarkerOptions markerOptions = new MarkerOptions();
+        mScreenMarker = aMap.addMarker(markerOptions.anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_move)));
+        //设置Marker在屏幕上,不跟随地图移动
+        mScreenMarker.setPositionByPixels(screenLocation.x, screenLocation.y);
     }
 
     private double lat;
@@ -376,6 +470,8 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
                     aMap.addMarker(markerOptions);
                     initData();
                     queryAddress();
+                    //添加marker
+                    addMarkersToMap();
 
 //                    amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
 //                    amapLocation.getLatitude();//获取纬度

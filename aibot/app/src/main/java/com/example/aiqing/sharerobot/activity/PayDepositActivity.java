@@ -379,6 +379,7 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
             public void onResponse(Response<PrivateKeyBean> response, Retrofit retrofit) {
                 if (response.body().getCoder().equals("0000")) {
                     String prkey = response.body().getPrkey().trim();
+
                     Log.e("私钥", "onResponse: " + prkey);
                     //查询
                     check(prkey);
@@ -399,21 +400,23 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
     private void check(final String prkey) {
         String pid = "2088721294401673";
         String appID = "2017062407561730";
+        String TARGET_ID = "20141225xxxx";
 
         boolean rsa2 = (prkey.length() > 0);
-        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(appID, rsa2);
-        String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
+        Map<String, String> authInfoMap = OrderInfoUtil2_0.buildAuthInfoMap(pid, appID, TARGET_ID, rsa2);
+        String info = OrderInfoUtil2_0.buildOrderParam(authInfoMap);
 
-        String sign = OrderInfoUtil2_0.getSign(params, prkey, rsa2);
-        final String orderInfo = orderParam + "&" + sign;
-
+        // String privateKey = rsa2 ? RSA2_PRIVATE : RSA_PRIVATE;
+        String sign = OrderInfoUtil2_0.getSign(authInfoMap, prkey, rsa2);
+        final String authInfo = info + "&" + sign;
+//
         Runnable authRunnable = new Runnable() {
             @Override
             public void run() {
                 // 构造AuthTask 对象
                 AuthTask authTask = new AuthTask(PayDepositActivity.this);
                 // 调用授权接口，获取授权结果
-                Map<String, String> result = authTask.authV2(orderInfo, true);
+                Map<String, String> result = authTask.authV2(authInfo, true);
 
                 Message msg = new Message();
                 msg.what = SDK_AUTH_FLAG;

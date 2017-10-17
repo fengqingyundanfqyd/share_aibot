@@ -44,6 +44,7 @@ import com.amap.api.maps.model.animation.TranslateAnimation;
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.BusRouteResult;
+import com.amap.api.services.route.DrivePath;
 import com.amap.api.services.route.DriveRouteResult;
 import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
@@ -55,6 +56,7 @@ import com.example.aiqing.sharerobot.bean.AibotNumBean;
 import com.example.aiqing.sharerobot.bean.PersonalInfoBean;
 import com.example.aiqing.sharerobot.inf.ApiService;
 import com.example.aiqing.sharerobot.inf.HttpTool;
+import com.example.aiqing.sharerobot.overlay.DrivingRouteOverlay;
 import com.example.aiqing.sharerobot.overlay.WalkRouteOverlay;
 
 import java.text.SimpleDateFormat;
@@ -73,6 +75,7 @@ import static com.example.aiqing.sharerobot.R.id.iv_refresh;
 
 public class Main2Activity extends AppCompatActivity implements View.OnClickListener, AMap.OnMarkerClickListener, RouteSearch.OnRouteSearchListener {
 
+    private static final int ROUTE_TYPE_DRIVE = 5;
     private LinearLayout mMain;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
@@ -123,6 +126,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     private List<AibotNumBean.ZzListBean> mZzList;
     private String mDistributorId;
     private WalkRouteResult mWalkRouteResult;
+    private WalkRouteOverlay mWalkRouteOverlay;
 
 
     @Override
@@ -181,6 +185,9 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             mRouteSearch = new RouteSearch(this);
 
             mRouteSearch.setRouteSearchListener(this);
+
+            aMap.getUiSettings().setZoomControlsEnabled(false);
+            aMap.getUiSettings().setGestureScaleByMapCenter(true);
 
         }
         setUpMap();
@@ -266,7 +273,6 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                         BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.icon_tou));
                         markerOptions.icon(bitmapDescriptor);
                         markerOptions.title("dis");
-
                         mMarker1 = aMap.addMarker(markerOptions);
 
 //                        HashMap<String,AibotNumBean> zzBean=new HashMap<String, AibotNumBean>();
@@ -647,32 +653,9 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                     aMap.clear();
                     // 设置当前地图显示为当前位置
                     aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 15));
-//                    MarkerOptions markerOptions = new MarkerOptions();
-//                    markerOptions.position(new LatLng(lat, lon));
-//                   // markerOptions.title("当前位置");
-//                    markerOptions.visible(true);
-//                    BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.shop));
-//                    markerOptions.icon(bitmapDescriptor);
+
                     addMarkersToMap();
 
-
-//                    amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
-//                    amapLocation.getLatitude();//获取纬度
-//                    amapLocation.getLongitude();//获取经度
-//                    amapLocation.getAccuracy();//获取精度信息
-//                    amapLocation.getAddress();//地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
-//                    amapLocation.getCountry();//国家信息
-//                    amapLocation.getProvince();//省信息
-//                    amapLocation.getCity();//城市信息
-//                    amapLocation.getDistrict();//城区信息
-//                    amapLocation.getStreet();//街道信息
-//                    amapLocation.getStreetNum();//街道门牌号信息
-//                    amapLocation.getCityCode();//城市编码
-//                    amapLocation.getAdCode();//地区编码
-//                    amapLocation.getAoiName();//获取当前定位点的AOI信息
-//                    amapLocation.getBuildingId();//获取当前室内定位的建筑物Id
-//                    amapLocation.getFloor();//获取当前室内定位的楼层
-//                    amapLocation.getGpsStatus();//获取GPS的当前状态
 //                    //获取定位时间
 //                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //                    Date date = new Date(amapLocation.getTime());
@@ -717,9 +700,18 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             //路线
             start(marker);
 
+            aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
+
         }
 
-        return false;
+        isClickIdentification = true;
+        if (tempMark != null) {
+            mWalkRouteOverlay.removeFromMap();
+            tempMark = null;
+        }
+
+
+        return true;
     }
 
     private void start(final Marker marker) {
@@ -728,23 +720,14 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void run() {
                         try {
-//                            Thread.sleep(300);
-//                            tempMark = marker;
-//                            mStartPoint = new LatLonPoint(mRecordPositon.latitude, mRecordPositon.longitude);
-//                             mPosition.setPosition(mRecordPositon);
-//                            mEndPoint = new LatLonPoint(marker.getPosition().latitude, marker.getPosition().longitude);
-//                             marker.setPosition(marker.getPosition());
-//                            searchRouteResultNew(ROUTE_TYPE_WALK, RouteSearch.WalkDefault);
-
-                            Thread.sleep(300);
                             tempMark = marker;
                             mStartPoint = new LatLonPoint(mRecordPositon.latitude, mRecordPositon.longitude);
-                            mScreenMarker.setPosition(mRecordPositon);
+                            mPosition.setPosition(mRecordPositon);
                             mEndPoint = new LatLonPoint(marker.getPosition().latitude, marker.getPosition().longitude);
                             marker.setPosition(marker.getPosition());
                             searchRouteResultNew(ROUTE_TYPE_WALK, RouteSearch.WalkDefault);
 
-                        } catch (InterruptedException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -769,10 +752,16 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         }
         final RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(
                 mStartPoint, mEndPoint);
-        if (routeType == ROUTE_TYPE_WALK) {// 步行路径规划
-            RouteSearch.WalkRouteQuery query = new RouteSearch.WalkRouteQuery(fromAndTo, mode);
-            mRouteSearch.calculateWalkRouteAsyn(query);// 异步路径规划步行模式查询
-        }
+//        if (routeType == ROUTE_TYPE_WALK) {// 步行路径规划
+//            RouteSearch.WalkRouteQuery query = new RouteSearch.WalkRouteQuery(fromAndTo, mode);
+//            mRouteSearch.calculateWalkRouteAsyn(query);// 异步路径规划步行模式查询
+//        }
+
+        //驾车路线
+       // if (routeType == ROUTE_TYPE_DRIVE) {// 驾车路径规划
+            RouteSearch.DriveRouteQuery query = new RouteSearch.DriveRouteQuery(fromAndTo, mode, null, null, "");// 第一个参数表示路径规划的起点和终点，第二个参数表示驾车模式，第三个参数表示途经点，第四个参数表示避让区域，第五个参数表示避让道路
+            mRouteSearch.calculateDriveRouteAsyn(query);// 异步路径规划驾车模式查询
+       // }
     }
 
     //设置转租信息
@@ -878,7 +867,38 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onDriveRouteSearched(DriveRouteResult result, int errorCode) {
+        aMap.clear();// 清理地图上的所有覆盖物
+        if (errorCode == AMapException.CODE_AMAP_SUCCESS) {
+            if (result != null && result.getPaths() != null) {
+                if (result.getPaths().size() > 0) {
+                    mDriveRouteResult = result;
+                    final DrivePath drivePath = mDriveRouteResult.getPaths().get(0);
+                    DrivingRouteOverlay drivingRouteOverlay = new DrivingRouteOverlay(Main2Activity.this,
+                            aMap, drivePath,
+                            mDriveRouteResult.getStartPos(),
+                            mDriveRouteResult.getTargetPos(), null);
+                    drivingRouteOverlay.setNodeIconVisibility(false);//设置节点marker是否显示
+                    drivingRouteOverlay.setIsColorfulline(false);//是否用颜色展示交通拥堵情况，默认true
+                    drivingRouteOverlay.removeFromMap();
+                    drivingRouteOverlay.addToMap();
+                    drivingRouteOverlay.zoomToSpan();
 
+//                   aMap.animateCamera(cameraUpate);
+
+                    int dis = (int) drivePath.getDistance();
+                    Log.e("距离", "onDriveRouteSearched: "+ dis);
+                    int dur = (int) drivePath.getDuration();
+
+                } else if (result != null && result.getPaths() == null) {
+//                    ToastUtil.show(mContext, R.string.no_result);
+                }
+
+            } else {
+//                ToastUtil.show(mContext, R.string.no_result);
+            }
+        } else {
+//            ToastUtil.showerror(this.getApplicationContext(), errorCode);
+        }
     }
 
     @Override
@@ -888,10 +908,10 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                 if (result.getPaths().size() > 0) {
                     mWalkRouteResult = result;
                     final WalkPath walkPath = mWalkRouteResult.getPaths().get(0);
-                    WalkRouteOverlay walkRouteOverlay = new WalkRouteOverlay(this, aMap, walkPath, mWalkRouteResult.getStartPos(), mWalkRouteResult.getTargetPos());
-                    walkRouteOverlay.removeFromMap();
-                    walkRouteOverlay.addToMap();
-                    walkRouteOverlay.zoomToSpan();
+                    mWalkRouteOverlay = new WalkRouteOverlay(this, aMap, walkPath, mWalkRouteResult.getStartPos(), mWalkRouteResult.getTargetPos());
+                    mWalkRouteOverlay.removeFromMap();
+                    mWalkRouteOverlay.addToMap();
+                    mWalkRouteOverlay.zoomToSpan();
 
                     int dis = (int) walkPath.getDistance();
                     int dur = (int) walkPath.getDuration();

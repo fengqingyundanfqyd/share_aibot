@@ -100,7 +100,7 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
                         @Override
                         public void onResponse(Response<AddAddressBean> response, Retrofit retrofit) {
                             DialogUtil.closeDialog(mLoadingDialog);
-                            Log.e("测试", "onResponse: " + response.body().isSuccess());
+                        //    Log.e("测试", "onResponse: " + response.body().isSuccess());
 //                            Intent intent=new Intent(AddAddressActivity.this,PersonalInfoActivity.class);
 //                            startActivity(intent);
                             if (response.body().getCoder().equals("0000")){

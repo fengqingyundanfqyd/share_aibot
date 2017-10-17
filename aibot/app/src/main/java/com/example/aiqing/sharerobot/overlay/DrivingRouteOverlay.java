@@ -108,7 +108,7 @@ public class DrivingRouteOverlay extends RouteOverlay{
                 endMarker.remove();
                 endMarker = null;
             }
-            addStartAndEndMarker();
+          //  addStartAndEndMarker();
            // addThroughPointMarker();
             if (isColorfulline && tmcs.size()>0 ) {
                 colorWayUpdate(tmcs);

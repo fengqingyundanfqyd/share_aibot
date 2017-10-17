@@ -8,11 +8,8 @@
 package com.example.aiqing.sharerobot.lib;
 
 import com.amap.api.maps.AMap;
-import com.amap.api.maps.model.BitmapDescriptor;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MarkerOptions;
-import com.example.aiqing.sharerobot.R;
 
 import java.util.ArrayList;
 
@@ -67,8 +64,8 @@ public class Utils {
 //
 //            }
 //        }
-        final BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory
-                    .fromResource(R.mipmap.shop);
+//        final BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory
+//                    .fromResource(R.mipmap.shop);
 //        Retrofit builder = new Retrofit.Builder()
 //                .baseUrl("http://192.168.1.56:8083/comm/getAgentInfo.shtml")
 //                .addConverterFactory(GsonConverterFactory.create())

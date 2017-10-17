@@ -66,7 +66,7 @@ public class BusinessInfoActivity extends AppCompatActivity implements View.OnCl
 
         Retrofit builder = new Retrofit.Builder()
                 .client(httpTool.client())
-                .baseUrl("http://relay.aqcome.com/comm/getDistributorInfo.shtml")
+                .baseUrl("http://120.132.117.157:8083/comm/getDistributorInfo.shtml")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiService apiService = builder.create(ApiService.class);
@@ -75,7 +75,7 @@ public class BusinessInfoActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onResponse(Response<MainBean> response, Retrofit retrofit) {
                     DialogUtil.closeDialog(mLoadingDialog);
-                if (response.body().getObj()!=null){
+                if (response.body()!=null){
                     mTvName.setText(response.body().getObj().getName());
                     mTvYizu.setText(response.body().getObj().getYzNum());
                     mTvKezu.setText(response.body().getObj().getDzNum());

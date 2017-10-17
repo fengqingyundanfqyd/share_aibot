@@ -31,6 +31,7 @@ import com.example.aiqing.sharerobot.bean.DoCashDetailBean;
 import com.example.aiqing.sharerobot.bean.GetGoodsYuanBean;
 import com.example.aiqing.sharerobot.bean.GetSystemTimeBean;
 import com.example.aiqing.sharerobot.bean.GetYanzhengmaBean;
+import com.example.aiqing.sharerobot.bean.GetZhimafenBean;
 import com.example.aiqing.sharerobot.bean.HavaLeaseBean;
 import com.example.aiqing.sharerobot.bean.InAndOutBean;
 import com.example.aiqing.sharerobot.bean.InAndOutBeanDai;
@@ -75,6 +76,7 @@ import com.example.aiqing.sharerobot.bean.UsersAddressBean;
 import com.example.aiqing.sharerobot.bean.WeChatPayBean;
 import com.example.aiqing.sharerobot.bean.YaoqingManBean;
 import com.example.aiqing.sharerobot.bean.ZhifubaoB2CBean;
+import com.example.aiqing.sharerobot.bean.ZhimafenBean;
 import com.example.aiqing.sharerobot.bean.advanceWxEBean;
 import com.example.aiqing.sharerobot.bean.advanceYuEBean;
 import com.example.aiqing.sharerobot.bean.advanceZfbBean;
@@ -103,7 +105,7 @@ public interface ApiService {
     /**
      * 商家信息页面
      */
-    @POST("http://relay.aqcome.com/comm/getDistributorInfo.shtml")
+    @POST("http://120.132.117.157:8083/comm/getDistributorInfo.shtml")
     Call<MainBean> getMessage(@Header("JSESSIONID") String JSESSIONID, @Query("distributorId") String distributorId);
 
     /**
@@ -621,9 +623,23 @@ public interface ApiService {
     /**
      * 余额支付B2C押金支付
      */
-    @POST("http://relay.aqcome.com/pay/depositBCAPPPay.shtml")
+//    @POST("http://relay.aqcome.com/pay/depositBCAPPPay.shtml")
+    @POST("http://120.132.117.157:8083/pay/depositBCAPPPay.shtml")
     Call<BalanceB2CBean> balancePay(@Header("JSESSIONID") String JSESSIONID, @Query("distributorId") String distributorId, @Query("pTypeId") String pTypeId, @Query("addressId") String addressId, @Query("receiveType") String receiveType, @Query("payMent") String payMent, @Query("unitFee") String unitFee, @Query("payZe") String payZe, @Query("zyNum") String zyNum, @Query("source") String source, @Query("creditkey") String creditkey);
 
+
+    /**
+     * 111、获取芝麻信用分
+     */
+    @POST("http://120.132.117.157:8083/pay/getAPPZMCredit.shtml")
+    Call<GetZhimafenBean> getZhimafen(@Header("JSESSIONID") String JSESSIONID, @Query("userid") String userid);
+
+
+    /**
+     * 获取芝麻信用（综合）
+     */
+    @POST("http://120.132.117.157:8083/pay/getAlipaySign.shtml")
+    Call<ZhimafenBean> getRoot(@Header("JSESSIONID") String JSESSIONID);
 
 }
 

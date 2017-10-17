@@ -3,6 +3,7 @@ package com.example.aiqing.sharerobot.activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +33,8 @@ public class NearbyShopActivity extends AppCompatActivity implements View.OnClic
     private ImageView mIvNearby;
     private ListView mLvNearbyShop;
     private List<NearbyShopBean.DistributorBean.ResultBean> mResult;
+    private NearbyAdapter mAdapter;
+    private SwipeRefreshLayout mFresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +51,6 @@ public class NearbyShopActivity extends AppCompatActivity implements View.OnClic
         String longtitid = intent.getStringExtra("longtitid");
 
             Log.e("附近", "initData: "+ lattuide+longtitid);
-
-
             Retrofit builder = new Retrofit.Builder()
                     .baseUrl("http://120.132.117.157:8083/comm/lbsSearch.shtml")
                     .addConverterFactory(GsonConverterFactory.create())
@@ -61,8 +62,11 @@ public class NearbyShopActivity extends AppCompatActivity implements View.OnClic
                 public void onResponse(Response<NearbyShopBean> response, Retrofit retrofit) {
                     DialogUtil.closeDialog(loadingDialog);
                     mResult = response.body().getDistributor().getResult();
-                    NearbyAdapter adapter = new NearbyAdapter(NearbyShopActivity.this, mResult);
-                    mLvNearbyShop.setAdapter(adapter);
+                    mAdapter = new NearbyAdapter(NearbyShopActivity.this, mResult);
+                    mLvNearbyShop.setAdapter(mAdapter);
+                    if (mFresh.isRefreshing()){
+                        mFresh.setRefreshing(false);
+                    }
 
                 }
 
@@ -90,10 +94,20 @@ public class NearbyShopActivity extends AppCompatActivity implements View.OnClic
         mLlNearby = (LinearLayout) findViewById(R.id.ll_nearby);
         mIvNearby = (ImageView) findViewById(R.id.iv_nearby);
         mLvNearbyShop = (ListView) findViewById(R.id.lv_nearby_shop);
+        mFresh = (SwipeRefreshLayout) findViewById(R.id.frash_dis);
+        mFresh.setRefreshing(true);
+
 
         mIvReturn.setOnClickListener(this);
         mLlNearby.setOnClickListener(this);
         mIvNearby.setOnClickListener(this);
+        mFresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mAdapter.notifyDataSetChanged();
+                mFresh.setRefreshing(false);
+            }
+        });
     }
 
     @Override

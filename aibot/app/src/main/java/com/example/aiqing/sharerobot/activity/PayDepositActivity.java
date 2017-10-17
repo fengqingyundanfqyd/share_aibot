@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,19 +22,20 @@ import com.alipay.sdk.app.PayTask;
 import com.example.aiqing.sharerobot.R;
 import com.example.aiqing.sharerobot.bean.ApplyBean;
 import com.example.aiqing.sharerobot.bean.BalanceB2CBean;
-import com.example.aiqing.sharerobot.bean.PrivateKeyBean;
+import com.example.aiqing.sharerobot.bean.GetZhimafenBean;
 import com.example.aiqing.sharerobot.bean.WeChatPayBean;
 import com.example.aiqing.sharerobot.bean.ZhifubaoB2CBean;
+import com.example.aiqing.sharerobot.bean.ZhimafenBean;
 import com.example.aiqing.sharerobot.inf.ApiService;
 import com.example.aiqing.sharerobot.inf.HttpTool;
 import com.example.aiqing.sharerobot.utils.AuthResult;
 import com.example.aiqing.sharerobot.utils.DialogUtil;
-import com.example.aiqing.sharerobot.utils.OrderInfoUtil2_0;
 import com.example.aiqing.sharerobot.utils.PayResult;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
+import java.text.DecimalFormat;
 import java.util.Map;
 
 import retrofit.Call;
@@ -115,10 +117,19 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
                     if (TextUtils.equals(status, "9000") && TextUtils.equals(authResult.getResultCode(), "200")) {
                         // 获取alipay_open_id，调支付时作为参数extern_token 的value
                         // 传入，则支付账户为该授权账户
-                        Toast.makeText(PayDepositActivity.this, "授权成功\n" + String.format("authCode:%s", authResult.getAuthCode()), Toast.LENGTH_SHORT).show();
+                        //  Toast.makeText(PayDepositActivity.this, "授权成功\n" + String.format("authCode:%s", authResult.getAuthCode()), Toast.LENGTH_SHORT).show();
 
                         String userinfo = authResult.getResult();
                         Log.e("用户信息", "handleMessage: " + userinfo);
+                        //用户信息
+                        //success=true&auth_code=33cc771885b8494d97eb33ecc03cUX82&result_code=200&alipay_open_id=20881067700297839817425421816782&user_id=2088522091585823
+
+                        String[] str = userinfo.split("=");
+                        String userid = str[str.length - 1];
+                        Log.e("用户id", "handleMessage: " + userid);
+                        //获取芝麻信用分
+                        getZhimafen(userid);
+
 
                     } else {
                         // 其他状态值则为授权失败
@@ -130,6 +141,69 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
             super.handleMessage(msg);
         }
     };
+    private TextView mTvStyle;
+    private LinearLayout mLlInfo;
+    private LinearLayout mLlMeessage;
+    private LinearLayout mLlIcon;
+    private TextView mTvLessover;
+    private View mView1;
+    private View mView2;
+    private View mView3;
+    private View mView4;
+
+    //获取芝麻信用分
+    private void getZhimafen(String userid) {
+        mLoadingDialog = DialogUtil.createLoadingDialog(this, "加载中...");
+        Retrofit builder = new Retrofit.Builder()
+                .client(mHttpTool.client())
+                .baseUrl("http://120.132.117.157:8083/pay/getAPPZMCredit.shtml")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        ApiService apiService = builder.create(ApiService.class);
+        Call<GetZhimafenBean> call = apiService.getZhimafen(mSid, userid);
+        call.enqueue(new Callback<GetZhimafenBean>() {
+            @Override
+            public void onResponse(Response<GetZhimafenBean> response, Retrofit retrofit) {
+                if (response.body().getCoder().equals("0000")) {
+                    DialogUtil.closeDialog(mLoadingDialog);
+                    String kkvalue = response.body().getKkvalue();//剩余支付金额
+
+                    DecimalFormat df = new DecimalFormat("0.00");
+                    String format = df.format(Double.valueOf(kkvalue));
+
+                    mTvStyle.setVisibility(View.GONE);
+                    mLlInfo.setVisibility(View.GONE);
+                    mLlMeessage.setVisibility(View.GONE);
+                    mRelativeLayoutZhifubao.setVisibility(View.GONE);
+                    mRelativeLayoutWeixin.setVisibility(View.GONE);
+                    mRlAccountbalance.setVisibility(View.GONE);
+                    mBtnLesspay.setVisibility(View.GONE);
+                    mBtnConfirm.setText("支付剩余" + format + "元押金");
+                    double dou = mD - Double.valueOf(kkvalue);
+                    String format1 = df.format(Double.valueOf(dou));
+                    mTvLessover.setText("已为你减免" + format1 + "元押金");
+                    mBtnConfirm.setBackgroundResource(R.mipmap.button_x);
+                    mLlIcon.setVisibility(View.VISIBLE);
+                    mView1.setVisibility(View.GONE);
+                    mView2.setVisibility(View.GONE);
+                    mView3.setVisibility(View.GONE);
+                    mView4.setVisibility(View.GONE);
+                    mTvMoney.setText(format+"");
+                    mTvNumCen.setText(format+"");
+
+                } else {
+                    Toast.makeText(PayDepositActivity.this, response.body().getErrorMsg(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+
+    }
+
     private int mSelectNum;
     private Button mBtnLesspay;
 
@@ -207,6 +281,10 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initFindId() {
+        mView1 = findViewById(R.id.view1);
+        mView2 = findViewById(R.id.view2);
+        mView3 = findViewById(R.id.view3);
+        mView4 = findViewById(R.id.view4);
         mBtnConfirm = (Button) findViewById(R.id.btn_pay);
         mTopLeft = (ImageView) findViewById(R.id.iv_return_sure);
         mTvMoney = (TextView) findViewById(R.id.tv_money);
@@ -225,6 +303,12 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
         mRlAccountbalance = (RelativeLayout) findViewById(R.id.rl_accountbalance);
         mIvAccountbalance = (ImageView) findViewById(R.id.iv_accountbalance);
         mBtnLesspay = (Button) findViewById(R.id.btn_lesspay);
+        mTvStyle = (TextView) findViewById(R.id.tv_style);
+        mLlInfo = (LinearLayout) findViewById(R.id.ll_payinfo);
+        mLlMeessage = (LinearLayout) findViewById(R.id.ll_meessage);
+        mLlIcon = (LinearLayout) findViewById(R.id.ll_icon);
+        mTvLessover = (TextView) findViewById(R.id.tv_lessover);
+
 
         mIvWeixin.setVisibility(View.GONE);
         mIvZhifubao.setVisibility(View.VISIBLE);
@@ -250,6 +334,26 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
         Intent intent = new Intent();
         switch (v.getId()) {
             case R.id.btn_pay:
+
+                if (mBtnConfirm.getText().toString().contains("剩余")) {
+                    mTvStyle.setVisibility(View.VISIBLE);
+                    mLlInfo.setVisibility(View.VISIBLE);
+                    mLlMeessage.setVisibility(View.VISIBLE);
+                    mRelativeLayoutZhifubao.setVisibility(View.VISIBLE);
+                    mRelativeLayoutWeixin.setVisibility(View.VISIBLE);
+                    mRlAccountbalance.setVisibility(View.VISIBLE);
+                    mBtnLesspay.setVisibility(View.GONE);
+                    mBtnConfirm.setText("确认支付");
+                    mBtnConfirm.setBackgroundResource(R.mipmap.dissabled);
+                    mLlIcon.setVisibility(View.GONE);
+                    mView1.setVisibility(View.VISIBLE);
+                    mView2.setVisibility(View.VISIBLE);
+                    mView3.setVisibility(View.VISIBLE);
+                    mView4.setVisibility(View.VISIBLE);
+                    mRelativeLayoutZhifubao.setSelected(false);
+                    mRelativeLayoutWeixin.setSelected(false);
+                    mRlAccountbalance.setSelected(false);
+                }
                 //确认支付
                 if (mRelativeLayoutZhifubao.isSelected()) {
                     //支付宝支付
@@ -263,7 +367,7 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
                     Double dbalance = Double.valueOf(banlance);
                     Double dneed = Double.valueOf(needpay);
 
-                    if (((dbalance-dneed)>=0)) {
+                    if (((dbalance - dneed) >= 0)) {
                         //余额支付
                         balancePay();
                     } else {
@@ -340,7 +444,7 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
     private void balancePay() {
         Retrofit builder = new Retrofit.Builder()
                 .client(mHttpTool.client())
-                .baseUrl("http://relay.aqcome.com/pay/depositBCAPPPay.shtml")
+                .baseUrl("http://120.132.117.157:8083/pay/depositBCAPPPay.shtml")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiService apiService = builder.create(ApiService.class);
@@ -365,58 +469,68 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
-    //押金减免
+    //押金减免(本地签名)
+//    private void lessPayDeposit() {
+//        Retrofit builder = new Retrofit.Builder()
+//                .client(mHttpTool.client())
+//                .baseUrl("http://120.132.117.157:8083/pay/getPrkey.shtml")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//        ApiService apiService = builder.create(ApiService.class);
+//        Call<PrivateKeyBean> call = apiService.getPrivateKey(mSid);
+//        call.enqueue(new Callback<PrivateKeyBean>() {
+//            @Override
+//            public void onResponse(Response<PrivateKeyBean> response, Retrofit retrofit) {
+//                if (response.body().getCoder().equals("0000")) {
+//                    String prkey = response.body().getPrkey().trim();
+//
+//                    Log.e("私钥", "onResponse: " + prkey);
+//                    //查询
+//                    check(prkey);
+//
+//                } else {
+//                    Toast.makeText(PayDepositActivity.this, response.body().getErrorMsg(), Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable t) {
+//                Toast.makeText(PayDepositActivity.this, "网络连接失败，请检查您的网络！", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
+    //后台签名
     private void lessPayDeposit() {
         Retrofit builder = new Retrofit.Builder()
                 .client(mHttpTool.client())
-                .baseUrl("http://120.132.117.157:8083/pay/getPrkey.shtml")
+                .baseUrl("http://120.132.117.157:8083/pay/getAlipaySign.shtml")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiService apiService = builder.create(ApiService.class);
-        Call<PrivateKeyBean> call = apiService.getPrivateKey(mSid);
-        call.enqueue(new Callback<PrivateKeyBean>() {
+        Call<ZhimafenBean> call = apiService.getRoot(mSid);
+        call.enqueue(new Callback<ZhimafenBean>() {
             @Override
-            public void onResponse(Response<PrivateKeyBean> response, Retrofit retrofit) {
-                if (response.body().getCoder().equals("0000")) {
-                    String prkey = response.body().getPrkey().trim();
-
-                    Log.e("私钥", "onResponse: " + prkey);
-                    //查询
-                    check(prkey);
-
-                } else {
-                    Toast.makeText(PayDepositActivity.this, response.body().getErrorMsg(), Toast.LENGTH_SHORT).show();
-                }
+            public void onResponse(Response<ZhimafenBean> response, Retrofit retrofit) {
+                String info = response.body().getObj();
+                getRoot(info);
             }
 
             @Override
             public void onFailure(Throwable t) {
-                Toast.makeText(PayDepositActivity.this, "网络连接失败，请检查您的网络！", Toast.LENGTH_SHORT).show();
+
             }
         });
+
     }
 
-    //查询
-    private void check(final String prkey) {
-        String pid = "2088721294401673";
-        String appID = "2017062407561730";
-        String TARGET_ID = "20141225xxxx";
-
-        boolean rsa2 = (prkey.length() > 0);
-        Map<String, String> authInfoMap = OrderInfoUtil2_0.buildAuthInfoMap(pid, appID, TARGET_ID, rsa2);
-        String info = OrderInfoUtil2_0.buildOrderParam(authInfoMap);
-
-        // String privateKey = rsa2 ? RSA2_PRIVATE : RSA_PRIVATE;
-        String sign = OrderInfoUtil2_0.getSign(authInfoMap, prkey, rsa2);
-        final String authInfo = info + "&" + sign;
-//
+    private void getRoot(final String info) {
         Runnable authRunnable = new Runnable() {
             @Override
             public void run() {
                 // 构造AuthTask 对象
                 AuthTask authTask = new AuthTask(PayDepositActivity.this);
                 // 调用授权接口，获取授权结果
-                Map<String, String> result = authTask.authV2(authInfo, true);
+                Map<String, String> result = authTask.authV2(info, true);
 
                 Message msg = new Message();
                 msg.what = SDK_AUTH_FLAG;
@@ -424,11 +538,45 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
                 mHandler.sendMessage(msg);
             }
         };
-
         // 必须异步调用
         Thread authThread = new Thread(authRunnable);
         authThread.start();
     }
+
+
+//    // 查询
+//    private void check(final String prkey) {
+//        String pid = "2088721294401673";
+//        String appID = "2017062407561730";
+//        String TARGET_ID = "20141225xxxx";
+//
+//        boolean rsa2 = (prkey.length() > 0);
+//        Map<String, String> authInfoMap = OrderInfoUtil2_0.buildAuthInfoMap(pid, appID, TARGET_ID, rsa2);
+//        String info = OrderInfoUtil2_0.buildOrderParam(authInfoMap);
+//
+//        // String privateKey = rsa2 ? RSA2_PRIVATE : RSA_PRIVATE;
+//        String sign = OrderInfoUtil2_0.getSign(authInfoMap, prkey, rsa2);
+//        final String authInfo = info + "&" + sign;
+////
+//        Runnable authRunnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                // 构造AuthTask 对象
+//                AuthTask authTask = new AuthTask(PayDepositActivity.this);
+//                // 调用授权接口，获取授权结果
+//                Map<String, String> result = authTask.authV2(authInfo, true);
+//
+//                Message msg = new Message();
+//                msg.what = SDK_AUTH_FLAG;
+//                msg.obj = result;
+//                mHandler.sendMessage(msg);
+//            }
+//        };
+//
+//        // 必须异步调用
+//        Thread authThread = new Thread(authRunnable);
+//        authThread.start();
+//    }
 
     //支付宝支付
     private void zhifubaoPay() {
@@ -448,6 +596,7 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
                 orderInfo = body;
                 new AliPayThread().start();
             }
+
             @Override
             public void onFailure(Throwable t) {
             }
@@ -467,6 +616,7 @@ public class PayDepositActivity extends AppCompatActivity implements View.OnClic
             super.run();
         }
     }
+
     //微信支付
     private void initPay() {
         mLoadingDialog = DialogUtil.createLoadingDialog(this, "加载中...");

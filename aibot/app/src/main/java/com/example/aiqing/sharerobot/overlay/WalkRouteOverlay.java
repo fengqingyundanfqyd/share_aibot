@@ -4,14 +4,12 @@ import android.content.Context;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.BitmapDescriptor;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.PolylineOptions;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkStep;
-import com.example.aiqing.sharerobot.R;
 
 import java.util.List;
 
@@ -137,11 +135,10 @@ public class WalkRouteOverlay extends RouteOverlay {
 //        if(walkStationDescriptor == null) {
 //            walkStationDescriptor = getWalkBitmapDescriptor();
 //        }
-		if(lineBitmap == null)
-		{
-			lineBitmap = BitmapDescriptorFactory
-					.fromResource(R.mipmap.shop);
-		}
+//		if(lineBitmap == null)
+//		{
+//			lineBitmap = BitmapDescriptorFactory.fromResource(R.mipmap.shop);
+//		}
 
         mPolylineOptions = null;
 
